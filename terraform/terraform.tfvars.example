@@ -1,0 +1,14 @@
+# Copy this file to terraform.tfvars and fill in your values
+# $ cp terraform.tfvars.example terraform.tfvars
+
+# Cloudflare Tunnel Token
+# Get this from: https://one.dash.cloudflare.com/
+# 1. Go to Zero Trust > Networks > Tunnels
+# 2. Create a new tunnel or use existing
+# 3. Copy the tunnel token
+cloudflare_tunnel_token = "your-cloudflare-tunnel-token-here"
+
+# NFS Storage Configuration
+enable_nfs_storage = true
+storage_class      = "nfs-client"
+

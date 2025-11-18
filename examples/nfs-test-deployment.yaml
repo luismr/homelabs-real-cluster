@@ -1,0 +1,78 @@
+# Test NFS Storage with a simple deployment
+# This creates a PVC and two pods that share the same volume
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-nfs-shared
+spec:
+  accessModes:
+    - ReadWriteMany  # Multiple pods can read/write
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: nfs-client  # Uses NFS default storage
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-writer
+  labels:
+    app: nfs-test
+spec:
+  containers:
+  - name: writer
+    image: busybox
+    command:
+      - sh
+      - -c
+      - |
+        echo "NFS Writer Pod Starting..."
+        while true; do
+          echo "$(date): Hello from $(hostname)" >> /data/messages.log
+          echo "Written message #$(wc -l < /data/messages.log)"
+          sleep 5
+        done
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+  volumes:
+  - name: shared-data
+    persistentVolumeClaim:
+      claimName: test-nfs-shared
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-reader
+  labels:
+    app: nfs-test
+spec:
+  containers:
+  - name: reader
+    image: busybox
+    command:
+      - sh
+      - -c
+      - |
+        echo "NFS Reader Pod Starting..."
+        while true; do
+          if [ -f /data/messages.log ]; then
+            echo "=== Last 5 messages ==="
+            tail -n 5 /data/messages.log
+          else
+            echo "Waiting for writer to create file..."
+          fi
+          sleep 10
+        done
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+  volumes:
+  - name: shared-data
+    persistentVolumeClaim:
+      claimName: test-nfs-shared
+
