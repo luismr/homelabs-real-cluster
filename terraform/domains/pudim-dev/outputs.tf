@@ -4,8 +4,8 @@ output "namespace" {
 }
 
 output "service_name" {
-  description = "Service name for pudim.dev site"
-  value       = module.pudim_dev_site.service_name
+  description = "Name of the Kubernetes service for pudim.dev"
+  value       = module.pudim_dev_calculator.service_name
 }
 
 output "site_url" {

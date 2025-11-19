@@ -37,30 +37,38 @@ resource "kubernetes_secret_v1" "ghcr_pull" {
   depends_on = [kubernetes_namespace.pudim_dev]
 }
 
-# Deploy pudim.dev static site
-module "pudim_dev_site" {
-  source = "../../modules/nginx-static-site"
-  
-  site_name         = "pudim-dev"
+# Deploy pudim.dev application
+module "pudim_dev_calculator" {
+  source = "../../modules/app-service"
+
+  app_name          = "calculator"
   domain            = "pudim.dev"
   namespace         = kubernetes_namespace.pudim_dev.metadata[0].name
   environment       = "production"
-  replicas          = 3
+  enable_autoscaling = true
+  min_replicas      = 1
+  max_replicas      = 3
   enable_nfs        = var.enable_nfs_storage
   storage_class     = var.storage_class
   storage_size      = "1Gi"
-  
-  # Image provided per domain (falls back to nginx:alpine)
-  nginx_image       = coalesce(var.site_image, "nginx:alpine")
+
+  # Image provided per domain
+  app_image         = var.site_image
   # Use imagePullSecret when created
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
-  
+
+  # Application specific settings
+  container_port    = 3000
+  service_port      = 80 # Exposed internally for the tunnel
+  health_check_path = "/api/health"
+  health_check_port = 3000
+
   # Production resource limits
   resource_limits_cpu      = "200m"
   resource_limits_memory   = "256Mi"
   resource_requests_cpu    = "100m"
   resource_requests_memory = "128Mi"
-  
+
   depends_on = [kubernetes_namespace.pudim_dev]
 }
 
