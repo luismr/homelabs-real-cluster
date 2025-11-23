@@ -23,7 +23,7 @@ storage_class      = "nfs-client"
 # Docker Images for Static Sites (replace with your actual images)
 pudim_site_image           = "ghcr.io/luismr/pudim-dev-calculator:main-5b33b7d"  # Replace with your pudim.dev image
 luismachadoreis_site_image = "ghcr.io/luismr/luismachadoreis-dev-portfolio:main-ebd37e5"  # Replace with your luismachadoreis.dev image
-carimbo_site_image         = "ghcr.io/luismr/carimbo-vip-site:sha-fb3b13a"  # Replace with your carimbo.vip image
+carimbo_site_image         = "ghcr.io/luismr/carimbo-vip-site:sha-105de47"  # Replace with your carimbo.vip image
 
 # GitHub Container Registry (GHCR) Authentication (for private images)
 # Leave empty if using public images
