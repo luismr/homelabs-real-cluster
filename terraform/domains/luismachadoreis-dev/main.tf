@@ -45,7 +45,10 @@ module "luismachadoreis_dev_site" {
   domain            = "luismachadoreis.dev"
   namespace         = kubernetes_namespace.luismachadoreis_dev.metadata[0].name
   environment       = "production"
-  replicas          = 3
+  replicas          = 1
+  enable_autoscaling = true
+  min_replicas      = 1
+  max_replicas      = 3
   enable_nfs        = var.enable_nfs_storage
   storage_class     = var.storage_class
   storage_size      = "1Gi"

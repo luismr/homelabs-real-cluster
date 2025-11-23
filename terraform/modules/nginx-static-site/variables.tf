@@ -79,3 +79,33 @@ variable "resource_requests_memory" {
   default     = "64Mi"
 }
 
+variable "enable_autoscaling" {
+  description = "Enable Horizontal Pod Autoscaler"
+  type        = bool
+  default     = false
+}
+
+variable "min_replicas" {
+  description = "Minimum number of replicas for autoscaling"
+  type        = number
+  default     = 1
+}
+
+variable "max_replicas" {
+  description = "Maximum number of replicas for autoscaling"
+  type        = number
+  default     = 3
+}
+
+variable "cpu_target_percentage" {
+  description = "Target CPU utilization percentage for autoscaling"
+  type        = number
+  default     = 80
+}
+
+variable "memory_target_percentage" {
+  description = "Target memory utilization percentage for autoscaling"
+  type        = number
+  default     = 80
+}
+

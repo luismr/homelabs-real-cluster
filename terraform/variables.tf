@@ -1,5 +1,5 @@
 variable "cloudflare_tunnel_token" {
-  description = "Cloudflare Tunnel token for exposing services"
+  description = "Cloudflare Tunnel token for exposing services (set via CLOUDFLARE_TUNNEL_TOKEN env var or TF_VAR_cloudflare_tunnel_token)"
   type        = string
   sensitive   = true
   default     = ""
@@ -36,13 +36,13 @@ variable "carimbo_site_image" {
 }
 
 variable "ghcr_username" {
-  description = "GitHub username (or org) for GHCR auth"
+  description = "GitHub username (or org) for GHCR auth (set via GITHUB_USER env var or TF_VAR_ghcr_username)"
   type        = string
   default     = null
 }
 
 variable "ghcr_token" {
-  description = "GitHub token with read:packages for GHCR"
+  description = "GitHub token with read:packages for GHCR (set via GITHUB_TOKEN env var or TF_VAR_ghcr_token)"
   type        = string
   sensitive   = true
   default     = null

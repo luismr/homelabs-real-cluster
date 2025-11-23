@@ -40,7 +40,7 @@ resource "kubernetes_deployment" "app" {
   }
 
   spec {
-    replicas = var.enable_autoscaling ? null : var.replicas
+    replicas = var.enable_autoscaling ? var.min_replicas : var.replicas
 
     selector {
       match_labels = {

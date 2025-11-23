@@ -111,7 +111,7 @@ resource "kubernetes_deployment" "site" {
   }
   
   spec {
-    replicas = var.replicas
+    replicas = var.enable_autoscaling ? var.min_replicas : var.replicas
     
     selector {
       match_labels = {
@@ -268,5 +268,56 @@ resource "kubernetes_service" "site" {
     
     type = "ClusterIP"
   }
+}
+
+# Horizontal Pod Autoscaler (optional)
+resource "kubernetes_horizontal_pod_autoscaler_v2" "site" {
+  count = var.enable_autoscaling ? 1 : 0
+
+  metadata {
+    name      = var.site_name
+    namespace = var.namespace
+    labels = {
+      app         = var.site_name
+      domain      = var.domain
+      environment = var.environment
+      managed-by  = "terraform"
+    }
+  }
+
+  spec {
+    scale_target_ref {
+      api_version = "apps/v1"
+      kind        = "Deployment"
+      name        = kubernetes_deployment.site.metadata[0].name
+    }
+
+    min_replicas = var.min_replicas
+    max_replicas = var.max_replicas
+
+    metric {
+      type = "Resource"
+      resource {
+        name = "cpu"
+        target {
+          type                = "Utilization"
+          average_utilization = var.cpu_target_percentage
+        }
+      }
+    }
+
+    metric {
+      type = "Resource"
+      resource {
+        name = "memory"
+        target {
+          type                = "Utilization"
+          average_utilization = var.memory_target_percentage
+        }
+      }
+    }
+  }
+
+  depends_on = [kubernetes_deployment.site]
 }
 
