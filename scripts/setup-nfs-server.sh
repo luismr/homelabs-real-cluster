@@ -7,24 +7,24 @@ echo "=== Setting up NFS Server on Master Node ==="
 
 # Install NFS server
 echo "Installing NFS server packages..."
-apt-get update -y
-apt-get install -y nfs-kernel-server nfs-common
+sudo apt-get update -y
+sudo apt-get install -y nfs-kernel-server nfs-common
 
 # Create NFS export directories
 echo "Creating NFS export directories..."
-mkdir -p /nfs/shared
-mkdir -p /nfs/grafana
-mkdir -p /nfs/prometheus
-mkdir -p /nfs/loki
-mkdir -p /nfs/alertmanager
+sudo mkdir -p /nfs/shared
+sudo mkdir -p /nfs/grafana
+sudo mkdir -p /nfs/prometheus
+sudo mkdir -p /nfs/loki
+sudo mkdir -p /nfs/alertmanager
 
 # Set permissions
-chmod -R 777 /nfs/
-chown -R nobody:nogroup /nfs/
+sudo chmod -R 777 /nfs/
+sudo chown -R nobody:nogroup /nfs/
 
 # Configure NFS exports
 echo "Configuring NFS exports..."
-cat > /etc/exports << 'EOF'
+sudo tee /etc/exports > /dev/null << 'EOF'
 # NFS exports for k3s cluster
 /nfs/shared      192.168.7.0/24(rw,sync,no_subtree_check,no_root_squash)
 /nfs/grafana     192.168.7.0/24(rw,sync,no_subtree_check,no_root_squash)
@@ -35,19 +35,19 @@ EOF
 
 # Export the filesystems
 echo "Exporting NFS filesystems..."
-exportfs -ra
+sudo exportfs -ra
 
 # Restart NFS server
 echo "Restarting NFS server..."
-systemctl restart nfs-kernel-server
-systemctl enable nfs-kernel-server
+sudo systemctl restart nfs-kernel-server
+sudo systemctl enable nfs-kernel-server
 
 # Show exports
 echo ""
 echo "=== NFS Server Setup Complete ==="
 echo ""
 echo "Active NFS exports:"
-exportfs -v
+sudo exportfs -v
 echo ""
 echo "NFS server is ready at: 192.168.7.200"
 echo ""

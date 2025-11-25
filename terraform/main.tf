@@ -1,3 +1,13 @@
+# Deploy monitoring stack (Prometheus, Grafana, Loki with NFS storage)
+module "monitoring" {
+  source = "./modules/monitoring"
+
+  enable_nfs_storage = var.enable_nfs_storage
+  storage_class      = var.storage_class
+  loki_storage_size  = "50Gi"
+  loki_retention_days = 30
+}
+
 # Create a dedicated namespace for the Cloudflare Tunnel
 resource "kubernetes_namespace" "cloudflare_tunnel" {
   count = var.cloudflare_tunnel_token != "" ? 1 : 0
@@ -5,8 +15,8 @@ resource "kubernetes_namespace" "cloudflare_tunnel" {
   metadata {
     name = "cloudflare-tunnel"
     labels = {
-      name        = "cloudflare-tunnel"
-      managed-by  = "terraform"
+      name       = "cloudflare-tunnel"
+      managed-by = "terraform"
     }
   }
 }
@@ -14,9 +24,9 @@ resource "kubernetes_namespace" "cloudflare_tunnel" {
 # Deploy the shared Cloudflare Tunnel
 module "cloudflare_tunnel" {
   count = var.cloudflare_tunnel_token != "" ? 1 : 0
-  
+
   source = "./modules/cloudflare-tunnel"
-  
+
   tunnel_token = var.cloudflare_tunnel_token
   namespace    = kubernetes_namespace.cloudflare_tunnel[0].metadata[0].name
 
@@ -29,37 +39,38 @@ module "cloudflare_tunnel" {
 # Deploy pudim.dev domain
 module "pudim_dev" {
   source = "./domains/pudim-dev"
-  
-  enable_nfs_storage       = var.enable_nfs_storage
-  storage_class            = var.storage_class
-  
-  site_image               = var.pudim_site_image
-  ghcr_username            = var.ghcr_username
-  ghcr_token               = var.ghcr_token
+
+  enable_nfs_storage = var.enable_nfs_storage
+  storage_class      = var.storage_class
+
+  site_image    = var.pudim_site_image
+  ghcr_username = var.ghcr_username
+  ghcr_token    = var.ghcr_token
 }
 
 # Deploy luismachadoreis.dev domain
 module "luismachadoreis_dev" {
   source = "./domains/luismachadoreis-dev"
-  
+
   enable_nfs_storage = var.enable_nfs_storage
   storage_class      = var.storage_class
-  
-  site_image         = var.luismachadoreis_site_image
-  ghcr_username      = var.ghcr_username
-  ghcr_token         = var.ghcr_token
+
+  site_image    = var.luismachadoreis_site_image
+  ghcr_username = var.ghcr_username
+  ghcr_token    = var.ghcr_token
 }
 
 # Deploy carimbo.vip domain
 module "carimbo_vip" {
   source = "./domains/carimbo-vip"
-  
+
   enable_nfs_storage = var.enable_nfs_storage
   storage_class      = var.storage_class
-  
-  site_image         = var.carimbo_site_image
-  ghcr_username      = var.ghcr_username
-  ghcr_token         = var.ghcr_token
+
+  site_image    = var.carimbo_site_image
+  forms_image   = var.carimbo_forms_image
+  ghcr_username = var.ghcr_username
+  ghcr_token    = var.ghcr_token
 }
 
 # Redirects namespace and redirector deployment
@@ -91,10 +102,10 @@ module "redirects" {
     {
       sources = [
         "carimbovip.com.br", "*.carimbovip.com.br",
-        "carimbovip.com",    "*.carimbovip.com",
+        "carimbovip.com", "*.carimbovip.com",
       ]
-      target  = "carimbo.vip"
-      code    = 301
+      target = "carimbo.vip"
+      code   = 301
     },
   ]
 

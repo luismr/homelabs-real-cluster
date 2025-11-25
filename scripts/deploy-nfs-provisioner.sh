@@ -3,8 +3,12 @@
 
 set -euo pipefail
 
-# Set kubeconfig for k3s
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+# Set kubeconfig for k3s (use ubuntu user's config if available, otherwise use system config)
+if [ -f /home/ubuntu/.kube/config ]; then
+  export KUBECONFIG=/home/ubuntu/.kube/config
+else
+  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+fi
 
 NFS_SERVER="192.168.7.200"
 

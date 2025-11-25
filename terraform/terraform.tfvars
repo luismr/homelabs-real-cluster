@@ -17,13 +17,14 @@
 # cloudflare_tunnel_token = ""  # Commented out - use TF_VAR_cloudflare_tunnel_token env var instead
 
 # NFS Storage Configuration
-enable_nfs_storage = false
-storage_class      = "nfs-client"
+enable_nfs_storage = true
+storage_class      = "nfs-loki"
 
 # Docker Images for Static Sites (replace with your actual images)
-pudim_site_image           = "ghcr.io/luismr/pudim-dev-calculator:main-5b33b7d"  # Replace with your pudim.dev image
-luismachadoreis_site_image = "ghcr.io/luismr/luismachadoreis-dev-portfolio:main-ebd37e5"  # Replace with your luismachadoreis.dev image
-carimbo_site_image         = "ghcr.io/luismr/carimbo-vip-site:sha-105de47"  # Replace with your carimbo.vip image
+pudim_site_image           = "ghcr.io/luismr/pudim-dev-calculator:main-5b33b7d"          # Replace with your pudim.dev image
+luismachadoreis_site_image = "ghcr.io/luismr/luismachadoreis-dev-portfolio:main-ebd37e5" # Replace with your luismachadoreis.dev image
+carimbo_site_image         = "ghcr.io/luismr/carimbo-vip-site:sha-72d673b"               # Replace with your carimbo.vip image
+carimbo_forms_image        = "ghcr.io/luismr/carimbo-vip-forms:main-042f09e"             # Replace with your carimbo.vip forms image
 
 # GitHub Container Registry (GHCR) Authentication (for private images)
 # Leave empty if using public images

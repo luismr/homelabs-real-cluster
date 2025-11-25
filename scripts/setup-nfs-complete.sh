@@ -11,9 +11,11 @@ echo ""
 MASTER_IP="192.168.7.200"
 WORKER_IPS=("192.168.7.201" "192.168.7.202" "192.168.7.203")
 
+SSH_USER=${SSH_USER:-ubuntu}
+
 # Step 1: Setup NFS server on master
 echo "[1/3] Setting up NFS server on master node..."
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@${MASTER_IP} 'bash -s' < scripts/setup-nfs-server.sh
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${SSH_USER}@${MASTER_IP} 'bash -s' < scripts/setup-nfs-server.sh
 
 # Wait for NFS to be ready
 sleep 5
@@ -23,7 +25,7 @@ echo ""
 echo "[2/3] Setting up NFS clients on worker nodes..."
 for WORKER_IP in "${WORKER_IPS[@]}"; do
   echo "  -> Setting up $WORKER_IP..."
-  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@${WORKER_IP} "bash -s -- ${MASTER_IP}" < scripts/setup-nfs-clients.sh &
+  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${SSH_USER}@${WORKER_IP} "bash -s -- ${MASTER_IP}" < scripts/setup-nfs-clients.sh &
 done
 
 # Wait for all workers
@@ -36,8 +38,8 @@ sleep 5
 # Step 3: Deploy NFS CSI provisioner
 echo ""
 echo "[3/3] Deploying NFS CSI provisioner to Kubernetes..."
-scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null scripts/deploy-nfs-provisioner.sh root@${MASTER_IP}:/tmp/
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@${MASTER_IP} 'bash /tmp/deploy-nfs-provisioner.sh'
+scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null scripts/deploy-nfs-provisioner.sh ${SSH_USER}@${MASTER_IP}:/tmp/
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${SSH_USER}@${MASTER_IP} 'bash /tmp/deploy-nfs-provisioner.sh'
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════════╗"

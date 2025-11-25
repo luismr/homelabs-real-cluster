@@ -13,3 +13,13 @@ output "site_url" {
   value       = "https://luismachadoreis.dev"
 }
 
+output "internal_url" {
+  description = "Internal Kubernetes service URL for luismachadoreis.dev"
+  value       = "${module.luismachadoreis_dev_site.service_name}.${kubernetes_namespace.luismachadoreis_dev.metadata[0].name}.svc.cluster.local"
+}
+
+output "internal_url_short" {
+  description = "Short internal Kubernetes service URL for luismachadoreis.dev"
+  value       = "${module.luismachadoreis_dev_site.service_name}.${kubernetes_namespace.luismachadoreis_dev.metadata[0].name}"
+}
+

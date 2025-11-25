@@ -30,3 +30,9 @@ variable "site_image" {
   default     = null
 }
 
+variable "forms_image" {
+  description = "Container image to deploy for forms service"
+  type        = string
+  default     = null
+}
+

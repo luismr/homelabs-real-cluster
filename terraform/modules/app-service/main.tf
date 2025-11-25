@@ -75,6 +75,16 @@ resource "kubernetes_deployment" "app" {
             protocol       = "TCP"
           }
 
+          # Load environment variables from ConfigMap if provided
+          dynamic "env_from" {
+            for_each = var.config_map_name != null ? [1] : []
+            content {
+              config_map_ref {
+                name = var.config_map_name
+              }
+            }
+          }
+
           dynamic "volume_mount" {
             for_each = var.enable_nfs ? [1] : []
             content {

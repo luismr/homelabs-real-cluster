@@ -149,3 +149,9 @@ variable "depends_on_resources" {
   type        = list(any)
   default     = []
 }
+
+variable "config_map_name" {
+  description = "Name of ConfigMap to use for environment variables"
+  type        = string
+  default     = null
+}

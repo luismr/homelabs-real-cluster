@@ -35,6 +35,12 @@ variable "carimbo_site_image" {
   default     = null
 }
 
+variable "carimbo_forms_image" {
+  description = "Image for carimbo.vip forms service"
+  type        = string
+  default     = null
+}
+
 variable "ghcr_username" {
   description = "GitHub username (or org) for GHCR auth (set via GITHUB_USER env var or TF_VAR_ghcr_username)"
   type        = string

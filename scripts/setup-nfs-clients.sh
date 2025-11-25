@@ -11,12 +11,12 @@ echo "Node: $(hostname)"
 
 # Install NFS client
 echo "Installing NFS client packages..."
-apt-get update -y
-apt-get install -y nfs-common
+sudo apt-get update -y
+sudo apt-get install -y nfs-common
 
 # Create mount point
 echo "Creating mount points..."
-mkdir -p /mnt/nfs-shared
+sudo mkdir -p /mnt/nfs-shared
 
 # Test NFS connectivity
 echo "Testing NFS connectivity..."

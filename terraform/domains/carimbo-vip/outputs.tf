@@ -13,3 +13,38 @@ output "site_url" {
   value       = "https://carimbo.vip"
 }
 
+output "forms_service_name" {
+  description = "Service name for carimbo.vip forms service"
+  value       = try(module.carimbo_vip_forms[0].service_name, null)
+}
+
+output "forms_deployment_name" {
+  description = "Deployment name for carimbo.vip forms service"
+  value       = try(module.carimbo_vip_forms[0].deployment_name, null)
+}
+
+output "forms_url" {
+  description = "URL for carimbo.vip forms service"
+  value       = "https://forms.carimbo.vip"
+}
+
+output "internal_url" {
+  description = "Internal Kubernetes service URL for carimbo.vip site"
+  value       = "${module.carimbo_vip_site.service_name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}.svc.cluster.local"
+}
+
+output "internal_url_short" {
+  description = "Short internal Kubernetes service URL for carimbo.vip site"
+  value       = "${module.carimbo_vip_site.service_name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}"
+}
+
+output "forms_internal_url" {
+  description = "Internal Kubernetes service URL for carimbo.vip forms service"
+  value       = try("${module.carimbo_vip_forms[0].service_name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}.svc.cluster.local", null)
+}
+
+output "forms_internal_url_short" {
+  description = "Short internal Kubernetes service URL for carimbo.vip forms service"
+  value       = try("${module.carimbo_vip_forms[0].service_name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}", null)
+}
+

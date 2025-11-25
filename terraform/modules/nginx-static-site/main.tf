@@ -141,22 +141,26 @@ resource "kubernetes_deployment" "site" {
           for_each = var.enable_nfs ? [1] : []
           content {
             name  = "init-content"
-            image = "busybox:latest"
+            image = var.nginx_image
             command = [
               "sh",
               "-c",
               <<-EOF
-                if [ ! -f /usr/share/nginx/html/index.html ]; then
-                  echo "Copying default content..."
-                  cp /default-content/index.html /usr/share/nginx/html/
+                echo "Copying content from image to NFS volume..."
+                # Copy all content from image to NFS volume (overwrite existing)
+                cp -rf /usr/share/nginx/html/* /usr/share/nginx/html-volume/ 2>/dev/null || true
+                # Verify content was copied
+                if [ -f /usr/share/nginx/html-volume/index.html ]; then
+                  echo "Content copied successfully from image"
                 else
-                  echo "Content already exists, skipping..."
+                  echo "Image content not found, using default content as fallback..."
+                  cp /default-content/index.html /usr/share/nginx/html-volume/
                 fi
               EOF
             ]
             volume_mount {
               name       = "content"
-              mount_path = "/usr/share/nginx/html"
+              mount_path = "/usr/share/nginx/html-volume"
             }
             volume_mount {
               name       = "default-content"
