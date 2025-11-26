@@ -107,10 +107,39 @@ resource "helm_release" "loki" {
       }
       promtail = {
         enabled = true
-        # Promtail will use default configuration which automatically
-        # discovers and collects logs from all pods in all namespaces
-        # The default config uses Kubernetes service discovery and
-        # mounts /var/log/pods from each node
+        
+        # Add JSON parsing pipeline stage to extract JSON fields from logs
+        # This extracts 'level' from JSON logs so Grafana log volume can use it
+        config = {
+          snippets = {
+            pipelineStages = [
+              {
+                cri = {}
+              },
+              {
+                json = {
+                  source = "log"
+                  expressions = {
+                    timestamp = "timestamp"
+                    level     = "level"
+                    message   = "message"
+                    method    = "method"
+                    path      = "path"
+                    ip        = "ip"
+                    origin    = "origin"
+                    userAgent = "userAgent"
+                    name      = "name"
+                    email     = "email"
+                    hasMobile = "hasMobile"
+                    hasMessage = "hasMessage"
+                    statusCode = "statusCode"
+                    duration   = "duration"
+                  }
+                }
+              }
+            ]
+          }
+        }
       }
       grafana = {
         enabled = false
