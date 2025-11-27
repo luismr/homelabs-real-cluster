@@ -78,3 +78,23 @@ output "waha_nodeport_url" {
   value       = try("http://<MASTER_IP>:30100", null)
 }
 
+output "n8n_service_name" {
+  description = "Service name for carimbo.vip n8n service"
+  value       = var.n8n_image != null ? kubernetes_service.n8n[0].metadata[0].name : null
+}
+
+output "n8n_deployment_name" {
+  description = "Deployment name for carimbo.vip n8n service"
+  value       = var.n8n_image != null ? kubernetes_deployment.n8n[0].metadata[0].name : null
+}
+
+output "n8n_internal_url" {
+  description = "Internal Kubernetes service URL for carimbo.vip n8n service"
+  value       = var.n8n_image != null ? "${kubernetes_service.n8n[0].metadata[0].name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}.svc.cluster.local:5678" : null
+}
+
+output "n8n_internal_url_short" {
+  description = "Short internal Kubernetes service URL for carimbo.vip n8n service"
+  value       = var.n8n_image != null ? "${kubernetes_service.n8n[0].metadata[0].name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}:5678" : null
+}
+

@@ -80,6 +80,18 @@ variable "carimbo_waha_swagger_password" {
   default     = null
 }
 
+variable "carimbo_n8n_image" {
+  description = "Image for carimbo.vip n8n service"
+  type        = string
+  default     = null
+}
+
+variable "carimbo_n8n_timezone" {
+  description = "Timezone for carimbo.vip n8n service (e.g., America/Sao_Paulo)"
+  type        = string
+  default     = "America/Sao_Paulo"
+}
+
 variable "singularideas_site_image" {
   description = "Image for singularideas.com.br site"
   type        = string

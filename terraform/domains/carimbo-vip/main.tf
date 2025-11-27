@@ -252,3 +252,217 @@ resource "kubernetes_service" "waha_nodeport" {
   ]
 }
 
+# ConfigMap for n8n service environment variables
+resource "kubernetes_config_map_v1" "n8n_config" {
+  count = var.n8n_image != null ? 1 : 0
+
+  metadata {
+    name      = "n8n-config"
+    namespace = kubernetes_namespace.carimbo_vip.metadata[0].name
+    labels = {
+      app         = "n8n"
+      domain      = "carimbo.vip"
+      environment = "production"
+      managed-by  = "terraform"
+    }
+  }
+
+  data = {
+    GENERIC_TIMEZONE                        = var.n8n_timezone
+    TZ                                     = var.n8n_timezone
+    N8N_PORT                               = "5678"
+    N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS  = "true"
+    N8N_RUNNERS_ENABLED                    = "true"
+    QUEUE_HEALTH_CHECK_ACTIVE              = "true"
+  }
+
+  depends_on = [kubernetes_namespace.carimbo_vip]
+}
+
+# PersistentVolumeClaim for n8n data
+resource "kubernetes_persistent_volume_claim" "n8n_data" {
+  count = (var.n8n_image != null && var.enable_nfs_storage) ? 1 : 0
+
+  metadata {
+    name      = "n8n-data"
+    namespace = kubernetes_namespace.carimbo_vip.metadata[0].name
+    labels = {
+      app         = "n8n"
+      domain      = "carimbo.vip"
+      environment = "production"
+      managed-by  = "terraform"
+    }
+  }
+
+  spec {
+    access_modes       = ["ReadWriteMany"]
+    storage_class_name = var.storage_class
+
+    resources {
+      requests = {
+        storage = "5Gi"
+      }
+    }
+  }
+
+  depends_on = [kubernetes_namespace.carimbo_vip]
+}
+
+# Deployment for n8n
+resource "kubernetes_deployment" "n8n" {
+  count = var.n8n_image != null ? 1 : 0
+
+  metadata {
+    name      = "n8n"
+    namespace = kubernetes_namespace.carimbo_vip.metadata[0].name
+    labels = {
+      app         = "n8n"
+      domain      = "carimbo.vip"
+      environment = "production"
+      managed-by  = "terraform"
+    }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "n8n"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app         = "n8n"
+          domain      = "carimbo.vip"
+          environment = "production"
+        }
+      }
+
+      spec {
+        # Optional imagePullSecrets for private registries
+        dynamic "image_pull_secrets" {
+          for_each = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null) != null ? [1] : []
+          content {
+            name = kubernetes_secret_v1.ghcr_pull[0].metadata[0].name
+          }
+        }
+
+        container {
+          name  = "n8n"
+          image = var.n8n_image
+
+          port {
+            container_port = 5678
+            protocol       = "TCP"
+          }
+
+          # Load environment variables from ConfigMap
+          env_from {
+            config_map_ref {
+              name = kubernetes_config_map_v1.n8n_config[0].metadata[0].name
+            }
+          }
+
+          # Mount persistent volume at /home/node/.n8n
+          dynamic "volume_mount" {
+            for_each = var.enable_nfs_storage ? [1] : []
+            content {
+              name       = "n8n-data"
+              mount_path = "/home/node/.n8n"
+            }
+          }
+
+          resources {
+            limits = {
+              cpu    = "500m"
+              memory = "512Mi"
+            }
+            requests = {
+              cpu    = "200m"
+              memory = "256Mi"
+            }
+          }
+
+          liveness_probe {
+            http_get {
+              path = "/healthz"
+              port = 5678
+            }
+            initial_delay_seconds = 60
+            period_seconds        = 30
+            timeout_seconds       = 5
+            failure_threshold     = 3
+          }
+
+          readiness_probe {
+            http_get {
+              path = "/healthz/readiness"
+              port = 5678
+            }
+            initial_delay_seconds = 30
+            period_seconds        = 10
+            timeout_seconds       = 5
+            failure_threshold     = 3
+          }
+        }
+
+        # Data volume only when NFS is enabled
+        dynamic "volume" {
+          for_each = var.enable_nfs_storage ? [1] : []
+          content {
+            name = "n8n-data"
+            persistent_volume_claim {
+              claim_name = kubernetes_persistent_volume_claim.n8n_data[0].metadata[0].name
+            }
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [
+    kubernetes_namespace.carimbo_vip,
+    kubernetes_config_map_v1.n8n_config
+  ]
+}
+
+# Service for n8n (ClusterIP)
+resource "kubernetes_service" "n8n" {
+  count = var.n8n_image != null ? 1 : 0
+
+  metadata {
+    name      = "n8n"
+    namespace = kubernetes_namespace.carimbo_vip.metadata[0].name
+    labels = {
+      app         = "n8n"
+      domain      = "carimbo.vip"
+      environment = "production"
+      managed-by  = "terraform"
+    }
+  }
+
+  spec {
+    selector = {
+      app = "n8n"
+    }
+
+    port {
+      name        = "http"
+      port        = 5678
+      target_port = 5678
+      protocol    = "TCP"
+    }
+
+    type = "ClusterIP"
+  }
+
+  depends_on = [
+    kubernetes_namespace.carimbo_vip,
+    kubernetes_deployment.n8n
+  ]
+}
+
+

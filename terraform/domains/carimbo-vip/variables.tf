@@ -75,3 +75,21 @@ variable "waha_swagger_password" {
   default     = null
 }
 
+variable "n8n_image" {
+  description = "Container image to deploy for n8n service"
+  type        = string
+  default     = null
+}
+
+variable "n8n_node_port" {
+  description = "NodePort for n8n service"
+  type        = number
+  default     = 30568
+}
+
+variable "n8n_timezone" {
+  description = "Timezone for n8n service (e.g., America/Sao_Paulo)"
+  type        = string
+  default     = "America/Sao_Paulo"
+}
+
