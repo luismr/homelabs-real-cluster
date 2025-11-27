@@ -308,7 +308,7 @@ resource "kubernetes_persistent_volume_claim" "n8n_data" {
   depends_on = [kubernetes_namespace.carimbo_vip]
 }
 
-# Deployment for n8n
+# Deployment for n8n service
 resource "kubernetes_deployment" "n8n" {
   count = var.n8n_image != null ? 1 : 0
 
