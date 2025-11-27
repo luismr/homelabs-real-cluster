@@ -25,6 +25,9 @@ pudim_site_image           = "ghcr.io/luismr/pudim-dev-calculator:main-5b33b7d" 
 luismachadoreis_site_image = "ghcr.io/luismr/luismachadoreis-dev-portfolio:main-ebd37e5" # Replace with your luismachadoreis.dev image
 carimbo_site_image         = "ghcr.io/luismr/carimbo-vip-site:sha-72d673b"               # Replace with your carimbo.vip image
 carimbo_forms_image        = "ghcr.io/luismr/carimbo-vip-forms:main-41890ec"             # Replace with your carimbo.vip forms image
+carimbo_waha_image         = "devlikeapro/waha:arm"                                       # WAHA (WhatsApp HTTP API) image - ARM64 version
+singularideas_site_image   = null                                                        # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
+ligflat_site_image         = null                                                        # Replace with your ligflat.com.br image (or leave null for nginx:alpine)
 
 # GitHub Container Registry (GHCR) Authentication (for private images)
 # Leave empty if using public images

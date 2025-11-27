@@ -48,10 +48,10 @@ resource "helm_release" "kube_prometheus_stack" {
           nodePort = var.grafana_node_port
         }
         persistence = {
-          enabled     = var.enable_nfs_storage
+          enabled          = var.enable_nfs_storage
           storageClassName = var.enable_nfs_storage ? var.storage_class : null
-          size        = "10Gi"
-          accessModes = ["ReadWriteOnce"]
+          size             = "10Gi"
+          accessModes      = ["ReadWriteOnce"]
         }
       }
       alertmanager = {
@@ -85,11 +85,11 @@ resource "helm_release" "kube_prometheus_stack" {
 
 # Install Loki with NFS storage and Promtail configured for all namespaces
 resource "helm_release" "loki" {
-  name       = "loki"
-  repository = "https://grafana.github.io/helm-charts"
-  chart      = "loki-stack"
-  namespace  = var.namespace
-  version    = "2.9.11"
+  name         = "loki"
+  repository   = "https://grafana.github.io/helm-charts"
+  chart        = "loki-stack"
+  namespace    = var.namespace
+  version      = "2.9.11"
   force_update = true
 
   values = [
@@ -97,10 +97,10 @@ resource "helm_release" "loki" {
       loki = {
         enabled = true
         persistence = {
-          enabled         = var.enable_nfs_storage
+          enabled          = var.enable_nfs_storage
           storageClassName = var.enable_nfs_storage ? var.storage_class : null
-          size            = var.loki_storage_size
-          accessModes     = ["ReadWriteOnce"]
+          size             = var.loki_storage_size
+          accessModes      = ["ReadWriteOnce"]
         }
         # Let Helm chart use default config - it will work correctly
         # Custom config was causing issues with invalid fields
@@ -129,19 +129,19 @@ resource "helm_release" "loki" {
                   source = "log"
                   # Keep generic; apps can have slightly different fields
                   expressions = {
-                    timestamp = "timestamp"
-                    time      = "time"
-                    level     = "level"
-                    msg       = "msg"
-                    message   = "message"
-                    method    = "method"
-                    path      = "path"
-                    ip        = "ip"
-                    origin    = "origin"
-                    userAgent = "userAgent"
-                    name      = "name"
-                    email     = "email"
-                    hasMobile = "hasMobile"
+                    timestamp  = "timestamp"
+                    time       = "time"
+                    level      = "level"
+                    msg        = "msg"
+                    message    = "message"
+                    method     = "method"
+                    path       = "path"
+                    ip         = "ip"
+                    origin     = "origin"
+                    userAgent  = "userAgent"
+                    name       = "name"
+                    email      = "email"
+                    hasMobile  = "hasMobile"
                     hasMessage = "hasMessage"
                     statusCode = "statusCode"
                     duration   = "duration"

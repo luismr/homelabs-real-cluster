@@ -41,19 +41,19 @@ resource "kubernetes_secret_v1" "ghcr_pull" {
 module "pudim_dev_calculator" {
   source = "../../modules/app-service"
 
-  app_name          = "calculator"
-  domain            = "pudim.dev"
-  namespace         = kubernetes_namespace.pudim_dev.metadata[0].name
-  environment       = "production"
+  app_name           = "calculator"
+  domain             = "pudim.dev"
+  namespace          = kubernetes_namespace.pudim_dev.metadata[0].name
+  environment        = "production"
   enable_autoscaling = true
-  min_replicas      = 1
-  max_replicas      = 3
-  enable_nfs        = var.enable_nfs_storage
-  storage_class     = var.storage_class
-  storage_size      = "1Gi"
+  min_replicas       = 1
+  max_replicas       = 3
+  enable_nfs         = var.enable_nfs_storage
+  storage_class      = var.storage_class
+  storage_size       = "1Gi"
 
   # Image provided per domain
-  app_image         = var.site_image
+  app_image = var.site_image
   # Use imagePullSecret when created
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
 

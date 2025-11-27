@@ -9,7 +9,7 @@ variable "storage_class" {
   type        = string
   default     = "nfs-client"
 }
- 
+
 
 variable "ghcr_username" {
   description = "GitHub username (or org) for GHCR auth"
@@ -32,6 +32,12 @@ variable "site_image" {
 
 variable "forms_image" {
   description = "Container image to deploy for forms service"
+  type        = string
+  default     = null
+}
+
+variable "waha_image" {
+  description = "Container image to deploy for WAHA (WhatsApp HTTP API) service"
   type        = string
   default     = null
 }

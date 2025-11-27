@@ -2,9 +2,9 @@
 module "monitoring" {
   source = "./modules/monitoring"
 
-  enable_nfs_storage = var.enable_nfs_storage
-  storage_class      = var.storage_class
-  loki_storage_size  = "50Gi"
+  enable_nfs_storage  = var.enable_nfs_storage
+  storage_class       = var.storage_class
+  loki_storage_size   = "50Gi"
   loki_retention_days = 30
 }
 
@@ -69,6 +69,7 @@ module "carimbo_vip" {
 
   site_image    = var.carimbo_site_image
   forms_image   = var.carimbo_forms_image
+  waha_image    = var.carimbo_waha_image
   ghcr_username = var.ghcr_username
   ghcr_token    = var.ghcr_token
 }
@@ -79,6 +80,10 @@ module "ligflat_com_br" {
 
   enable_nfs_storage = var.enable_nfs_storage
   storage_class      = var.storage_class
+
+  site_image    = var.ligflat_site_image
+  ghcr_username = var.ghcr_username
+  ghcr_token    = var.ghcr_token
 }
 
 # Deploy singularideas.com.br domain
@@ -87,6 +92,10 @@ module "singularideas_com_br" {
 
   enable_nfs_storage = var.enable_nfs_storage
   storage_class      = var.storage_class
+
+  site_image    = var.singularideas_site_image
+  ghcr_username = var.ghcr_username
+  ghcr_token    = var.ghcr_token
 }
 
 # Redirects namespace and redirector deployment

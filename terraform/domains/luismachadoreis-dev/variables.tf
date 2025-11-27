@@ -10,7 +10,7 @@ variable "storage_class" {
   default     = "nfs-client"
 }
 
- 
+
 
 variable "ghcr_username" {
   description = "GitHub username (or org) for GHCR auth"

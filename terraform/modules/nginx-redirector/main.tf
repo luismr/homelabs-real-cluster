@@ -11,11 +11,11 @@ locals {
         (
           [for s in r.sources : s if !startswith(s, "*.")]
           != []
-        ) ? [
+          ) ? [
           join("\n", [
             "server {",
             "  listen 80;",
-            format("  server_name %s;", join(" ", [for s in r.sources : s if !startswith(s, "*.")])) ,
+            format("  server_name %s;", join(" ", [for s in r.sources : s if !startswith(s, "*.")])),
             format("  return %d https://%s$request_uri;", r.code, r.target),
             "}",
           ])

@@ -155,3 +155,9 @@ variable "config_map_name" {
   type        = string
   default     = null
 }
+
+variable "enable_cloudflare_tunnel" {
+  description = "Enable Cloudflare Tunnel annotation on the service"
+  type        = bool
+  default     = true
+}

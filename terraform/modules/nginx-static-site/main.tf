@@ -1,7 +1,7 @@
 # PersistentVolumeClaim for site content
 resource "kubernetes_persistent_volume_claim" "site_content" {
   count = var.enable_nfs ? 1 : 0
-  
+
   metadata {
     name      = "${var.site_name}-content"
     namespace = var.namespace
@@ -12,11 +12,11 @@ resource "kubernetes_persistent_volume_claim" "site_content" {
       managed-by  = "terraform"
     }
   }
-  
+
   spec {
-    access_modes = ["ReadWriteMany"]
+    access_modes       = ["ReadWriteMany"]
     storage_class_name = var.storage_class
-    
+
     resources {
       requests = {
         storage = var.storage_size
@@ -38,7 +38,7 @@ resource "kubernetes_config_map" "default_content" {
       managed-by  = "terraform"
     }
   }
-  
+
   data = {
     "index.html" = <<-EOF
       <!DOCTYPE html>
@@ -109,16 +109,16 @@ resource "kubernetes_deployment" "site" {
       managed-by  = "terraform"
     }
   }
-  
+
   spec {
     replicas = var.enable_autoscaling ? var.min_replicas : var.replicas
-    
+
     selector {
       match_labels = {
         app = var.site_name
       }
     }
-    
+
     template {
       metadata {
         labels = {
@@ -127,7 +127,7 @@ resource "kubernetes_deployment" "site" {
           environment = var.environment
         }
       }
-      
+
       spec {
         # Optional imagePullSecrets for private registries
         dynamic "image_pull_secrets" {
@@ -168,16 +168,16 @@ resource "kubernetes_deployment" "site" {
             }
           }
         }
-        
+
         container {
           name  = "nginx"
           image = var.nginx_image
-          
+
           port {
             container_port = 80
             protocol       = "TCP"
           }
-          
+
           dynamic "volume_mount" {
             for_each = var.enable_nfs ? [1] : []
             content {
@@ -185,7 +185,7 @@ resource "kubernetes_deployment" "site" {
               mount_path = "/usr/share/nginx/html"
             }
           }
-          
+
           resources {
             limits = {
               cpu    = var.resource_limits_cpu
@@ -196,7 +196,7 @@ resource "kubernetes_deployment" "site" {
               memory = var.resource_requests_memory
             }
           }
-          
+
           liveness_probe {
             http_get {
               path = "/"
@@ -205,7 +205,7 @@ resource "kubernetes_deployment" "site" {
             initial_delay_seconds = 10
             period_seconds        = 10
           }
-          
+
           readiness_probe {
             http_get {
               path = "/"
@@ -215,7 +215,7 @@ resource "kubernetes_deployment" "site" {
             period_seconds        = 5
           }
         }
-        
+
         # Content volume only when NFS is enabled
         dynamic "volume" {
           for_each = var.enable_nfs ? [1] : []
@@ -226,7 +226,7 @@ resource "kubernetes_deployment" "site" {
             }
           }
         }
-        
+
         # Default content volume only when NFS is enabled
         dynamic "volume" {
           for_each = var.enable_nfs ? [1] : []
@@ -257,19 +257,19 @@ resource "kubernetes_service" "site" {
       "cloudflare-tunnel/hostname" = var.domain
     }
   }
-  
+
   spec {
     selector = {
       app = var.site_name
     }
-    
+
     port {
       name        = "http"
       port        = 80
       target_port = 80
       protocol    = "TCP"
     }
-    
+
     type = "ClusterIP"
   }
 }

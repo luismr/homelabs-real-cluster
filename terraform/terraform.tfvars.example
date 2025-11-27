@@ -12,3 +12,20 @@ cloudflare_tunnel_token = "your-cloudflare-tunnel-token-here"
 enable_nfs_storage = true
 storage_class      = "nfs-client"
 
+# Docker Images for Static Sites (optional - leave null to skip deployment)
+# pudim_site_image           = "ghcr.io/your-org/pudim-dev-calculator:tag"          # Replace with your pudim.dev image
+# luismachadoreis_site_image = "ghcr.io/your-org/luismachadoreis-dev-portfolio:tag" # Replace with your luismachadoreis.dev image
+# carimbo_site_image         = "ghcr.io/your-org/carimbo-vip-site:tag"               # Replace with your carimbo.vip image
+# carimbo_forms_image        = "ghcr.io/your-org/carimbo-vip-forms:tag"             # Replace with your carimbo.vip forms image
+# carimbo_waha_image         = "devlikeapro/waha:latest"                              # WAHA (WhatsApp HTTP API) image (public)
+# carimbo_waha_image         = "ghcr.io/your-org/waha:tag"                            # WAHA image from GHCR (requires GHCR auth)
+# singularideas_site_image    = null                                                    # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
+# ligflat_site_image          = null                                                    # Replace with your ligflat.com.br image (or leave null for nginx:alpine)
+
+# GitHub Container Registry (GHCR) Authentication (for private images)
+# Leave empty if using public images
+# Set via: export TF_VAR_ghcr_username="$GITHUB_USER"
+# Set via: export TF_VAR_ghcr_token="$GITHUB_TOKEN"
+# ghcr_username = null  # Commented out - use TF_VAR_ghcr_username env var instead
+# ghcr_token    = null  # Commented out - use TF_VAR_ghcr_token env var instead
+

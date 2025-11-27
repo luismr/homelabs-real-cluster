@@ -150,9 +150,9 @@ resource "kubernetes_service" "app" {
       environment = var.environment
       managed-by  = "terraform"
     }
-    annotations = {
+    annotations = var.enable_cloudflare_tunnel ? {
       "cloudflare-tunnel/hostname" = var.domain
-    }
+    } : {}
   }
 
   spec {

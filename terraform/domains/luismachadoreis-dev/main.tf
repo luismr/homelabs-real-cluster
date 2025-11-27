@@ -40,30 +40,30 @@ resource "kubernetes_secret_v1" "ghcr_pull" {
 # Deploy luismachadoreis.dev static site
 module "luismachadoreis_dev_site" {
   source = "../../modules/nginx-static-site"
-  
-  site_name         = "luismachadoreis-dev"
-  domain            = "luismachadoreis.dev"
-  namespace         = kubernetes_namespace.luismachadoreis_dev.metadata[0].name
-  environment       = "production"
-  replicas          = 1
+
+  site_name          = "luismachadoreis-dev"
+  domain             = "luismachadoreis.dev"
+  namespace          = kubernetes_namespace.luismachadoreis_dev.metadata[0].name
+  environment        = "production"
+  replicas           = 1
   enable_autoscaling = true
-  min_replicas      = 1
-  max_replicas      = 3
-  enable_nfs        = var.enable_nfs_storage
-  storage_class     = var.storage_class
-  storage_size      = "1Gi"
-  
+  min_replicas       = 1
+  max_replicas       = 3
+  enable_nfs         = var.enable_nfs_storage
+  storage_class      = var.storage_class
+  storage_size       = "1Gi"
+
   # Image provided per domain (falls back to nginx:alpine)
-  nginx_image       = coalesce(var.site_image, "nginx:alpine")
+  nginx_image = coalesce(var.site_image, "nginx:alpine")
   # Use imagePullSecret when created
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
-  
+
   # Production resource limits
   resource_limits_cpu      = "200m"
   resource_limits_memory   = "256Mi"
   resource_requests_cpu    = "100m"
   resource_requests_memory = "128Mi"
-  
+
   depends_on = [kubernetes_namespace.luismachadoreis_dev]
 }
 

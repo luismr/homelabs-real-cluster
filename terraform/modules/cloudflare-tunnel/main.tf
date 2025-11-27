@@ -8,11 +8,11 @@ resource "kubernetes_secret" "tunnel_credentials" {
       managed-by = "terraform"
     }
   }
-  
+
   data = {
     token = var.tunnel_token
   }
-  
+
   type = "Opaque"
 }
 
@@ -26,7 +26,7 @@ resource "kubernetes_config_map" "tunnel_config" {
       managed-by = "terraform"
     }
   }
-  
+
   data = {
     "config.yaml" = <<-EOF
       metrics: 0.0.0.0:2000
@@ -104,41 +104,41 @@ resource "kubernetes_deployment" "tunnel" {
       managed-by = "terraform"
     }
   }
-  
+
   spec {
     replicas = var.replicas
-    
+
     selector {
       match_labels = {
         app = "cloudflare-tunnel"
       }
     }
-    
+
     template {
       metadata {
         labels = {
           app = "cloudflare-tunnel"
         }
       }
-      
+
       spec {
         container {
           name  = "cloudflared"
           image = var.image
-          
+
           args = [
             "tunnel",
             "--config",
             "/etc/cloudflared/config.yaml",
             "run"
           ]
-          
+
           port {
             name           = "metrics"
             container_port = 2000
             protocol       = "TCP"
           }
-          
+
           env {
             name = "TUNNEL_TOKEN"
             value_from {
@@ -148,14 +148,14 @@ resource "kubernetes_deployment" "tunnel" {
               }
             }
           }
-          
+
           volume_mount {
             name       = "config"
             mount_path = "/etc/cloudflared/config.yaml"
             sub_path   = "config.yaml"
             read_only  = true
           }
-          
+
           resources {
             limits = {
               cpu    = "200m"
@@ -166,7 +166,7 @@ resource "kubernetes_deployment" "tunnel" {
               memory = "128Mi"
             }
           }
-          
+
           liveness_probe {
             http_get {
               path = "/ready"
@@ -176,7 +176,7 @@ resource "kubernetes_deployment" "tunnel" {
             period_seconds        = 10
             failure_threshold     = 3
           }
-          
+
           readiness_probe {
             http_get {
               path = "/ready"
@@ -186,7 +186,7 @@ resource "kubernetes_deployment" "tunnel" {
             period_seconds        = 5
           }
         }
-        
+
         volume {
           name = "config"
           config_map {
@@ -208,19 +208,19 @@ resource "kubernetes_service" "tunnel_metrics" {
       managed-by = "terraform"
     }
   }
-  
+
   spec {
     selector = {
       app = "cloudflare-tunnel"
     }
-    
+
     port {
       name        = "metrics"
       port        = 2000
       target_port = 2000
       protocol    = "TCP"
     }
-    
+
     type = "ClusterIP"
   }
 }

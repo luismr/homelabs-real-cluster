@@ -1,10 +1,10 @@
 output "namespaces" {
   description = "The namespaces for each domain"
   value = {
-    pudim_dev           = module.pudim_dev.namespace
-    luismachadoreis_dev = module.luismachadoreis_dev.namespace
-    carimbo_vip         = module.carimbo_vip.namespace
-    ligflat_com_br      = module.ligflat_com_br.namespace
+    pudim_dev            = module.pudim_dev.namespace
+    luismachadoreis_dev  = module.luismachadoreis_dev.namespace
+    carimbo_vip          = module.carimbo_vip.namespace
+    ligflat_com_br       = module.ligflat_com_br.namespace
     singularideas_com_br = module.singularideas_com_br.namespace
   }
 }
@@ -44,6 +44,11 @@ output "carimbo_vip" {
     forms_url                = try(module.carimbo_vip.forms_url, null)
     forms_internal_url       = try(module.carimbo_vip.forms_internal_url, null)
     forms_internal_url_short = try(module.carimbo_vip.forms_internal_url_short, null)
+    waha_service             = try(module.carimbo_vip.waha_service_name, null)
+    waha_deployment          = try(module.carimbo_vip.waha_deployment_name, null)
+    waha_url                 = try(module.carimbo_vip.waha_url, null)
+    waha_internal_url        = try(module.carimbo_vip.waha_internal_url, null)
+    waha_internal_url_short  = try(module.carimbo_vip.waha_internal_url_short, null)
   }
 }
 
@@ -83,10 +88,10 @@ output "cloudflare_tunnel_info" {
 output "sites_urls" {
   description = "URLs for all deployed sites"
   value = {
-    pudim_dev           = module.pudim_dev.site_url
-    luismachadoreis_dev = module.luismachadoreis_dev.site_url
-    carimbo_vip         = module.carimbo_vip.site_url
-    ligflat_com_br      = module.ligflat_com_br.site_url
+    pudim_dev            = module.pudim_dev.site_url
+    luismachadoreis_dev  = module.luismachadoreis_dev.site_url
+    carimbo_vip          = module.carimbo_vip.site_url
+    ligflat_com_br       = module.ligflat_com_br.site_url
     singularideas_com_br = module.singularideas_com_br.site_url
   }
 }
@@ -104,9 +109,9 @@ output "redirects_summary" {
   description = "Summary of all redirects in a readable format"
   value = [
     for rule in module.redirects.rules : {
-      from   = join(", ", rule.sources)
-      to     = rule.target
-      code   = try(rule.code, 301)
+      from = join(", ", rule.sources)
+      to   = rule.target
+      code = try(rule.code, 301)
     }
   ]
 }

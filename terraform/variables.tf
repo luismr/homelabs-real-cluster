@@ -41,6 +41,24 @@ variable "carimbo_forms_image" {
   default     = null
 }
 
+variable "carimbo_waha_image" {
+  description = "Image for carimbo.vip WAHA (WhatsApp HTTP API) service"
+  type        = string
+  default     = null
+}
+
+variable "singularideas_site_image" {
+  description = "Image for singularideas.com.br site"
+  type        = string
+  default     = null
+}
+
+variable "ligflat_site_image" {
+  description = "Image for ligflat.com.br site"
+  type        = string
+  default     = null
+}
+
 variable "ghcr_username" {
   description = "GitHub username (or org) for GHCR auth (set via GITHUB_USER env var or TF_VAR_ghcr_username)"
   type        = string
