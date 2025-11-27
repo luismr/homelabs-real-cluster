@@ -4,6 +4,8 @@ output "namespaces" {
     pudim_dev           = module.pudim_dev.namespace
     luismachadoreis_dev = module.luismachadoreis_dev.namespace
     carimbo_vip         = module.carimbo_vip.namespace
+    ligflat_com_br      = module.ligflat_com_br.namespace
+    singularideas_com_br = module.singularideas_com_br.namespace
   }
 }
 
@@ -45,6 +47,28 @@ output "carimbo_vip" {
   }
 }
 
+output "ligflat_com_br" {
+  description = "ligflat.com.br domain outputs"
+  value = {
+    namespace          = module.ligflat_com_br.namespace
+    service            = module.ligflat_com_br.service_name
+    url                = module.ligflat_com_br.site_url
+    internal_url       = module.ligflat_com_br.internal_url
+    internal_url_short = module.ligflat_com_br.internal_url_short
+  }
+}
+
+output "singularideas_com_br" {
+  description = "singularideas.com.br domain outputs"
+  value = {
+    namespace          = module.singularideas_com_br.namespace
+    service            = module.singularideas_com_br.service_name
+    url                = module.singularideas_com_br.site_url
+    internal_url       = module.singularideas_com_br.internal_url
+    internal_url_short = module.singularideas_com_br.internal_url_short
+  }
+}
+
 output "cloudflare_tunnel_info" {
   description = "Cloudflare Tunnel deployment information (if enabled)"
   value = length(module.cloudflare_tunnel) > 0 ? {
@@ -62,6 +86,28 @@ output "sites_urls" {
     pudim_dev           = module.pudim_dev.site_url
     luismachadoreis_dev = module.luismachadoreis_dev.site_url
     carimbo_vip         = module.carimbo_vip.site_url
+    ligflat_com_br      = module.ligflat_com_br.site_url
+    singularideas_com_br = module.singularideas_com_br.site_url
   }
+}
+
+output "redirects" {
+  description = "All redirect rules configured in nginx-redirector"
+  value = {
+    namespace = module.redirects.namespace
+    service   = module.redirects.service_name
+    rules     = module.redirects.rules
+  }
+}
+
+output "redirects_summary" {
+  description = "Summary of all redirects in a readable format"
+  value = [
+    for rule in module.redirects.rules : {
+      from   = join(", ", rule.sources)
+      to     = rule.target
+      code   = try(rule.code, 301)
+    }
+  ]
 }
 

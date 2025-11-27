@@ -53,6 +53,11 @@ resource "kubernetes_config_map" "tunnel_config" {
         - hostname: '*.carimbovip.com'
           service: http://redirector.redirects.svc.cluster.local:80
 
+        - hostname: singularideias.com.br
+          service: http://redirector.redirects.svc.cluster.local:80
+        - hostname: '*.singularideias.com.br'
+          service: http://redirector.redirects.svc.cluster.local:80
+
         # pudim.dev -> static-site service in pudim-dev namespace
         - hostname: pudim.dev
           service: http://static-site.pudim-dev.svc.cluster.local:80
@@ -70,6 +75,18 @@ resource "kubernetes_config_map" "tunnel_config" {
           service: http://static-site.carimbo-vip.svc.cluster.local:80
         - hostname: www.carimbo.vip
           service: http://static-site.carimbo-vip.svc.cluster.local:80
+        
+        # singularideas.com.br -> static-site service in singularideas-com-br namespace
+        - hostname: singularideas.com.br
+          service: http://static-site.singularideas-com-br.svc.cluster.local:80
+        - hostname: www.singularideas.com.br
+          service: http://static-site.singularideas-com-br.svc.cluster.local:80
+        
+        # ligflat.com.br -> static-site service in ligflat-com-br namespace
+        - hostname: ligflat.com.br
+          service: http://static-site.ligflat-com-br.svc.cluster.local:80
+        - hostname: www.ligflat.com.br
+          service: http://static-site.ligflat-com-br.svc.cluster.local:80
         
         # Catch-all rule (return 404 for unknown hosts)
         - service: http_status:404

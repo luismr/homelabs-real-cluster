@@ -73,6 +73,22 @@ module "carimbo_vip" {
   ghcr_token    = var.ghcr_token
 }
 
+# Deploy ligflat.com.br domain
+module "ligflat_com_br" {
+  source = "./domains/ligflat-com-br"
+
+  enable_nfs_storage = var.enable_nfs_storage
+  storage_class      = var.storage_class
+}
+
+# Deploy singularideas.com.br domain
+module "singularideas_com_br" {
+  source = "./domains/singularideas-com-br"
+
+  enable_nfs_storage = var.enable_nfs_storage
+  storage_class      = var.storage_class
+}
+
 # Redirects namespace and redirector deployment
 resource "kubernetes_namespace" "redirects" {
   metadata {
@@ -106,6 +122,11 @@ module "redirects" {
       ]
       target = "carimbo.vip"
       code   = 301
+    },
+    {
+      sources = ["singularideias.com.br", "*.singularideias.com.br"]
+      target  = "singularideas.com.br"
+      code    = 301
     },
   ]
 
