@@ -105,6 +105,18 @@ module "singularideas_com_br" {
   ghcr_token    = var.ghcr_token
 }
 
+# Deploy leticiacarvalho.pro domain
+module "leticiacarvalho_pro" {
+  source = "./domains/leticiacarvalho-pro"
+
+  enable_nfs_storage = var.enable_nfs_storage
+  storage_class      = var.storage_class
+
+  site_image    = var.leticiacarvalho_pro_site_image
+  ghcr_username = var.ghcr_username
+  ghcr_token    = var.ghcr_token
+}
+
 # Redirects namespace and redirector deployment
 resource "kubernetes_namespace" "redirects" {
   metadata {

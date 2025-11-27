@@ -104,6 +104,12 @@ variable "ligflat_site_image" {
   default     = null
 }
 
+variable "leticiacarvalho_pro_site_image" {
+  description = "Image for leticiacarvalho.pro site"
+  type        = string
+  default     = null
+}
+
 variable "ghcr_username" {
   description = "GitHub username (or org) for GHCR auth (set via GITHUB_USER env var or TF_VAR_ghcr_username)"
   type        = string

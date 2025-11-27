@@ -37,6 +37,7 @@ carimbo_waha_image         = "devlikeapro/waha:arm"                             
 carimbo_n8n_image          = "docker.n8n.io/n8nio/n8n"                                  # n8n workflow automation image
 singularideas_site_image   = null                                                        # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
 ligflat_site_image         = null                                                        # Replace with your ligflat.com.br image (or leave null for nginx:alpine)
+leticiacarvalho_pro_site_image = "ghcr.io/luismr/leticiacarvalho-pro-portfolio:master-ae00107"  # leticiacarvalho.pro portfolio image
 
 carimbo_n8n_timezone      = "America/Sao_Paulo"                                         # Timezone for n8n (TZ and GENERIC_TIMEZONE)
 

@@ -6,6 +6,7 @@ output "namespaces" {
     carimbo_vip          = module.carimbo_vip.namespace
     ligflat_com_br       = module.ligflat_com_br.namespace
     singularideas_com_br = module.singularideas_com_br.namespace
+    leticiacarvalho_pro  = module.leticiacarvalho_pro.namespace
   }
 }
 
@@ -78,6 +79,17 @@ output "singularideas_com_br" {
   }
 }
 
+output "leticiacarvalho_pro" {
+  description = "leticiacarvalho.pro domain outputs"
+  value = {
+    namespace          = module.leticiacarvalho_pro.namespace
+    service            = module.leticiacarvalho_pro.service_name
+    url                = module.leticiacarvalho_pro.site_url
+    internal_url       = module.leticiacarvalho_pro.internal_url
+    internal_url_short = module.leticiacarvalho_pro.internal_url_short
+  }
+}
+
 output "cloudflare_tunnel_info" {
   description = "Cloudflare Tunnel deployment information (if enabled)"
   value = length(module.cloudflare_tunnel) > 0 ? {
@@ -97,6 +109,7 @@ output "sites_urls" {
     carimbo_vip          = module.carimbo_vip.site_url
     ligflat_com_br       = module.ligflat_com_br.site_url
     singularideas_com_br = module.singularideas_com_br.site_url
+    leticiacarvalho_pro  = module.leticiacarvalho_pro.site_url
   }
 }
 
