@@ -107,21 +107,32 @@ resource "helm_release" "loki" {
       }
       promtail = {
         enabled = true
-        
-        # Add JSON parsing pipeline stage to extract JSON fields from logs
-        # This extracts 'level' from JSON logs so Grafana log volume can use it
+
+        # Use default k8s scrape configs (all namespaces, containers stdout/stderr)
+        # and inject common pipeline stages via snippets
         config = {
           snippets = {
             pipelineStages = [
+              # 1) Strip Kubernetes/containerd CRI wrapper so .log is just the app line
               {
                 cri = {}
               },
+              # 2) Drop empty lines
+              {
+                drop = {
+                  expression = "^$"
+                }
+              },
+              # 3) Try to parse JSON logs (Node, Spring, Nginx in JSON)
               {
                 json = {
                   source = "log"
+                  # Keep generic; apps can have slightly different fields
                   expressions = {
                     timestamp = "timestamp"
+                    time      = "time"
                     level     = "level"
+                    msg       = "msg"
                     message   = "message"
                     method    = "method"
                     path      = "path"
@@ -136,9 +147,54 @@ resource "helm_release" "loki" {
                     duration   = "duration"
                   }
                 }
+              },
+              # 4) Use app-provided time/timestamp if present
+              {
+                timestamp = {
+                  source = "timestamp"
+                  format = "RFC3339"
+                }
+              },
+              {
+                timestamp = {
+                  source = "time"
+                  # if you use unix ms in Node (e.g. pino) change to UnixMs
+                  format = "RFC3339"
+                }
+              },
+              # 5) Extract level as label (from JSON field extracted in step 3)
+              {
+                labels = {
+                  level = ""
+                }
               }
             ]
           }
+
+          # Labels (app, container, namespace, job, filename) are set by Helm chart defaults
+          # via relabel_configs in the default scrape configs. To customize, uncomment below:
+          # extraScrapeConfigs = <<-EOT
+          # - job_name: kubernetes-pods
+          #   kubernetes_sd_configs:
+          #   - role: pod
+          #   relabel_configs:
+          #   # Extract namespace label
+          #   - source_labels: [__meta_kubernetes_namespace]
+          #     target_label: namespace
+          #   # Extract container name
+          #   - source_labels: [__meta_kubernetes_pod_container_name]
+          #     target_label: container
+          #   # Extract app label from pod labels
+          #   - source_labels: [__meta_kubernetes_pod_label_app]
+          #     target_label: app
+          #   # Extract app.kubernetes.io/name label (alternative)
+          #   - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+          #     target_label: app
+          #   # Set job name
+          #   - target_label: job
+          #     replacement: kubernetes-pods
+          #   # filename is automatically set by Promtail from __path__
+          # EOT
         }
       }
       grafana = {

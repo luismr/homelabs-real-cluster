@@ -24,7 +24,7 @@ storage_class      = "nfs-loki"
 pudim_site_image           = "ghcr.io/luismr/pudim-dev-calculator:main-5b33b7d"          # Replace with your pudim.dev image
 luismachadoreis_site_image = "ghcr.io/luismr/luismachadoreis-dev-portfolio:main-ebd37e5" # Replace with your luismachadoreis.dev image
 carimbo_site_image         = "ghcr.io/luismr/carimbo-vip-site:sha-72d673b"               # Replace with your carimbo.vip image
-carimbo_forms_image        = "ghcr.io/luismr/carimbo-vip-forms:main-042f09e"             # Replace with your carimbo.vip forms image
+carimbo_forms_image        = "ghcr.io/luismr/carimbo-vip-forms:main-41890ec"             # Replace with your carimbo.vip forms image
 
 # GitHub Container Registry (GHCR) Authentication (for private images)
 # Leave empty if using public images
