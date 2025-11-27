@@ -49,6 +49,10 @@ output "carimbo_vip" {
     waha_url                 = try(module.carimbo_vip.waha_url, null)
     waha_internal_url        = try(module.carimbo_vip.waha_internal_url, null)
     waha_internal_url_short  = try(module.carimbo_vip.waha_internal_url_short, null)
+    n8n_service              = try(module.carimbo_vip.n8n_service_name, null)
+    n8n_deployment           = try(module.carimbo_vip.n8n_deployment_name, null)
+    n8n_internal_url         = try(module.carimbo_vip.n8n_internal_url, null)
+    n8n_internal_url_short   = try(module.carimbo_vip.n8n_internal_url_short, null)
   }
 }
 
