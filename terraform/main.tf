@@ -70,6 +70,11 @@ module "carimbo_vip" {
   site_image    = var.carimbo_site_image
   forms_image   = var.carimbo_forms_image
   waha_image    = var.carimbo_waha_image
+  waha_api_key  = var.carimbo_waha_api_key
+  waha_dashboard_username = var.carimbo_waha_dashboard_username
+  waha_dashboard_password = var.carimbo_waha_dashboard_password
+  waha_swagger_username   = var.carimbo_waha_swagger_username
+  waha_swagger_password   = var.carimbo_waha_swagger_password
   ghcr_username = var.ghcr_username
   ghcr_token    = var.ghcr_token
 }

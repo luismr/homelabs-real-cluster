@@ -47,6 +47,39 @@ variable "carimbo_waha_image" {
   default     = null
 }
 
+variable "carimbo_waha_api_key" {
+  description = "WAHA API key for carimbo.vip WAHA service"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "carimbo_waha_dashboard_username" {
+  description = "WAHA dashboard username for carimbo.vip"
+  type        = string
+  default     = "admin"
+}
+
+variable "carimbo_waha_dashboard_password" {
+  description = "WAHA dashboard password for carimbo.vip"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "carimbo_waha_swagger_username" {
+  description = "WAHA Swagger/API docs username for carimbo.vip"
+  type        = string
+  default     = "admin"
+}
+
+variable "carimbo_waha_swagger_password" {
+  description = "WAHA Swagger/API docs password for carimbo.vip"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
 variable "singularideas_site_image" {
   description = "Image for singularideas.com.br site"
   type        = string

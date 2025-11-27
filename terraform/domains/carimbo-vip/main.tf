@@ -148,20 +148,21 @@ resource "kubernetes_config_map_v1" "waha_config" {
     }
   }
 
-  data = {
-    # Configure WAHA to use the persistent volume mounted at /data
-    WHATSAPP_HOME = "/data"
-    # Enable API endpoints
-    API_ENABLED = "true"
-    # WhatsApp engine configuration
-    WHATSAPP_DEFAULT_ENGINE = "GOWS"
-    # WAHA API and Dashboard credentials
-    WAHA_API_KEY            = "04d46b801bb4421d8b690adbbaed8585"
-    WAHA_DASHBOARD_USERNAME = "admin"
-    WAHA_DASHBOARD_PASSWORD = "5ac2095be9e04bc0b11cb8349bc7bde6"
-    WHATSAPP_SWAGGER_USERNAME = "admin"
-    WHATSAPP_SWAGGER_PASSWORD = "5ac2095be9e04bc0b11cb8349bc7bde6"
-  }
+  data = merge(
+    {
+      # Configure WAHA to use the persistent volume mounted at /data
+      WHATSAPP_HOME = "/data"
+      # Enable API endpoints
+      API_ENABLED = "true"
+      # WhatsApp engine configuration
+      WHATSAPP_DEFAULT_ENGINE = "GOWS"
+    },
+    var.waha_api_key != null ? { WAHA_API_KEY = var.waha_api_key } : {},
+    var.waha_dashboard_username != null ? { WAHA_DASHBOARD_USERNAME = var.waha_dashboard_username } : {},
+    var.waha_dashboard_password != null ? { WAHA_DASHBOARD_PASSWORD = var.waha_dashboard_password } : {},
+    var.waha_swagger_username != null ? { WHATSAPP_SWAGGER_USERNAME = var.waha_swagger_username } : {},
+    var.waha_swagger_password != null ? { WHATSAPP_SWAGGER_PASSWORD = var.waha_swagger_password } : {}
+  )
 
   depends_on = [kubernetes_namespace.carimbo_vip]
 }

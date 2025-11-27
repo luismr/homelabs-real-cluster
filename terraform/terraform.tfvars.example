@@ -19,6 +19,17 @@ storage_class      = "nfs-client"
 # carimbo_forms_image        = "ghcr.io/your-org/carimbo-vip-forms:tag"             # Replace with your carimbo.vip forms image
 # carimbo_waha_image         = "devlikeapro/waha:latest"                              # WAHA (WhatsApp HTTP API) image (public)
 # carimbo_waha_image         = "ghcr.io/your-org/waha:tag"                            # WAHA image from GHCR (requires GHCR auth)
+# WAHA Credentials (set via environment variables)
+# Set via: export TF_VAR_carimbo_waha_api_key="$WAHA_API_KEY"
+# Set via: export TF_VAR_carimbo_waha_dashboard_username="$WAHA_DASHBOARD_USERNAME"
+# Set via: export TF_VAR_carimbo_waha_dashboard_password="$WAHA_DASHBOARD_PASSWORD"
+# Set via: export TF_VAR_carimbo_waha_swagger_username="$WAHA_SWAGGER_USERNAME"
+# Set via: export TF_VAR_carimbo_waha_swagger_password="$WAHA_SWAGGER_PASSWORD"
+# carimbo_waha_api_key            = null  # Commented out - use TF_VAR_carimbo_waha_api_key env var instead
+# carimbo_waha_dashboard_username = null  # Commented out - use TF_VAR_carimbo_waha_dashboard_username env var instead
+# carimbo_waha_dashboard_password  = null  # Commented out - use TF_VAR_carimbo_waha_swagger_password env var instead
+# carimbo_waha_swagger_username    = null  # Commented out - use TF_VAR_carimbo_waha_swagger_username env var instead
+# carimbo_waha_swagger_password    = null  # Commented out - use TF_VAR_carimbo_waha_swagger_password env var instead
 # singularideas_site_image    = null                                                    # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
 # ligflat_site_image          = null                                                    # Replace with your ligflat.com.br image (or leave null for nginx:alpine)
 
