@@ -178,6 +178,42 @@ resource "kubernetes_deployment" "redis" {
           }
         }
 
+        # Redis Exporter sidecar container for Prometheus metrics
+        container {
+          name  = "redis-exporter"
+          image = "oliver006/redis_exporter:latest"
+
+          port {
+            name           = "metrics"
+            container_port = 9121
+            protocol       = "TCP"
+          }
+
+          env {
+            name  = "REDIS_ADDR"
+            value = "redis://localhost:6379"
+          }
+
+          dynamic "env" {
+            for_each = var.requirepass != null ? [1] : []
+            content {
+              name  = "REDIS_PASSWORD"
+              value = var.requirepass
+            }
+          }
+
+          resources {
+            limits = {
+              cpu    = "100m"
+              memory = "128Mi"
+            }
+            requests = {
+              cpu    = "50m"
+              memory = "64Mi"
+            }
+          }
+        }
+
         # ConfigMap volume for Redis configuration
         volume {
           name = "redis-config"
@@ -228,6 +264,48 @@ resource "kubernetes_service" "redis" {
       protocol    = "TCP"
     }
 
+    port {
+      name        = "metrics"
+      port        = 9121
+      target_port = 9121
+      protocol    = "TCP"
+    }
+
     type = "ClusterIP"
   }
+}
+
+# ServiceMonitor for Prometheus to scrape Redis metrics
+resource "kubernetes_manifest" "redis_servicemonitor" {
+  manifest = {
+    apiVersion = "monitoring.coreos.com/v1"
+    kind       = "ServiceMonitor"
+    metadata = {
+      name      = var.app_name
+      namespace = var.namespace
+      labels = {
+        app         = var.app_name
+        domain      = var.domain
+        environment = var.environment
+        managed-by  = "terraform"
+        release     = "kube-prometheus-stack"
+      }
+    }
+    spec = {
+      selector = {
+        matchLabels = {
+          app = var.app_name
+        }
+      }
+      endpoints = [
+        {
+          port     = "metrics"
+          interval = "30s"
+          path     = "/metrics"
+        }
+      ]
+    }
+  }
+
+  depends_on = [kubernetes_service.redis]
 }

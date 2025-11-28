@@ -139,11 +139,11 @@ module "carimbo_vip_waha" {
 
   source = "../../modules/waha"
 
-  app_name      = "waha"
-  domain        = "waha.carimbo.vip"
-  namespace     = kubernetes_namespace.carimbo_vip.metadata[0].name
-  environment   = "production"
-  waha_image    = var.waha_image
+  app_name               = "waha"
+  domain                 = "waha.carimbo.vip"
+  namespace              = kubernetes_namespace.carimbo_vip.metadata[0].name
+  environment            = "production"
+  waha_image             = var.waha_image
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
 
   enable_nfs    = var.enable_nfs_storage
@@ -179,11 +179,11 @@ module "carimbo_vip_n8n" {
 
   source = "../../modules/n8n"
 
-  app_name      = "n8n"
-  domain        = "n8n.carimbo.vip"
-  namespace     = kubernetes_namespace.carimbo_vip.metadata[0].name
-  environment   = "production"
-  n8n_image     = var.n8n_image
+  app_name               = "n8n"
+  domain                 = "n8n.carimbo.vip"
+  namespace              = kubernetes_namespace.carimbo_vip.metadata[0].name
+  environment            = "production"
+  n8n_image              = var.n8n_image
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
 
   enable_nfs    = var.enable_nfs_storage
@@ -211,11 +211,11 @@ module "carimbo_vip_n8n" {
 module "carimbo_vip_redis" {
   source = "../../modules/redis"
 
-  app_name      = "redis"
-  domain        = "redis.carimbo.vip"
-  namespace     = kubernetes_namespace.carimbo_vip.metadata[0].name
-  environment   = "production"
-  redis_image   = coalesce(var.redis_image, "redis:7-alpine")
+  app_name               = "redis"
+  domain                 = "redis.carimbo.vip"
+  namespace              = kubernetes_namespace.carimbo_vip.metadata[0].name
+  environment            = "production"
+  redis_image            = coalesce(var.redis_image, "redis:7-alpine")
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
 
   enable_nfs    = var.enable_nfs_storage
@@ -228,6 +228,40 @@ module "carimbo_vip_redis" {
   resource_limits_memory   = "512Mi"
   resource_requests_cpu    = "100m"
   resource_requests_memory = "256Mi"
+
+  depends_on = [
+    kubernetes_namespace.carimbo_vip,
+    kubernetes_secret_v1.ghcr_pull
+  ]
+}
+
+# Deploy carimbo.vip PostgreSQL service with pgvector
+module "carimbo_vip_postgres" {
+  source = "../../modules/postgres"
+
+  app_name               = "postgres"
+  domain                 = "postgres.carimbo.vip"
+  namespace              = kubernetes_namespace.carimbo_vip.metadata[0].name
+  environment            = "production"
+  postgres_image         = coalesce(var.postgres_image, "pgvector/pgvector:pg17")
+  image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
+
+  enable_nfs    = var.enable_nfs_storage
+  storage_class = var.storage_class
+  storage_size  = "20Gi" # PostgreSQL data storage
+
+  replicas = 1
+
+  postgres_user     = "postgres"
+  postgres_password = var.postgres_password
+  database_name     = var.postgres_database_name
+  enable_pgvector   = true
+  node_port         = var.postgres_node_port # NodePort for external access (like Grafana)
+
+  resource_limits_cpu      = "1000m"
+  resource_limits_memory   = "1Gi"
+  resource_requests_cpu    = "200m"
+  resource_requests_memory = "512Mi"
 
   depends_on = [
     kubernetes_namespace.carimbo_vip,

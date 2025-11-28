@@ -129,4 +129,29 @@ variable "carimbo_redis_image" {
   default     = "redis:7-alpine"
 }
 
+variable "carimbo_postgres_image" {
+  description = "Image for carimbo.vip PostgreSQL service with pgvector (should be ARM64 compatible)"
+  type        = string
+  default     = "pgvector/pgvector:pg17"
+}
+
+variable "carimbo_postgres_password" {
+  description = "PostgreSQL password for carimbo.vip (set via POSTGRES_PASSWORD env var or TF_VAR_carimbo_postgres_password)"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "carimbo_postgres_database_name" {
+  description = "PostgreSQL database name for carimbo.vip"
+  type        = string
+  default     = "carimbo"
+}
+
+variable "carimbo_postgres_node_port" {
+  description = "NodePort for carimbo.vip PostgreSQL service (for external access like Grafana). Set to null to disable NodePort"
+  type        = number
+  default     = 30432 # PostgreSQL default port 5432 + 25000
+}
+
 

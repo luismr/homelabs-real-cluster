@@ -67,19 +67,23 @@ module "carimbo_vip" {
   enable_nfs_storage = var.enable_nfs_storage
   storage_class      = var.storage_class
 
-  site_image    = var.carimbo_site_image
-  forms_image   = var.carimbo_forms_image
-  waha_image    = var.carimbo_waha_image
-  waha_api_key  = var.carimbo_waha_api_key
+  site_image              = var.carimbo_site_image
+  forms_image             = var.carimbo_forms_image
+  waha_image              = var.carimbo_waha_image
+  waha_api_key            = var.carimbo_waha_api_key
   waha_dashboard_username = var.carimbo_waha_dashboard_username
   waha_dashboard_password = var.carimbo_waha_dashboard_password
   waha_swagger_username   = var.carimbo_waha_swagger_username
   waha_swagger_password   = var.carimbo_waha_swagger_password
-  n8n_image      = var.carimbo_n8n_image
-  n8n_timezone   = var.carimbo_n8n_timezone
-  redis_image    = var.carimbo_redis_image
-  ghcr_username = var.ghcr_username
-  ghcr_token    = var.ghcr_token
+  n8n_image               = var.carimbo_n8n_image
+  n8n_timezone            = var.carimbo_n8n_timezone
+  redis_image             = var.carimbo_redis_image
+  postgres_image          = var.carimbo_postgres_image
+  postgres_password       = var.carimbo_postgres_password
+  postgres_database_name  = var.carimbo_postgres_database_name
+  postgres_node_port      = var.carimbo_postgres_node_port
+  ghcr_username           = var.ghcr_username
+  ghcr_token              = var.ghcr_token
 }
 
 # Deploy ligflat.com.br domain

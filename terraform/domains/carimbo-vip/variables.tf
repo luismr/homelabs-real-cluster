@@ -99,4 +99,29 @@ variable "redis_image" {
   default     = "redis:7-alpine"
 }
 
+variable "postgres_image" {
+  description = "Container image to deploy for PostgreSQL service with pgvector (should be ARM64 compatible)"
+  type        = string
+  default     = "pgvector/pgvector:pg17"
+}
+
+variable "postgres_password" {
+  description = "PostgreSQL password for the superuser"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "postgres_database_name" {
+  description = "Name of the PostgreSQL database to create"
+  type        = string
+  default     = "carimbo"
+}
+
+variable "postgres_node_port" {
+  description = "NodePort for PostgreSQL service (for external access like Grafana). Set to null to disable NodePort"
+  type        = number
+  default     = 30432 # PostgreSQL default port 5432 + 25000
+}
+
 

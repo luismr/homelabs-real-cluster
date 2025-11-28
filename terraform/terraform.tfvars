@@ -8,6 +8,7 @@
 #   - WAHA_API_KEY -> TF_VAR_carimbo_waha_api_key
 #   - WAHA_DASHBOARD_PASSWORD -> TF_VAR_carimbo_waha_dashboard_password
 #   - WAHA_SWAGGER_PASSWORD -> TF_VAR_carimbo_waha_swagger_password
+#   - POSTGRES_PASSWORD -> TF_VAR_carimbo_postgres_password
 #
 # Set them before running terraform:
 #   export TF_VAR_cloudflare_tunnel_token="$CLOUDFLARE_TUNNEL_TOKEN"
@@ -18,6 +19,7 @@
 #   export TF_VAR_carimbo_waha_dashboard_password="$WAHA_DASHBOARD_PASSWORD"
 #   export TF_VAR_carimbo_waha_swagger_username="$WAHA_SWAGGER_USERNAME"
 #   export TF_VAR_carimbo_waha_swagger_password="$WAHA_SWAGGER_PASSWORD"
+#   export TF_VAR_carimbo_postgres_password="$POSTGRES_PASSWORD"
 
 # Cloudflare Tunnel Token (optional - get from https://one.dash.cloudflare.com/)
 # Leave empty to deploy sites without tunnel initially
@@ -52,6 +54,11 @@ carimbo_n8n_timezone      = "America/Sao_Paulo"                                 
 # carimbo_waha_dashboard_password  = null  # Commented out - use TF_VAR_carimbo_waha_dashboard_password env var instead
 # carimbo_waha_swagger_username    = null  # Commented out - use TF_VAR_carimbo_waha_swagger_username env var instead
 # carimbo_waha_swagger_password    = null  # Commented out - use TF_VAR_carimbo_waha_swagger_password env var instead
+
+# PostgreSQL Configuration for carimbo.vip
+# Set via: export TF_VAR_carimbo_postgres_password="$POSTGRES_PASSWORD"
+# carimbo_postgres_password = null  # Commented out - use TF_VAR_carimbo_postgres_password env var instead
+# carimbo_postgres_database_name = "carimbo"  # Optional: defaults to "carimbo"
 
 # GitHub Container Registry (GHCR) Authentication (for private images)
 # Leave empty if using public images
