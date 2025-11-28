@@ -18,6 +18,7 @@ resource "kubernetes_config_map_v1" "n8n_config" {
     N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS  = "true"
     N8N_RUNNERS_ENABLED                    = "true"
     QUEUE_HEALTH_CHECK_ACTIVE              = "true"
+    N8N_METRICS                            = "true"
   }
 }
 
@@ -192,6 +193,39 @@ resource "kubernetes_service" "n8n" {
     }
 
     type = "ClusterIP"
+  }
+}
+
+# ServiceMonitor for Prometheus metrics scraping
+resource "kubernetes_manifest" "n8n_servicemonitor" {
+  manifest = {
+    apiVersion = "monitoring.coreos.com/v1"
+    kind       = "ServiceMonitor"
+    metadata = {
+      name      = var.app_name
+      namespace = var.namespace
+      labels = {
+        app         = var.app_name
+        domain      = var.domain
+        environment = var.environment
+        managed-by  = "terraform"
+        release     = "kube-prometheus-stack" # Label to be discovered by Prometheus
+      }
+    }
+    spec = {
+      selector = {
+        matchLabels = {
+          app = var.app_name
+        }
+      }
+      endpoints = [
+        {
+          port     = "http"
+          interval = "30s"
+          path     = "/metrics"
+        },
+      ]
+    }
   }
 }
 
