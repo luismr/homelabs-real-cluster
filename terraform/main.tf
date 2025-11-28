@@ -86,18 +86,6 @@ module "carimbo_vip" {
   ghcr_token              = var.ghcr_token
 }
 
-# Deploy ligflat.com.br domain
-module "ligflat_com_br" {
-  source = "./domains/ligflat-com-br"
-
-  enable_nfs_storage = var.enable_nfs_storage
-  storage_class      = var.storage_class
-
-  site_image    = var.ligflat_site_image
-  ghcr_username = var.ghcr_username
-  ghcr_token    = var.ghcr_token
-}
-
 # Deploy singularideas.com.br domain
 module "singularideas_com_br" {
   source = "./domains/singularideas-com-br"
@@ -158,6 +146,11 @@ module "redirects" {
     },
     {
       sources = ["singularideias.com.br", "*.singularideias.com.br"]
+      target  = "singularideas.com.br"
+      code    = 301
+    },
+    {
+      sources = ["ligflat.com.br", "*.ligflat.com.br"]
       target  = "singularideas.com.br"
       code    = 301
     },

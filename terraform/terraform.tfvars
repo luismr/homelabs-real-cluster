@@ -31,17 +31,16 @@ enable_nfs_storage = true
 storage_class      = "nfs-loki"
 
 # Docker Images for Static Sites (replace with your actual images)
-pudim_site_image           = "ghcr.io/luismr/pudim-dev-calculator:main-5b33b7d"          # Replace with your pudim.dev image
-luismachadoreis_site_image = "ghcr.io/luismr/luismachadoreis-dev-portfolio:main-ebd37e5" # Replace with your luismachadoreis.dev image
-carimbo_site_image         = "ghcr.io/luismr/carimbo-vip-site:sha-72d673b"               # Replace with your carimbo.vip image
-carimbo_forms_image        = "ghcr.io/luismr/carimbo-vip-forms:main-41890ec"             # Replace with your carimbo.vip forms image
-carimbo_waha_image         = "devlikeapro/waha:arm"                                      # WAHA (WhatsApp HTTP API) image - ARM64 version
-carimbo_n8n_image          = "docker.n8n.io/n8nio/n8n"                                   # n8n workflow automation image
-singularideas_site_image   = "ghcr.io/luismr/singularideas-com-site:main-5329983"        # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
-ligflat_site_image         = null                                                        # Replace with your ligflat.com.br image (or leave null for nginx:alpine)
-leticiacarvalho_pro_site_image = "ghcr.io/luismr/leticiacarvalho-pro-portfolio:master-ae00107"  # leticiacarvalho.pro portfolio image
+pudim_site_image               = "ghcr.io/luismr/pudim-dev-calculator:main-5b33b7d"            # Replace with your pudim.dev image
+luismachadoreis_site_image     = "ghcr.io/luismr/luismachadoreis-dev-portfolio:main-ebd37e5"   # Replace with your luismachadoreis.dev image
+carimbo_site_image             = "ghcr.io/luismr/carimbo-vip-site:sha-72d673b"                 # Replace with your carimbo.vip image
+carimbo_forms_image            = "ghcr.io/luismr/carimbo-vip-forms:main-41890ec"               # Replace with your carimbo.vip forms image
+carimbo_waha_image             = "devlikeapro/waha:arm"                                        # WAHA (WhatsApp HTTP API) image - ARM64 version
+carimbo_n8n_image              = "docker.n8n.io/n8nio/n8n"                                     # n8n workflow automation image
+singularideas_site_image       = "ghcr.io/luismr/singularideas-com-site:main-06724f2"          # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
+leticiacarvalho_pro_site_image = "ghcr.io/luismr/leticiacarvalho-pro-portfolio:master-ae00107" # leticiacarvalho.pro portfolio image
 
-carimbo_n8n_timezone      = "America/Sao_Paulo"                                         # Timezone for n8n (TZ and GENERIC_TIMEZONE)
+carimbo_n8n_timezone = "America/Sao_Paulo" # Timezone for n8n (TZ and GENERIC_TIMEZONE)
 
 # WAHA Credentials (set via environment variables)
 # Set via: export TF_VAR_carimbo_waha_api_key="$WAHA_API_KEY"

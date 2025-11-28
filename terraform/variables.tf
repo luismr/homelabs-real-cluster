@@ -98,12 +98,6 @@ variable "singularideas_site_image" {
   default     = null
 }
 
-variable "ligflat_site_image" {
-  description = "Image for ligflat.com.br site"
-  type        = string
-  default     = null
-}
-
 variable "leticiacarvalho_pro_site_image" {
   description = "Image for leticiacarvalho.pro site"
   type        = string

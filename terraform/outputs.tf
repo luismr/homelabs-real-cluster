@@ -4,7 +4,6 @@ output "namespaces" {
     pudim_dev            = module.pudim_dev.namespace
     luismachadoreis_dev  = module.luismachadoreis_dev.namespace
     carimbo_vip          = module.carimbo_vip.namespace
-    ligflat_com_br       = module.ligflat_com_br.namespace
     singularideas_com_br = module.singularideas_com_br.namespace
     leticiacarvalho_pro  = module.leticiacarvalho_pro.namespace
   }
@@ -57,17 +56,6 @@ output "carimbo_vip" {
   }
 }
 
-output "ligflat_com_br" {
-  description = "ligflat.com.br domain outputs"
-  value = {
-    namespace          = module.ligflat_com_br.namespace
-    service            = module.ligflat_com_br.service_name
-    url                = module.ligflat_com_br.site_url
-    internal_url       = module.ligflat_com_br.internal_url
-    internal_url_short = module.ligflat_com_br.internal_url_short
-  }
-}
-
 output "singularideas_com_br" {
   description = "singularideas.com.br domain outputs"
   value = {
@@ -107,7 +95,6 @@ output "sites_urls" {
     pudim_dev            = module.pudim_dev.site_url
     luismachadoreis_dev  = module.luismachadoreis_dev.site_url
     carimbo_vip          = module.carimbo_vip.site_url
-    ligflat_com_br       = module.ligflat_com_br.site_url
     singularideas_com_br = module.singularideas_com_br.site_url
     leticiacarvalho_pro  = module.leticiacarvalho_pro.site_url
   }
