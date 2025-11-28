@@ -81,21 +81,21 @@ output "waha_nodeport_url" {
 # n8n outputs
 output "n8n_service_name" {
   description = "Service name for carimbo.vip n8n service"
-  value       = try(kubernetes_service.n8n[0].metadata[0].name, null)
+  value       = try(module.carimbo_vip_n8n[0].service_name, null)
 }
 
 output "n8n_deployment_name" {
   description = "Deployment name for carimbo.vip n8n service"
-  value       = try(kubernetes_deployment.n8n[0].metadata[0].name, null)
+  value       = try(module.carimbo_vip_n8n[0].deployment_name, null)
 }
 
 output "n8n_internal_url" {
   description = "Internal Kubernetes service URL for carimbo.vip n8n service"
-  value       = try("${kubernetes_service.n8n[0].metadata[0].name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}.svc.cluster.local:5678", null)
+  value       = try("${module.carimbo_vip_n8n[0].service_name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}.svc.cluster.local:5678", null)
 }
 
 output "n8n_internal_url_short" {
   description = "Short internal Kubernetes service URL for carimbo.vip n8n service"
-  value       = try("${kubernetes_service.n8n[0].metadata[0].name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}:5678", null)
+  value       = try("${module.carimbo_vip_n8n[0].service_name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}:5678", null)
 }
 
