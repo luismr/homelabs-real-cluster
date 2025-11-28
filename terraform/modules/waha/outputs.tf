@@ -23,3 +23,13 @@ output "node_port" {
   value       = var.node_port
 }
 
+output "namespace" {
+  description = "Namespace where resources are deployed"
+  value       = var.namespace
+}
+
+output "domain" {
+  description = "Domain name for the WAHA service"
+  value       = var.domain
+}
+

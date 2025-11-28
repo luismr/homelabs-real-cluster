@@ -207,4 +207,33 @@ module "carimbo_vip_n8n" {
   ]
 }
 
+# Deploy carimbo.vip Redis service
+module "carimbo_vip_redis" {
+  source = "../../modules/redis"
+
+  app_name      = "redis"
+  domain        = "redis.carimbo.vip"
+  namespace     = kubernetes_namespace.carimbo_vip.metadata[0].name
+  environment   = "production"
+  redis_image   = coalesce(var.redis_image, "redis:7-alpine")
+  image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
+
+  enable_nfs    = var.enable_nfs_storage
+  storage_class = var.storage_class
+  storage_size  = "2Gi" # Redis data storage for id generator state
+
+  replicas = 1
+
+  resource_limits_cpu      = "500m"
+  resource_limits_memory   = "512Mi"
+  resource_requests_cpu    = "100m"
+  resource_requests_memory = "256Mi"
+
+  depends_on = [
+    kubernetes_namespace.carimbo_vip,
+    kubernetes_secret_v1.ghcr_pull
+  ]
+}
+
+
 

@@ -77,6 +77,7 @@ module "carimbo_vip" {
   waha_swagger_password   = var.carimbo_waha_swagger_password
   n8n_image      = var.carimbo_n8n_image
   n8n_timezone   = var.carimbo_n8n_timezone
+  redis_image    = var.carimbo_redis_image
   ghcr_username = var.ghcr_username
   ghcr_token    = var.ghcr_token
 }

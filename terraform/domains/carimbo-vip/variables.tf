@@ -93,3 +93,10 @@ variable "n8n_timezone" {
   default     = "America/Sao_Paulo"
 }
 
+variable "redis_image" {
+  description = "Container image to deploy for Redis service (should be ARM64 compatible)"
+  type        = string
+  default     = "redis:7-alpine"
+}
+
+

@@ -123,3 +123,10 @@ variable "ghcr_token" {
   default     = null
 }
 
+variable "carimbo_redis_image" {
+  description = "Image for carimbo.vip Redis service (should be ARM64 compatible)"
+  type        = string
+  default     = "redis:7-alpine"
+}
+
+
