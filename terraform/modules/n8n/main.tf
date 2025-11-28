@@ -12,13 +12,13 @@ resource "kubernetes_config_map_v1" "n8n_config" {
   }
 
   data = {
-    GENERIC_TIMEZONE                       = var.n8n_timezone
-    TZ                                     = var.n8n_timezone
-    N8N_PORT                               = "5678"
-    N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS  = "true"
-    N8N_RUNNERS_ENABLED                    = "true"
-    QUEUE_HEALTH_CHECK_ACTIVE              = "true"
-    N8N_METRICS                            = "true"
+    GENERIC_TIMEZONE                      = var.n8n_timezone
+    TZ                                    = var.n8n_timezone
+    N8N_PORT                              = "5678"
+    N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS = "true"
+    N8N_RUNNERS_ENABLED                   = "true"
+    QUEUE_HEALTH_CHECK_ACTIVE             = "true"
+    N8N_METRICS                           = "true"
   }
 }
 

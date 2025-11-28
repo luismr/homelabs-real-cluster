@@ -96,4 +96,3 @@ variable "enable_cloudflare_tunnel" {
   type        = bool
   default     = false
 }
-

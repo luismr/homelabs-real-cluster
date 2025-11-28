@@ -194,10 +194,10 @@ module "carimbo_vip_n8n" {
 
   replicas = 1
 
-  resource_limits_cpu      = "500m"
-  resource_limits_memory   = "512Mi"
-  resource_requests_cpu    = "200m"
-  resource_requests_memory = "256Mi"
+  resource_limits_cpu      = "2000m" # 2 CPU cores
+  resource_limits_memory   = "2Gi"   # 2 GiB memory
+  resource_requests_cpu    = "1000m" # 1 CPU core
+  resource_requests_memory = "1Gi"   # 1 GiB memory
 
   enable_cloudflare_tunnel = false
 
@@ -228,6 +228,18 @@ module "carimbo_vip_redis" {
   resource_limits_memory   = "512Mi"
   resource_requests_cpu    = "100m"
   resource_requests_memory = "256Mi"
+
+  # Redis authentication and security
+  protected_mode = false # Disable protected mode
+  requirepass    = null  # Don't set default user password, use ACL instead
+  acl_users = [
+    {
+      username = "redis"
+      password = "redis"
+      commands = "+@all" # Allow all commands
+      keys     = "*"     # Allow access to all keys
+    }
+  ]
 
   depends_on = [
     kubernetes_namespace.carimbo_vip,

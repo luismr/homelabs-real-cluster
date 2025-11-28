@@ -36,7 +36,10 @@ resource "kubernetes_config_map_v1" "redis_config" {
       "# Network",
       "bind 0.0.0.0",
       "protected-mode ${var.protected_mode ? "yes" : "no"}",
-    ], var.maxmemory != null ? ["maxmemory ${var.maxmemory}"] : [], var.requirepass != null ? ["requirepass ${var.requirepass}"] : []))
+      ], var.maxmemory != null ? ["maxmemory ${var.maxmemory}"] : [], var.requirepass != null ? ["requirepass ${var.requirepass}"] : [], length(var.acl_users) > 0 ? concat(
+      ["# ACL Users"],
+      [for user in var.acl_users : "user ${user.username} on >${user.password} ~${user.keys} ${user.commands}"]
+    ) : []))
   }
 }
 

@@ -110,3 +110,14 @@ variable "protected_mode" {
   default     = true
 }
 
+variable "acl_users" {
+  description = "List of ACL users to create. Format: [{username = 'redis', password = 'redis', commands = '~*', keys = '~*'}]"
+  type = list(object({
+    username = string
+    password = string
+    commands = optional(string, "~*")
+    keys     = optional(string, "~*")
+  }))
+  default = []
+}
+
