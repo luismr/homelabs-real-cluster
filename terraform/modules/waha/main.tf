@@ -121,6 +121,16 @@ resource "kubernetes_deployment" "waha" {
             }
           }
 
+          # Mount sessions directory for WAHA session persistence
+          dynamic "volume_mount" {
+            for_each = var.enable_nfs ? [1] : []
+            content {
+              name       = "waha-data"
+              mount_path = "/app/.sessions"
+              sub_path   = "sessions"
+            }
+          }
+
           resources {
             limits = {
               cpu    = var.resource_limits_cpu

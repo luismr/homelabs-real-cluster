@@ -158,9 +158,9 @@ module "carimbo_vip_waha" {
 
   node_port = 30100 # Similar to Grafana's 30080, using 30100 for WAHA
 
-  enable_autoscaling = true
+  enable_autoscaling = false # WAHA should run as single instance
   min_replicas       = 1
-  max_replicas       = 3
+  max_replicas       = 1
 
   resource_limits_cpu      = "500m"
   resource_limits_memory   = "512Mi"
