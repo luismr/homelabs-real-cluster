@@ -29,3 +29,42 @@ variable "ghcr_token" {
   default     = null
 }
 
+variable "waha_image" {
+  description = "Container image to deploy for WAHA (WhatsApp HTTP API) service"
+  type        = string
+  default     = null
+}
+
+variable "waha_api_key" {
+  description = "WAHA API key for authentication"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "waha_dashboard_username" {
+  description = "WAHA dashboard username"
+  type        = string
+  default     = "admin"
+}
+
+variable "waha_dashboard_password" {
+  description = "WAHA dashboard password"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "waha_swagger_username" {
+  description = "WAHA Swagger/API docs username"
+  type        = string
+  default     = "admin"
+}
+
+variable "waha_swagger_password" {
+  description = "WAHA Swagger/API docs password"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
