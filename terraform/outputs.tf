@@ -53,6 +53,9 @@ output "carimbo_vip" {
     n8n_deployment           = try(module.carimbo_vip.n8n_deployment_name, null)
     n8n_internal_url         = try(module.carimbo_vip.n8n_internal_url, null)
     n8n_internal_url_short   = try(module.carimbo_vip.n8n_internal_url_short, null)
+    n8n_webhook_url          = try(module.carimbo_vip.n8n_webhook_url, null)
+    n8n_host                 = try(module.carimbo_vip.n8n_host, null)
+    n8n_webhook_full_url     = try(module.carimbo_vip.n8n_webhook_full_url, null)
   }
 }
 

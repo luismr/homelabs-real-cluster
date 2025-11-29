@@ -96,3 +96,27 @@ variable "enable_cloudflare_tunnel" {
   type        = bool
   default     = false
 }
+
+variable "webhook_url" {
+  description = "Webhook URL for n8n (e.g., engine.carimbo.vip)"
+  type        = string
+  default     = null
+}
+
+variable "n8n_host" {
+  description = "Hostname for n8n (e.g., engine.carimbo.vip)"
+  type        = string
+  default     = null
+}
+
+variable "n8n_protocol" {
+  description = "Protocol for n8n (http or https)"
+  type        = string
+  default     = null
+}
+
+variable "n8n_proxy_hops" {
+  description = "Number of proxy hops if behind a reverse proxy"
+  type        = number
+  default     = null
+}

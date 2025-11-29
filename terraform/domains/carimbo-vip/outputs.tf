@@ -99,3 +99,18 @@ output "n8n_internal_url_short" {
   value       = try("${module.carimbo_vip_n8n[0].service_name}.${kubernetes_namespace.carimbo_vip.metadata[0].name}:5678", null)
 }
 
+output "n8n_webhook_url" {
+  description = "Webhook URL for carimbo.vip n8n service"
+  value       = try(module.carimbo_vip_n8n[0].webhook_url, null)
+}
+
+output "n8n_host" {
+  description = "Hostname for carimbo.vip n8n service"
+  value       = try(module.carimbo_vip_n8n[0].n8n_host, null)
+}
+
+output "n8n_webhook_full_url" {
+  description = "Full webhook URL (protocol + host) for carimbo.vip n8n service"
+  value       = try(module.carimbo_vip_n8n[0].webhook_full_url, null)
+}
+

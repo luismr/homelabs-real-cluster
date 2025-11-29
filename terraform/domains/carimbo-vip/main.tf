@@ -201,6 +201,12 @@ module "carimbo_vip_n8n" {
 
   enable_cloudflare_tunnel = false
 
+  # n8n webhook and host configuration
+  webhook_url    = "https://engine.carimbo.vip"
+  n8n_host       = "engine.carimbo.vip"
+  n8n_protocol   = "https"
+  n8n_proxy_hops = 1
+
   depends_on = [
     kubernetes_namespace.carimbo_vip,
     kubernetes_secret_v1.ghcr_pull

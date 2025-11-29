@@ -11,7 +11,7 @@ resource "kubernetes_config_map_v1" "n8n_config" {
     }
   }
 
-  data = {
+  data = merge({
     GENERIC_TIMEZONE                      = var.n8n_timezone
     TZ                                    = var.n8n_timezone
     N8N_PORT                              = "5678"
@@ -19,7 +19,7 @@ resource "kubernetes_config_map_v1" "n8n_config" {
     N8N_RUNNERS_ENABLED                   = "true"
     QUEUE_HEALTH_CHECK_ACTIVE             = "true"
     N8N_METRICS                           = "true"
-  }
+  }, var.webhook_url != null ? { WEBHOOK_URL = var.webhook_url } : {}, var.n8n_host != null ? { N8N_HOST = var.n8n_host } : {}, var.n8n_protocol != null ? { N8N_PROTOCOL = var.n8n_protocol } : {}, var.n8n_proxy_hops != null ? { N8N_PROXY_HOPS = tostring(var.n8n_proxy_hops) } : {})
 }
 
 # PersistentVolumeClaim for n8n data

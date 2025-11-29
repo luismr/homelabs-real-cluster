@@ -23,3 +23,23 @@ output "domain" {
   value       = var.domain
 }
 
+output "webhook_url" {
+  description = "Webhook URL for n8n"
+  value       = var.webhook_url
+}
+
+output "n8n_host" {
+  description = "Hostname for n8n"
+  value       = var.n8n_host
+}
+
+output "n8n_protocol" {
+  description = "Protocol for n8n (http/https)"
+  value       = var.n8n_protocol
+}
+
+output "webhook_full_url" {
+  description = "Full webhook URL (protocol + host)"
+  value       = var.webhook_url != null && var.n8n_protocol != null ? "${var.n8n_protocol}://${var.webhook_url}" : null
+}
+
