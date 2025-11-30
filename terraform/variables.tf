@@ -41,6 +41,30 @@ variable "carimbo_forms_image" {
   default     = null
 }
 
+variable "carimbo_forms_n8n_base_url" {
+  description = "Base URL for N8N webhook endpoints for carimbo.vip forms service (e.g., https://n8n.example.com/webhook)"
+  type        = string
+  default     = null
+}
+
+variable "carimbo_forms_allowed_controllers" {
+  description = "Comma-separated list of allowed controllers for carimbo.vip forms service"
+  type        = string
+  default     = "leads,contacts"
+}
+
+variable "carimbo_forms_allowed_origins" {
+  description = "Comma-separated list of allowed origins for carimbo.vip forms service"
+  type        = string
+  default     = "carimbo.vip"
+}
+
+variable "carimbo_forms_origin_override" {
+  description = "Origin override for carimbo.vip forms service"
+  type        = string
+  default     = "carimbo.vip"
+}
+
 variable "carimbo_waha_image" {
   description = "Image for carimbo.vip WAHA (WhatsApp HTTP API) service"
   type        = string

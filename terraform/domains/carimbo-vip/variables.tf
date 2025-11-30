@@ -36,6 +36,30 @@ variable "forms_image" {
   default     = null
 }
 
+variable "forms_n8n_base_url" {
+  description = "Base URL for N8N webhook endpoints (e.g., https://n8n.example.com/webhook)"
+  type        = string
+  default     = null
+}
+
+variable "forms_allowed_controllers" {
+  description = "Comma-separated list of allowed controllers for forms service"
+  type        = string
+  default     = "leads,contacts"
+}
+
+variable "forms_allowed_origins" {
+  description = "Comma-separated list of allowed origins for forms service"
+  type        = string
+  default     = "carimbo.vip"
+}
+
+variable "forms_origin_override" {
+  description = "Origin override for forms service"
+  type        = string
+  default     = "carimbo.vip"
+}
+
 variable "waha_image" {
   description = "Container image to deploy for WAHA (WhatsApp HTTP API) service"
   type        = string

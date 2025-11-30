@@ -67,9 +67,13 @@ module "carimbo_vip" {
   enable_nfs_storage = var.enable_nfs_storage
   storage_class      = var.storage_class
 
-  site_image              = var.carimbo_site_image
-  forms_image             = var.carimbo_forms_image
-  waha_image              = var.carimbo_waha_image
+  site_image                      = var.carimbo_site_image
+  forms_image                     = var.carimbo_forms_image
+  forms_n8n_base_url              = var.carimbo_forms_n8n_base_url
+  forms_allowed_controllers       = var.carimbo_forms_allowed_controllers
+  forms_allowed_origins           = var.carimbo_forms_allowed_origins
+  forms_origin_override           = var.carimbo_forms_origin_override
+  waha_image                      = var.carimbo_waha_image
   waha_api_key            = var.carimbo_waha_api_key
   waha_dashboard_username = var.carimbo_waha_dashboard_username
   waha_dashboard_password = var.carimbo_waha_dashboard_password

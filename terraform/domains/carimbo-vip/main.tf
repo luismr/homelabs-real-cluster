@@ -82,11 +82,14 @@ resource "kubernetes_config_map_v1" "forms_config" {
     }
   }
 
-  data = {
+  data = merge({
     TURNSTILE_SECRET_KEY = "0x4AAAAAACCvUECCzvvVh9Yg3Ric5u0dvSs"
     TURNSTILE_ENABLED    = "true"
     CORS_ORIGIN          = "https://carimbo.vip"
-  }
+    ALLOWED_CONTROLLERS  = var.forms_allowed_controllers
+    ALLOWED_ORIGINS      = var.forms_allowed_origins
+    ORIGIN_OVERRIDE      = var.forms_origin_override
+  }, var.forms_n8n_base_url != null ? { N8N_BASE_URL = var.forms_n8n_base_url } : {})
 
   depends_on = [kubernetes_namespace.carimbo_vip]
 }
