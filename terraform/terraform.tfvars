@@ -31,18 +31,24 @@ enable_nfs_storage = true
 storage_class      = "nfs-loki"
 
 # Docker Images for Static Sites (replace with your actual images)
-pudim_site_image               = "ghcr.io/luismr/pudim-dev-calculator:main-5b33b7d"            # Replace with your pudim.dev image
-luismachadoreis_site_image     = "ghcr.io/luismr/luismachadoreis-dev-portfolio:main-ebd37e5"   # Replace with your luismachadoreis.dev image
-carimbo_site_image             = "ghcr.io/luismr/carimbo-vip-site:sha-72d673b"                 # Replace with your carimbo.vip image
-carimbo_forms_image            = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"               # Replace with your carimbo.vip forms image
-carimbo_forms_n8n_base_url     = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb"       # Base URL for N8N webhook endpoints (e.g., https://n8n.example.com/webhook)
-carimbo_forms_allowed_controllers = "leads,contacts"                                            # Comma-separated list of allowed controllers for forms service
-carimbo_forms_allowed_origins     = "carimbo.vip"                                               # Comma-separated list of allowed origins for forms service
-carimbo_forms_origin_override     = "carimbo.vip"                                               # Origin override for forms service
-carimbo_waha_image             = "devlikeapro/waha:arm"                                        # WAHA (WhatsApp HTTP API) image - ARM64 version
-carimbo_n8n_image              = "docker.n8n.io/n8nio/n8n"                                     # n8n workflow automation image
-singularideas_site_image       = "ghcr.io/luismr/singularideas-com-site:main-caa1e2b"          # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
-leticiacarvalho_pro_site_image = "ghcr.io/luismr/leticiacarvalho-pro-portfolio:master-ae00107" # leticiacarvalho.pro portfolio image
+pudim_site_image                        = "ghcr.io/luismr/pudim-dev-calculator:sha-6cd017d"                                           # Replace with your pudim.dev image
+luismachadoreis_site_image              = "ghcr.io/luismr/luismachadoreis-dev-portfolio:sha-44325af"                                  # Replace with your luismachadoreis.dev image
+carimbo_site_image                      = "ghcr.io/luismr/carimbo-vip-site:sha-4c3ab04"                                                # Replace with your carimbo.vip image
+carimbo_forms_image                     = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Replace with your carimbo.vip forms image
+carimbo_forms_n8n_base_url              = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints (e.g., https://n8n.example.com/webhook)
+carimbo_forms_allowed_controllers       = "leads,contacts"                                                                             # Comma-separated list of allowed controllers for forms service
+carimbo_forms_allowed_origins           = "carimbo.vip"                                                                                # Comma-separated list of allowed origins for forms service
+carimbo_forms_origin_override           = "carimbo.vip"                                                                                # Origin override for forms service
+carimbo_waha_image                      = "devlikeapro/waha:arm"                                                                       # WAHA (WhatsApp HTTP API) image - ARM64 version
+singularideas_waha_image                = "devlikeapro/waha:arm"                                                                       # WAHA (WhatsApp HTTP API) image for singularideas.com.br - ARM64 version (same as carimbo-vip)
+carimbo_n8n_image                       = "docker.n8n.io/n8nio/n8n"                                                                    # n8n workflow automation image
+singularideas_site_image                = "ghcr.io/luismr/singularideas-com-site:sha-27e5946"                                         # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
+singularideas_forms_image               = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                         # Image for singularideas.com.br forms service (using same as carimbo-vip)
+singularideas_forms_n8n_base_url        = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints for forms service (using same as carimbo-vip)
+singularideas_forms_allowed_controllers = "contacts"                                                                                   # Comma-separated list of allowed controllers for forms service
+singularideas_forms_allowed_origins     = "singularideas.com.br"                                                                       # Comma-separated list of allowed origins for forms service
+singularideas_forms_origin_override     = "singularideas.com.br"                                                                       # Origin override for forms service
+leticiacarvalho_pro_site_image          = "ghcr.io/luismr/leticiacarvalho-pro-portfolio:master-ae00107"                                # leticiacarvalho.pro portfolio image
 
 carimbo_n8n_timezone = "America/Sao_Paulo" # Timezone for n8n (TZ and GENERIC_TIMEZONE)
 
@@ -57,6 +63,18 @@ carimbo_n8n_timezone = "America/Sao_Paulo" # Timezone for n8n (TZ and GENERIC_TI
 # carimbo_waha_dashboard_password  = null  # Commented out - use TF_VAR_carimbo_waha_dashboard_password env var instead
 # carimbo_waha_swagger_username    = null  # Commented out - use TF_VAR_carimbo_waha_swagger_username env var instead
 # carimbo_waha_swagger_password    = null  # Commented out - use TF_VAR_carimbo_waha_swagger_password env var instead
+
+# WAHA Credentials for singularideas.com.br (using same values as carimbo-vip)
+# Set via: export TF_VAR_singularideas_waha_api_key="$WAHA_API_KEY"
+# Set via: export TF_VAR_singularideas_waha_dashboard_username="$WAHA_DASHBOARD_USERNAME"
+# Set via: export TF_VAR_singularideas_waha_dashboard_password="$WAHA_DASHBOARD_PASSWORD"
+# Set via: export TF_VAR_singularideas_waha_swagger_username="$WAHA_SWAGGER_USERNAME"
+# Set via: export TF_VAR_singularideas_waha_swagger_password="$WAHA_SWAGGER_PASSWORD"
+# singularideas_waha_api_key            = null  # Commented out - use TF_VAR_singularideas_waha_api_key env var instead
+# singularideas_waha_dashboard_username = null  # Commented out - use TF_VAR_singularideas_waha_dashboard_username env var instead
+# singularideas_waha_dashboard_password  = null  # Commented out - use TF_VAR_singularideas_waha_dashboard_password env var instead
+# singularideas_waha_swagger_username    = null  # Commented out - use TF_VAR_singularideas_waha_swagger_username env var instead
+# singularideas_waha_swagger_password    = null  # Commented out - use TF_VAR_singularideas_waha_swagger_password env var instead
 
 # PostgreSQL Configuration for carimbo.vip
 # Set via: export TF_VAR_carimbo_postgres_password="$POSTGRES_PASSWORD"

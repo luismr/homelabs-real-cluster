@@ -67,38 +67,11 @@ module "carimbo_vip_site" {
   depends_on = [kubernetes_namespace.carimbo_vip]
 }
 
-# ConfigMap for forms service environment variables
-resource "kubernetes_config_map_v1" "forms_config" {
-  count = var.forms_image != null ? 1 : 0
-
-  metadata {
-    name      = "forms-config"
-    namespace = kubernetes_namespace.carimbo_vip.metadata[0].name
-    labels = {
-      app         = "forms"
-      domain      = "carimbo.vip"
-      environment = "production"
-      managed-by  = "terraform"
-    }
-  }
-
-  data = merge({
-    TURNSTILE_SECRET_KEY = "0x4AAAAAACCvUECCzvvVh9Yg3Ric5u0dvSs"
-    TURNSTILE_ENABLED    = "true"
-    CORS_ORIGIN          = "https://carimbo.vip"
-    ALLOWED_CONTROLLERS  = var.forms_allowed_controllers
-    ALLOWED_ORIGINS      = var.forms_allowed_origins
-    ORIGIN_OVERRIDE      = var.forms_origin_override
-  }, var.forms_n8n_base_url != null ? { N8N_BASE_URL = var.forms_n8n_base_url } : {})
-
-  depends_on = [kubernetes_namespace.carimbo_vip]
-}
-
 # Deploy carimbo.vip forms service
 module "carimbo_vip_forms" {
   count = var.forms_image != null ? 1 : 0
 
-  source = "../../modules/app-service"
+  source = "../../modules/forms"
 
   app_name           = "forms"
   domain             = "forms.carimbo.vip"
@@ -111,12 +84,17 @@ module "carimbo_vip_forms" {
   storage_class      = var.storage_class
   storage_size       = "1Gi"
 
-  # Image provided per domain
-  app_image = var.forms_image
-  # Use imagePullSecret when created
+  forms_image            = var.forms_image
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
-  # Use ConfigMap for environment variables
-  config_map_name = try(kubernetes_config_map_v1.forms_config[0].metadata[0].name, null)
+
+  # Forms-specific environment variables
+  turnstile_secret_key = "0x4AAAAAACCvUECCzvvVh9Yg3Ric5u0dvSs"
+  turnstile_enabled    = "true"
+  cors_origin          = "https://carimbo.vip"
+  n8n_base_url         = var.forms_n8n_base_url
+  allowed_controllers  = var.forms_allowed_controllers
+  allowed_origins      = var.forms_allowed_origins
+  origin_override      = var.forms_origin_override
 
   # Application specific settings
   container_port    = 3000
@@ -130,10 +108,7 @@ module "carimbo_vip_forms" {
   resource_requests_cpu    = "100m"
   resource_requests_memory = "128Mi"
 
-  depends_on = [
-    kubernetes_namespace.carimbo_vip,
-    kubernetes_config_map_v1.forms_config
-  ]
+  depends_on_resources = [kubernetes_namespace.carimbo_vip]
 }
 
 # Deploy carimbo.vip WAHA (WhatsApp HTTP API) service

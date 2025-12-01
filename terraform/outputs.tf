@@ -62,11 +62,21 @@ output "carimbo_vip" {
 output "singularideas_com_br" {
   description = "singularideas.com.br domain outputs"
   value = {
-    namespace          = module.singularideas_com_br.namespace
-    service            = module.singularideas_com_br.service_name
-    url                = module.singularideas_com_br.site_url
-    internal_url       = module.singularideas_com_br.internal_url
-    internal_url_short = module.singularideas_com_br.internal_url_short
+    namespace                = module.singularideas_com_br.namespace
+    service                  = module.singularideas_com_br.service_name
+    url                      = module.singularideas_com_br.site_url
+    internal_url             = module.singularideas_com_br.internal_url
+    internal_url_short       = module.singularideas_com_br.internal_url_short
+    forms_service            = try(module.singularideas_com_br.forms_service_name, null)
+    forms_deployment         = try(module.singularideas_com_br.forms_deployment_name, null)
+    forms_url                = try(module.singularideas_com_br.forms_url, null)
+    forms_internal_url       = try(module.singularideas_com_br.forms_internal_url, null)
+    forms_internal_url_short = try(module.singularideas_com_br.forms_internal_url_short, null)
+    waha_service             = try(module.singularideas_com_br.waha_service_name, null)
+    waha_deployment          = try(module.singularideas_com_br.waha_deployment_name, null)
+    waha_url                 = try(module.singularideas_com_br.waha_url, null)
+    waha_internal_url        = try(module.singularideas_com_br.waha_internal_url, null)
+    waha_internal_url_short  = try(module.singularideas_com_br.waha_internal_url_short, null)
   }
 }
 

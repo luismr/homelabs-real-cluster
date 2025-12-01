@@ -67,27 +67,27 @@ module "carimbo_vip" {
   enable_nfs_storage = var.enable_nfs_storage
   storage_class      = var.storage_class
 
-  site_image                      = var.carimbo_site_image
-  forms_image                     = var.carimbo_forms_image
-  forms_n8n_base_url              = var.carimbo_forms_n8n_base_url
-  forms_allowed_controllers       = var.carimbo_forms_allowed_controllers
-  forms_allowed_origins           = var.carimbo_forms_allowed_origins
-  forms_origin_override           = var.carimbo_forms_origin_override
-  waha_image                      = var.carimbo_waha_image
-  waha_api_key            = var.carimbo_waha_api_key
-  waha_dashboard_username = var.carimbo_waha_dashboard_username
-  waha_dashboard_password = var.carimbo_waha_dashboard_password
-  waha_swagger_username   = var.carimbo_waha_swagger_username
-  waha_swagger_password   = var.carimbo_waha_swagger_password
-  n8n_image               = var.carimbo_n8n_image
-  n8n_timezone            = var.carimbo_n8n_timezone
-  redis_image             = var.carimbo_redis_image
-  postgres_image          = var.carimbo_postgres_image
-  postgres_password       = var.carimbo_postgres_password
-  postgres_database_name  = var.carimbo_postgres_database_name
-  postgres_node_port      = var.carimbo_postgres_node_port
-  ghcr_username           = var.ghcr_username
-  ghcr_token              = var.ghcr_token
+  site_image                = var.carimbo_site_image
+  forms_image               = var.carimbo_forms_image
+  forms_n8n_base_url        = var.carimbo_forms_n8n_base_url
+  forms_allowed_controllers = var.carimbo_forms_allowed_controllers
+  forms_allowed_origins     = var.carimbo_forms_allowed_origins
+  forms_origin_override     = var.carimbo_forms_origin_override
+  waha_image                = var.carimbo_waha_image
+  waha_api_key              = var.carimbo_waha_api_key
+  waha_dashboard_username   = var.carimbo_waha_dashboard_username
+  waha_dashboard_password   = var.carimbo_waha_dashboard_password
+  waha_swagger_username     = var.carimbo_waha_swagger_username
+  waha_swagger_password     = var.carimbo_waha_swagger_password
+  n8n_image                 = var.carimbo_n8n_image
+  n8n_timezone              = var.carimbo_n8n_timezone
+  redis_image               = var.carimbo_redis_image
+  postgres_image            = var.carimbo_postgres_image
+  postgres_password         = var.carimbo_postgres_password
+  postgres_database_name    = var.carimbo_postgres_database_name
+  postgres_node_port        = var.carimbo_postgres_node_port
+  ghcr_username             = var.ghcr_username
+  ghcr_token                = var.ghcr_token
 }
 
 # Deploy singularideas.com.br domain
@@ -97,9 +97,20 @@ module "singularideas_com_br" {
   enable_nfs_storage = var.enable_nfs_storage
   storage_class      = var.storage_class
 
-  site_image    = var.singularideas_site_image
-  ghcr_username = var.ghcr_username
-  ghcr_token    = var.ghcr_token
+  site_image                = var.singularideas_site_image
+  forms_image               = var.singularideas_forms_image
+  forms_n8n_base_url        = var.singularideas_forms_n8n_base_url
+  forms_allowed_controllers = var.singularideas_forms_allowed_controllers
+  forms_allowed_origins     = var.singularideas_forms_allowed_origins
+  forms_origin_override     = var.singularideas_forms_origin_override
+  waha_image                = var.singularideas_waha_image
+  waha_api_key              = var.singularideas_waha_api_key
+  waha_dashboard_username   = var.singularideas_waha_dashboard_username
+  waha_dashboard_password   = var.singularideas_waha_dashboard_password
+  waha_swagger_username     = var.singularideas_waha_swagger_username
+  waha_swagger_password     = var.singularideas_waha_swagger_password
+  ghcr_username             = var.ghcr_username
+  ghcr_token                = var.ghcr_token
 }
 
 # Deploy leticiacarvalho.pro domain

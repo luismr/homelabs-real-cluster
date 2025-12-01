@@ -172,4 +172,73 @@ variable "carimbo_postgres_node_port" {
   default     = 30432 # PostgreSQL default port 5432 + 25000
 }
 
+variable "singularideas_forms_image" {
+  description = "Image for singularideas.com.br forms service"
+  type        = string
+  default     = null
+}
+
+variable "singularideas_forms_n8n_base_url" {
+  description = "Base URL for N8N webhook endpoints for singularideas.com.br forms service (e.g., https://n8n.example.com/webhook)"
+  type        = string
+  default     = null
+}
+
+variable "singularideas_forms_allowed_controllers" {
+  description = "Comma-separated list of allowed controllers for singularideas.com.br forms service"
+  type        = string
+  default     = "contacts"
+}
+
+variable "singularideas_forms_allowed_origins" {
+  description = "Comma-separated list of allowed origins for singularideas.com.br forms service"
+  type        = string
+  default     = "singularideas.com.br"
+}
+
+variable "singularideas_forms_origin_override" {
+  description = "Origin override for singularideas.com.br forms service"
+  type        = string
+  default     = "singularideas.com.br"
+}
+
+variable "singularideas_waha_image" {
+  description = "Image for singularideas.com.br WAHA (WhatsApp HTTP API) service"
+  type        = string
+  default     = null
+}
+
+variable "singularideas_waha_api_key" {
+  description = "WAHA API key for singularideas.com.br WAHA service"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "singularideas_waha_dashboard_username" {
+  description = "WAHA dashboard username for singularideas.com.br"
+  type        = string
+  default     = "admin"
+}
+
+variable "singularideas_waha_dashboard_password" {
+  description = "WAHA dashboard password for singularideas.com.br"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "singularideas_waha_swagger_username" {
+  description = "WAHA Swagger/API docs username for singularideas.com.br"
+  type        = string
+  default     = "admin"
+}
+
+variable "singularideas_waha_swagger_password" {
+  description = "WAHA Swagger/API docs password for singularideas.com.br"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
 

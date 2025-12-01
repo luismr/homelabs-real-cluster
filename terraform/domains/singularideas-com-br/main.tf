@@ -100,3 +100,47 @@ module "singularideas_com_br_waha" {
   ]
 }
 
+# Deploy singularideas.com.br forms service
+module "singularideas_com_br_forms" {
+  count = var.forms_image != null ? 1 : 0
+
+  source = "../../modules/forms"
+
+  app_name           = "forms"
+  domain             = "forms.singularideas.com.br"
+  namespace          = kubernetes_namespace.singularideas_com_br.metadata[0].name
+  environment        = "production"
+  enable_autoscaling = true
+  min_replicas       = 1
+  max_replicas       = 3
+  enable_nfs         = var.enable_nfs_storage
+  storage_class      = var.storage_class
+  storage_size       = "1Gi"
+
+  forms_image            = var.forms_image
+  image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
+
+  # Forms-specific environment variables
+  turnstile_secret_key = "0x4AAAAAACCvUECCzvvVh9Yg3Ric5u0dvSs"
+  turnstile_enabled    = "true"
+  cors_origin          = "https://singularideas.com.br"
+  n8n_base_url         = var.forms_n8n_base_url
+  allowed_controllers  = var.forms_allowed_controllers
+  allowed_origins      = var.forms_allowed_origins
+  origin_override       = var.forms_origin_override
+
+  # Application specific settings
+  container_port    = 3000
+  service_port       = 80 # Exposed internally for the tunnel
+  health_check_path = "/health"
+  health_check_port = 3000
+
+  # Production resource limits
+  resource_limits_cpu      = "200m"
+  resource_limits_memory   = "256Mi"
+  resource_requests_cpu    = "100m"
+  resource_requests_memory = "128Mi"
+
+  depends_on_resources = [kubernetes_namespace.singularideas_com_br]
+}
+
