@@ -33,7 +33,7 @@ storage_class      = "nfs-loki"
 # Docker Images for Static Sites (replace with your actual images)
 pudim_site_image                        = "ghcr.io/luismr/pudim-dev-calculator:sha-6cd017d"                                           # Replace with your pudim.dev image
 luismachadoreis_site_image              = "ghcr.io/luismr/luismachadoreis-dev-portfolio:sha-44325af"                                  # Replace with your luismachadoreis.dev image
-carimbo_site_image                      = "ghcr.io/luismr/carimbo-vip-site:sha-4c3ab04"                                                # Replace with your carimbo.vip image
+carimbo_site_image                      = "ghcr.io/luismr/carimbo-vip-site:sha-64f6ecb"                                                # Replace with your carimbo.vip image
 carimbo_forms_image                     = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Replace with your carimbo.vip forms image
 carimbo_forms_n8n_base_url              = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints (e.g., https://n8n.example.com/webhook)
 carimbo_forms_allowed_controllers       = "leads,contacts"                                                                             # Comma-separated list of allowed controllers for forms service
@@ -42,7 +42,7 @@ carimbo_forms_origin_override           = "carimbo.vip"                         
 carimbo_waha_image                      = "devlikeapro/waha:arm"                                                                       # WAHA (WhatsApp HTTP API) image - ARM64 version
 singularideas_waha_image                = "devlikeapro/waha:arm"                                                                       # WAHA (WhatsApp HTTP API) image for singularideas.com.br - ARM64 version (same as carimbo-vip)
 carimbo_n8n_image                       = "docker.n8n.io/n8nio/n8n"                                                                    # n8n workflow automation image
-singularideas_site_image                = "ghcr.io/luismr/singularideas-com-site:sha-27e5946"                                         # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
+singularideas_site_image                = "ghcr.io/luismr/singularideas-com-site:sha-cd647e1"                                         # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
 singularideas_forms_image               = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                         # Image for singularideas.com.br forms service (using same as carimbo-vip)
 singularideas_forms_n8n_base_url        = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints for forms service (using same as carimbo-vip)
 singularideas_forms_allowed_controllers = "contacts"                                                                                   # Comma-separated list of allowed controllers for forms service
@@ -75,6 +75,12 @@ carimbo_n8n_timezone = "America/Sao_Paulo" # Timezone for n8n (TZ and GENERIC_TI
 # singularideas_waha_dashboard_password  = null  # Commented out - use TF_VAR_singularideas_waha_dashboard_password env var instead
 # singularideas_waha_swagger_username    = null  # Commented out - use TF_VAR_singularideas_waha_swagger_username env var instead
 # singularideas_waha_swagger_password    = null  # Commented out - use TF_VAR_singularideas_waha_swagger_password env var instead
+
+# WAHA Configuration
+carimbo_waha_restart_all_sessions       = true   # Enable restart all WhatsApp sessions on startup for carimbo.vip WAHA
+carimbo_waha_start_session              = "default"  # WhatsApp session to start automatically for carimbo.vip WAHA
+singularideas_waha_restart_all_sessions = true   # Enable restart all WhatsApp sessions on startup for singularideas.com.br WAHA
+singularideas_waha_start_session        = "default"  # WhatsApp session to start automatically for singularideas.com.br WAHA
 
 # PostgreSQL Configuration for carimbo.vip
 # Set via: export TF_VAR_carimbo_postgres_password="$POSTGRES_PASSWORD"

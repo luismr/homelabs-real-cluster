@@ -19,12 +19,15 @@ resource "kubernetes_config_map_v1" "waha_config" {
       API_ENABLED = "true"
       # WhatsApp engine configuration
       WHATSAPP_DEFAULT_ENGINE = "GOWS"
+      # Restart all sessions on startup
+      WHATSAPP_RESTART_ALL_SESSIONS = var.waha_restart_all_sessions ? "True" : "False"
     },
     var.waha_api_key != null ? { WAHA_API_KEY = var.waha_api_key } : {},
     var.waha_dashboard_username != null ? { WAHA_DASHBOARD_USERNAME = var.waha_dashboard_username } : {},
     var.waha_dashboard_password != null ? { WAHA_DASHBOARD_PASSWORD = var.waha_dashboard_password } : {},
     var.waha_swagger_username != null ? { WHATSAPP_SWAGGER_USERNAME = var.waha_swagger_username } : {},
-    var.waha_swagger_password != null ? { WHATSAPP_SWAGGER_PASSWORD = var.waha_swagger_password } : {}
+    var.waha_swagger_password != null ? { WHATSAPP_SWAGGER_PASSWORD = var.waha_swagger_password } : {},
+    var.waha_start_session != null ? { WHATSAPP_START_SESSION = var.waha_start_session } : {}
   )
 }
 

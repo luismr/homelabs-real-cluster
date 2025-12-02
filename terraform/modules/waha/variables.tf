@@ -136,3 +136,16 @@ variable "depends_on_resources" {
   default     = []
 }
 
+variable "waha_restart_all_sessions" {
+  description = "Enable restart all WhatsApp sessions on startup"
+  type        = bool
+  default     = false
+}
+
+variable "waha_start_session" {
+  description = "WhatsApp session to start automatically (e.g., 'default')"
+  type        = string
+  default     = null
+}
+
+

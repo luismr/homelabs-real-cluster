@@ -241,4 +241,28 @@ variable "singularideas_waha_swagger_password" {
   default     = null
 }
 
+variable "carimbo_waha_restart_all_sessions" {
+  description = "Enable restart all WhatsApp sessions on startup for carimbo.vip WAHA"
+  type        = bool
+  default     = false
+}
+
+variable "carimbo_waha_start_session" {
+  description = "WhatsApp session to start automatically for carimbo.vip WAHA (e.g., 'default')"
+  type        = string
+  default     = null
+}
+
+variable "singularideas_waha_restart_all_sessions" {
+  description = "Enable restart all WhatsApp sessions on startup for singularideas.com.br WAHA"
+  type        = bool
+  default     = false
+}
+
+variable "singularideas_waha_start_session" {
+  description = "WhatsApp session to start automatically for singularideas.com.br WAHA (e.g., 'default')"
+  type        = string
+  default     = null
+}
+
 

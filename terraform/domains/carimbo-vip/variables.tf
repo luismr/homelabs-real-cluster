@@ -148,4 +148,16 @@ variable "postgres_node_port" {
   default     = 30432 # PostgreSQL default port 5432 + 25000
 }
 
+variable "waha_restart_all_sessions" {
+  description = "Enable restart all WhatsApp sessions on startup for WAHA"
+  type        = bool
+  default     = false
+}
+
+variable "waha_start_session" {
+  description = "WhatsApp session to start automatically for WAHA (e.g., 'default')"
+  type        = string
+  default     = null
+}
+
 

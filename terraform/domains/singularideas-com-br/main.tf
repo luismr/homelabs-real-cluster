@@ -82,6 +82,8 @@ module "singularideas_com_br_waha" {
   waha_dashboard_password = var.waha_dashboard_password
   waha_swagger_username   = var.waha_swagger_username
   waha_swagger_password   = var.waha_swagger_password
+  waha_restart_all_sessions = var.waha_restart_all_sessions
+  waha_start_session      = var.waha_start_session
 
   node_port = 30101 # Using 30101 for singularideas (30100 is used by carimbo-vip)
 

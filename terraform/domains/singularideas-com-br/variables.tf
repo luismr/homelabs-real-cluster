@@ -98,3 +98,15 @@ variable "forms_origin_override" {
   default     = "singularideas.com.br"
 }
 
+variable "waha_restart_all_sessions" {
+  description = "Enable restart all WhatsApp sessions on startup for WAHA"
+  type        = bool
+  default     = false
+}
+
+variable "waha_start_session" {
+  description = "WhatsApp session to start automatically for WAHA (e.g., 'default')"
+  type        = string
+  default     = null
+}
+
