@@ -110,3 +110,15 @@ variable "waha_start_session" {
   default     = null
 }
 
+variable "waha_hook_url" {
+  description = "Webhook URL for WAHA to send events"
+  type        = string
+  default     = null
+}
+
+variable "waha_hook_events" {
+  description = "Comma-separated list of events to send to webhook (default: 'message,message.any,state.change')"
+  type        = string
+  default     = "message,message.any,state.change"
+}
+

@@ -265,4 +265,28 @@ variable "singularideas_waha_start_session" {
   default     = null
 }
 
+variable "carimbo_waha_hook_url" {
+  description = "Webhook URL for carimbo.vip WAHA to send events"
+  type        = string
+  default     = null
+}
+
+variable "singularideas_waha_hook_url" {
+  description = "Webhook URL for singularideas.com.br WAHA to send events"
+  type        = string
+  default     = null
+}
+
+variable "carimbo_waha_hook_events" {
+  description = "Comma-separated list of events to send to webhook for carimbo.vip WAHA (default: 'message,message.any,state.change')"
+  type        = string
+  default     = "message,message.any,state.change"
+}
+
+variable "singularideas_waha_hook_events" {
+  description = "Comma-separated list of events to send to webhook for singularideas.com.br WAHA (default: 'message,message.any,state.change')"
+  type        = string
+  default     = "message,message.any,state.change"
+}
+
 

@@ -135,6 +135,8 @@ module "carimbo_vip_waha" {
   waha_swagger_password   = var.waha_swagger_password
   waha_restart_all_sessions = var.waha_restart_all_sessions
   waha_start_session      = var.waha_start_session
+  waha_hook_url           = var.waha_hook_url
+  waha_hook_events        = var.waha_hook_events
 
   node_port = 30100 # Similar to Grafana's 30080, using 30100 for WAHA
 

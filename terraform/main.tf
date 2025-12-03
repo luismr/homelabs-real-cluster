@@ -81,6 +81,8 @@ module "carimbo_vip" {
   waha_swagger_password     = var.carimbo_waha_swagger_password
   waha_restart_all_sessions  = var.carimbo_waha_restart_all_sessions
   waha_start_session         = var.carimbo_waha_start_session
+  waha_hook_url             = var.carimbo_waha_hook_url
+  waha_hook_events          = var.carimbo_waha_hook_events
   n8n_image                 = var.carimbo_n8n_image
   n8n_timezone              = var.carimbo_n8n_timezone
   redis_image               = var.carimbo_redis_image
@@ -113,6 +115,8 @@ module "singularideas_com_br" {
   waha_swagger_password     = var.singularideas_waha_swagger_password
   waha_restart_all_sessions  = var.singularideas_waha_restart_all_sessions
   waha_start_session         = var.singularideas_waha_start_session
+  waha_hook_url             = var.singularideas_waha_hook_url
+  waha_hook_events          = var.singularideas_waha_hook_events
   ghcr_username             = var.ghcr_username
   ghcr_token                = var.ghcr_token
 }

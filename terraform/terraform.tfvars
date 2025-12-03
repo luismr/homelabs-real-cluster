@@ -79,8 +79,10 @@ carimbo_n8n_timezone = "America/Sao_Paulo" # Timezone for n8n (TZ and GENERIC_TI
 # WAHA Configuration
 carimbo_waha_restart_all_sessions       = true   # Enable restart all WhatsApp sessions on startup for carimbo.vip WAHA
 carimbo_waha_start_session              = "default"  # WhatsApp session to start automatically for carimbo.vip WAHA
+carimbo_waha_hook_url                   = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/64bee5f6-129c-426d-986d-5ec70549dd76/waha"  # Webhook URL for carimbo.vip WAHA
 singularideas_waha_restart_all_sessions = true   # Enable restart all WhatsApp sessions on startup for singularideas.com.br WAHA
 singularideas_waha_start_session        = "default"  # WhatsApp session to start automatically for singularideas.com.br WAHA
+singularideas_waha_hook_url             = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/d7e91a31-bca3-4f32-a25c-19ab61ff8016/waha"  # Webhook URL for singularideas.com.br WAHA
 
 # PostgreSQL Configuration for carimbo.vip
 # Set via: export TF_VAR_carimbo_postgres_password="$POSTGRES_PASSWORD"
