@@ -14,6 +14,8 @@ output "pudim_dev" {
   value = {
     namespace          = module.pudim_dev.namespace
     service            = module.pudim_dev.service_name
+    redis_service      = module.pudim_dev.redis_service_name
+    redis_url          = module.pudim_dev.redis_url
     url                = module.pudim_dev.site_url
     internal_url       = module.pudim_dev.internal_url
     internal_url_short = module.pudim_dev.internal_url_short
