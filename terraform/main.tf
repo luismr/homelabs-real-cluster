@@ -46,6 +46,13 @@ module "pudim_dev" {
   site_image    = var.pudim_site_image
   ghcr_username = var.ghcr_username
   ghcr_token    = var.ghcr_token
+
+  redis_enabled                     = var.pudim_redis_enabled
+  redis_prefix                      = var.pudim_redis_prefix
+  redis_ttl                         = var.pudim_redis_ttl
+  redis_circuit_breaker_cooldown_ms = var.pudim_redis_circuit_breaker_cooldown_ms
+  redis_maxmemory                   = var.pudim_redis_maxmemory
+  redis_maxmemory_policy            = var.pudim_redis_maxmemory_policy
 }
 
 # Deploy luismachadoreis.dev domain
@@ -79,8 +86,8 @@ module "carimbo_vip" {
   waha_dashboard_password   = var.carimbo_waha_dashboard_password
   waha_swagger_username     = var.carimbo_waha_swagger_username
   waha_swagger_password     = var.carimbo_waha_swagger_password
-  waha_restart_all_sessions  = var.carimbo_waha_restart_all_sessions
-  waha_start_session         = var.carimbo_waha_start_session
+  waha_restart_all_sessions = var.carimbo_waha_restart_all_sessions
+  waha_start_session        = var.carimbo_waha_start_session
   waha_hook_url             = var.carimbo_waha_hook_url
   waha_hook_events          = var.carimbo_waha_hook_events
   n8n_image                 = var.carimbo_n8n_image
@@ -113,8 +120,8 @@ module "singularideas_com_br" {
   waha_dashboard_password   = var.singularideas_waha_dashboard_password
   waha_swagger_username     = var.singularideas_waha_swagger_username
   waha_swagger_password     = var.singularideas_waha_swagger_password
-  waha_restart_all_sessions  = var.singularideas_waha_restart_all_sessions
-  waha_start_session         = var.singularideas_waha_start_session
+  waha_restart_all_sessions = var.singularideas_waha_restart_all_sessions
+  waha_start_session        = var.singularideas_waha_start_session
   waha_hook_url             = var.singularideas_waha_hook_url
   waha_hook_events          = var.singularideas_waha_hook_events
   ghcr_username             = var.ghcr_username

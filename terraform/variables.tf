@@ -23,6 +23,42 @@ variable "pudim_site_image" {
   default     = null
 }
 
+variable "pudim_redis_enabled" {
+  description = "Enable Redis caching for pudim.dev calculator"
+  type        = bool
+  default     = true
+}
+
+variable "pudim_redis_prefix" {
+  description = "Redis key prefix for pudim.dev calculator cache"
+  type        = string
+  default     = "pudim:"
+}
+
+variable "pudim_redis_ttl" {
+  description = "Redis TTL (seconds) for pudim.dev calculator cache"
+  type        = number
+  default     = 3600
+}
+
+variable "pudim_redis_circuit_breaker_cooldown_ms" {
+  description = "Redis circuit breaker cooldown (ms) for pudim.dev calculator"
+  type        = number
+  default     = 60000
+}
+
+variable "pudim_redis_maxmemory" {
+  description = "Redis maxmemory value (e.g., '128mb') for pudim.dev calculator cache. Set null to omit."
+  type        = string
+  default     = "128mb"
+}
+
+variable "pudim_redis_maxmemory_policy" {
+  description = "Redis maxmemory eviction policy for pudim.dev calculator cache"
+  type        = string
+  default     = "allkeys-lru"
+}
+
 variable "luismachadoreis_site_image" {
   description = "Image for luismachadoreis.dev site"
   type        = string

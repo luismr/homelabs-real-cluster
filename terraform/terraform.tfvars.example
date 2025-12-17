@@ -34,6 +34,15 @@ storage_class      = "nfs-client"
 # carimbo_waha_swagger_password    = null  # Commented out - use TF_VAR_carimbo_waha_swagger_password env var instead
 # singularideas_site_image    = null                                                    # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
 
+# pudim.dev Redis cache settings (for pudim-dev-calculator)
+# Note: REDIS_URL is automatically set to the in-cluster Redis service (redis://redis:6379).
+pudim_redis_enabled                     = true
+pudim_redis_prefix                      = "pudim:"
+pudim_redis_ttl                         = 3600
+pudim_redis_circuit_breaker_cooldown_ms = 60000
+pudim_redis_maxmemory                   = "128mb"
+pudim_redis_maxmemory_policy            = "allkeys-lru"
+
 # GitHub Container Registry (GHCR) Authentication (for private images)
 # Leave empty if using public images
 # Set via: export TF_VAR_ghcr_username="$GITHUB_USER"

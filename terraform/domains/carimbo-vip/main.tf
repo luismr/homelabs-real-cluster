@@ -128,15 +128,15 @@ module "carimbo_vip_waha" {
   storage_class = var.storage_class
   storage_size  = "5Gi" # WAHA needs more storage for session data
 
-  waha_api_key            = var.waha_api_key
-  waha_dashboard_username = var.waha_dashboard_username
-  waha_dashboard_password = var.waha_dashboard_password
-  waha_swagger_username   = var.waha_swagger_username
-  waha_swagger_password   = var.waha_swagger_password
+  waha_api_key              = var.waha_api_key
+  waha_dashboard_username   = var.waha_dashboard_username
+  waha_dashboard_password   = var.waha_dashboard_password
+  waha_swagger_username     = var.waha_swagger_username
+  waha_swagger_password     = var.waha_swagger_password
   waha_restart_all_sessions = var.waha_restart_all_sessions
-  waha_start_session      = var.waha_start_session
-  waha_hook_url           = var.waha_hook_url
-  waha_hook_events        = var.waha_hook_events
+  waha_start_session        = var.waha_start_session
+  waha_hook_url             = var.waha_hook_url
+  waha_hook_events          = var.waha_hook_events
 
   node_port = 30100 # Similar to Grafana's 30080, using 30100 for WAHA
 
