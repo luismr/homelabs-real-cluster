@@ -65,3 +65,39 @@ variable "redis_maxmemory_policy" {
   default     = "allkeys-lru"
 }
 
+variable "dynamodb_enabled" {
+  description = "Enable DynamoDB for pudim-dev-calculator"
+  type        = bool
+  default     = false
+}
+
+variable "dynamodb_endpoint" {
+  description = "DynamoDB endpoint URL (for local use DynamoDB Local service URL, omit for AWS)"
+  type        = string
+  default     = null
+}
+
+variable "dynamodb_circuit_breaker_cooldown_ms" {
+  description = "DynamoDB circuit breaker cooldown (ms) for pudim-dev-calculator"
+  type        = number
+  default     = 300000
+}
+
+variable "dynamodb_aws_region" {
+  description = "AWS region for DynamoDB (use 'us-east-1' for local DynamoDB Local)"
+  type        = string
+  default     = "us-east-1"
+}
+
+variable "dynamodb_aws_access_key_id" {
+  description = "AWS access key ID (use 'local' for DynamoDB Local)"
+  type        = string
+  default     = "local"
+}
+
+variable "dynamodb_aws_secret_access_key" {
+  description = "AWS secret access key (use 'local' for DynamoDB Local)"
+  type        = string
+  default     = "local"
+}
+

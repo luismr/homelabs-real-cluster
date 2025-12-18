@@ -31,7 +31,7 @@ enable_nfs_storage = true
 storage_class      = "nfs-loki"
 
 # Docker Images for Static Sites (replace with your actual images)
-pudim_site_image                        = "ghcr.io/luismr/pudim-dev-calculator:sha-ed6ee60"                                            # Replace with your pudim.dev image
+pudim_site_image                        = "ghcr.io/luismr/pudim-dev-calculator:sha-0a0bc6f"                                            # Replace with your pudim.dev image
 luismachadoreis_site_image              = "ghcr.io/luismr/luismachadoreis-dev-portfolio:sha-0022a05"                                   # Replace with your luismachadoreis.dev image
 carimbo_site_image                      = "ghcr.io/luismr/carimbo-vip-site:sha-3a19b2c"                                                # Replace with your carimbo.vip image
 carimbo_forms_image                     = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Replace with your carimbo.vip forms image
@@ -57,6 +57,14 @@ pudim_redis_ttl                         = 3600
 pudim_redis_circuit_breaker_cooldown_ms = 60000
 pudim_redis_maxmemory                   = "128mb"
 pudim_redis_maxmemory_policy            = "allkeys-lru"
+
+# pudim.dev DynamoDB settings (for pudim-dev-calculator)
+pudim_dynamodb_enabled                     = true
+pudim_dynamodb_endpoint                    = null  # null = use DynamoDB Local service URL automatically
+pudim_dynamodb_circuit_breaker_cooldown_ms = 300000  # 5 minutes
+pudim_dynamodb_aws_region                  = "us-east-1"
+pudim_dynamodb_aws_access_key_id           = "local"
+pudim_dynamodb_aws_secret_access_key       = "local"
 
 carimbo_n8n_timezone = "America/Sao_Paulo" # Timezone for n8n (TZ and GENERIC_TIMEZONE)
 

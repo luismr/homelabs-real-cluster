@@ -53,6 +53,13 @@ module "pudim_dev" {
   redis_circuit_breaker_cooldown_ms = var.pudim_redis_circuit_breaker_cooldown_ms
   redis_maxmemory                   = var.pudim_redis_maxmemory
   redis_maxmemory_policy            = var.pudim_redis_maxmemory_policy
+
+  dynamodb_enabled                     = var.pudim_dynamodb_enabled
+  dynamodb_endpoint                    = var.pudim_dynamodb_endpoint
+  dynamodb_circuit_breaker_cooldown_ms = var.pudim_dynamodb_circuit_breaker_cooldown_ms
+  dynamodb_aws_region                  = var.pudim_dynamodb_aws_region
+  dynamodb_aws_access_key_id           = var.pudim_dynamodb_aws_access_key_id
+  dynamodb_aws_secret_access_key       = var.pudim_dynamodb_aws_secret_access_key
 }
 
 # Deploy luismachadoreis.dev domain

@@ -67,6 +67,32 @@ module "pudim_dev_redis" {
   depends_on = [kubernetes_namespace.pudim_dev]
 }
 
+# Deploy DynamoDB Local for pudim.dev
+module "pudim_dev_dynamodb_local" {
+  source = "../../modules/dynamodb-local"
+
+  app_name    = "dynamodb-local"
+  domain      = "dynamodb.pudim.dev"
+  namespace   = kubernetes_namespace.pudim_dev.metadata[0].name
+  environment = "production"
+
+  enable_nfs    = var.enable_nfs_storage
+  storage_class = var.storage_class
+  storage_size  = "1Gi"
+
+  replicas = 1
+
+  resource_limits_cpu      = "500m"
+  resource_limits_memory   = "512Mi"
+  resource_requests_cpu    = "100m"
+  resource_requests_memory = "256Mi"
+
+  # Use imagePullSecret when created
+  image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
+
+  depends_on = [kubernetes_namespace.pudim_dev]
+}
+
 # ConfigMap for pudim.dev calculator environment variables
 resource "kubernetes_config_map_v1" "pudim_dev_calculator_config" {
   metadata {
@@ -80,7 +106,7 @@ resource "kubernetes_config_map_v1" "pudim_dev_calculator_config" {
     }
   }
 
-  data = {
+  data = merge({
     # Enable Redis caching
     REDIS_ENABLED = var.redis_enabled ? "true" : "false"
 
@@ -93,9 +119,26 @@ resource "kubernetes_config_map_v1" "pudim_dev_calculator_config" {
 
     # Circuit breaker
     REDIS_CIRCUIT_BREAKER_COOLDOWN = tostring(var.redis_circuit_breaker_cooldown_ms)
-  }
+  }, var.dynamodb_enabled ? {
+    # Enable DynamoDB
+    DYNAMODB_ENABLED = "true"
 
-  depends_on = [kubernetes_namespace.pudim_dev]
+    # DynamoDB endpoint (use service URL if endpoint is null)
+    DYNAMODB_ENDPOINT = coalesce(var.dynamodb_endpoint, module.pudim_dev_dynamodb_local.service_url)
+
+    # Circuit breaker cooldown
+    DYNAMODB_CIRCUIT_BREAKER_COOLDOWN = tostring(var.dynamodb_circuit_breaker_cooldown_ms)
+
+    # AWS credentials (for local DynamoDB Local, use dummy values)
+    AWS_REGION            = var.dynamodb_aws_region
+    AWS_ACCESS_KEY_ID     = var.dynamodb_aws_access_key_id
+    AWS_SECRET_ACCESS_KEY = var.dynamodb_aws_secret_access_key
+  } : {})
+
+  depends_on = [
+    kubernetes_namespace.pudim_dev,
+    module.pudim_dev_dynamodb_local,
+  ]
 }
 
 # Deploy pudim.dev application
@@ -136,6 +179,7 @@ module "pudim_dev_calculator" {
   depends_on = [
     kubernetes_namespace.pudim_dev,
     module.pudim_dev_redis,
+    module.pudim_dev_dynamodb_local,
     kubernetes_config_map_v1.pudim_dev_calculator_config,
   ]
 }
