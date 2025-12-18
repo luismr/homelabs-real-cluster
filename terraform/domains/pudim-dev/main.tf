@@ -106,34 +106,28 @@ resource "kubernetes_config_map_v1" "pudim_dev_calculator_config" {
     }
   }
 
-  data = merge({
-    # Enable Redis caching
-    REDIS_ENABLED = var.redis_enabled ? "true" : "false"
+  data = {
+    # Redis settings
+    REDIS_ENABLED                        = var.redis_enabled ? "true" : "false"
+    REDIS_URL                            = "redis://${module.pudim_dev_redis.service_name}:6379"
+    REDIS_PREFIX                         = var.redis_prefix
+    REDIS_TTL                            = tostring(var.redis_ttl)
+    REDIS_CIRCUIT_BREAKER_COOLDOWN       = tostring(var.redis_circuit_breaker_cooldown_ms)
 
-    # Redis connection (in-cluster service)
-    REDIS_URL = "redis://${module.pudim_dev_redis.service_name}:6379"
+    # Leaderboard
+    LEADERBOARD_ENABLED                  = var.leaderboard_enabled ? "true" : "false"
 
-    # Cache settings
-    REDIS_PREFIX = var.redis_prefix
-    REDIS_TTL    = tostring(var.redis_ttl)
+    # Frontend debug
+    FRONTEND_DEBUG_ENABLED               = var.frontend_debug_enabled ? "true" : "false"
 
-    # Circuit breaker
-    REDIS_CIRCUIT_BREAKER_COOLDOWN = tostring(var.redis_circuit_breaker_cooldown_ms)
-  }, var.dynamodb_enabled ? {
-    # Enable DynamoDB
-    DYNAMODB_ENABLED = "true"
-
-    # DynamoDB endpoint (use service URL if endpoint is null)
-    DYNAMODB_ENDPOINT = coalesce(var.dynamodb_endpoint, module.pudim_dev_dynamodb_local.service_url)
-
-    # Circuit breaker cooldown
-    DYNAMODB_CIRCUIT_BREAKER_COOLDOWN = tostring(var.dynamodb_circuit_breaker_cooldown_ms)
-
-    # AWS credentials (for local DynamoDB Local, use dummy values)
-    AWS_REGION            = var.dynamodb_aws_region
-    AWS_ACCESS_KEY_ID     = var.dynamodb_aws_access_key_id
-    AWS_SECRET_ACCESS_KEY = var.dynamodb_aws_secret_access_key
-  } : {})
+    # DynamoDB settings (only if enabled)
+    DYNAMODB_ENABLED                     = var.dynamodb_enabled ? "true" : "false"
+    DYNAMODB_ENDPOINT                    = var.dynamodb_enabled ? coalesce(var.dynamodb_endpoint, module.pudim_dev_dynamodb_local.service_url) : ""
+    DYNAMODB_CIRCUIT_BREAKER_COOLDOWN    = var.dynamodb_enabled ? tostring(var.dynamodb_circuit_breaker_cooldown_ms) : ""
+    AWS_REGION                           = var.dynamodb_enabled ? var.dynamodb_aws_region : ""
+    AWS_ACCESS_KEY_ID                    = var.dynamodb_enabled ? var.dynamodb_aws_access_key_id : ""
+    AWS_SECRET_ACCESS_KEY                = var.dynamodb_enabled ? var.dynamodb_aws_secret_access_key : ""
+  }
 
   depends_on = [
     kubernetes_namespace.pudim_dev,

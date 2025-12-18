@@ -95,6 +95,18 @@ variable "pudim_dynamodb_aws_secret_access_key" {
   default     = "local"
 }
 
+variable "pudim_leaderboard_enabled" {
+  description = "Enable leaderboard feature for pudim.dev calculator"
+  type        = bool
+  default     = false
+}
+
+variable "pudim_frontend_debug_enabled" {
+  description = "Enable frontend debug mode for pudim.dev calculator"
+  type        = bool
+  default     = false
+}
+
 variable "luismachadoreis_site_image" {
   description = "Image for luismachadoreis.dev site"
   type        = string

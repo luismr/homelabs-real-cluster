@@ -101,3 +101,15 @@ variable "dynamodb_aws_secret_access_key" {
   default     = "local"
 }
 
+variable "leaderboard_enabled" {
+  description = "Enable leaderboard feature for pudim-dev-calculator"
+  type        = bool
+  default     = false
+}
+
+variable "frontend_debug_enabled" {
+  description = "Enable frontend debug mode for pudim-dev-calculator"
+  type        = bool
+  default     = false
+}
+

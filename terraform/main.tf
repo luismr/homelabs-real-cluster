@@ -60,6 +60,10 @@ module "pudim_dev" {
   dynamodb_aws_region                  = var.pudim_dynamodb_aws_region
   dynamodb_aws_access_key_id           = var.pudim_dynamodb_aws_access_key_id
   dynamodb_aws_secret_access_key       = var.pudim_dynamodb_aws_secret_access_key
+
+  leaderboard_enabled = var.pudim_leaderboard_enabled
+
+  frontend_debug_enabled = var.pudim_frontend_debug_enabled
 }
 
 # Deploy luismachadoreis.dev domain
