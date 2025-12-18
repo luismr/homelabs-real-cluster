@@ -19,6 +19,9 @@ output "pudim_dev" {
     url                = module.pudim_dev.site_url
     internal_url       = module.pudim_dev.internal_url
     internal_url_short = module.pudim_dev.internal_url_short
+    redis              = module.pudim_dev.redis
+    dynamodb           = module.pudim_dev.dynamodb
+    leaderboard        = module.pudim_dev.leaderboard
   }
 }
 
