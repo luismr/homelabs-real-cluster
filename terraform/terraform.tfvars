@@ -31,7 +31,7 @@ enable_nfs_storage = true
 storage_class      = "nfs-loki"
 
 # Docker Images for Static Sites (replace with your actual images)
-pudim_site_image                        = "ghcr.io/luismr/pudim-dev-calculator:sha-8c40eb0"                                            # Replace with your pudim.dev image
+pudim_site_image                        = "ghcr.io/luismr/pudim-dev-calculator:sha-7b7a884"                                            # Replace with your pudim.dev image
 luismachadoreis_site_image              = "ghcr.io/luismr/luismachadoreis-dev-portfolio:sha-0022a05"                                   # Replace with your luismachadoreis.dev image
 carimbo_site_image                      = "ghcr.io/luismr/carimbo-vip-site:sha-3a19b2c"                                                # Replace with your carimbo.vip image
 carimbo_forms_image                     = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Replace with your carimbo.vip forms image
