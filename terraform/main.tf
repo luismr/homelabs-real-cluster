@@ -151,6 +151,23 @@ module "leticiacarvalho_pro" {
   ghcr_token    = var.ghcr_token
 }
 
+# Deploy brickfolio.online domain
+module "brickfolio_online" {
+  source = "./domains/brickfolio-online"
+
+  enable_nfs_storage = var.enable_nfs_storage
+  storage_class      = var.storage_class
+
+  site_image                = var.brickfolio_site_image
+  forms_image               = var.brickfolio_forms_image
+  forms_n8n_base_url        = var.brickfolio_forms_n8n_base_url
+  forms_allowed_controllers = var.brickfolio_forms_allowed_controllers
+  forms_allowed_origins     = var.brickfolio_forms_allowed_origins
+  forms_origin_override     = var.brickfolio_forms_origin_override
+  ghcr_username             = var.ghcr_username
+  ghcr_token                = var.ghcr_token
+}
+
 # Redirects namespace and redirector deployment
 resource "kubernetes_namespace" "redirects" {
   metadata {

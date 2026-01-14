@@ -87,6 +87,12 @@ resource "kubernetes_config_map" "tunnel_config" {
         - hostname: www.singularideas.com.br
           service: http://static-site.singularideas-com-br.svc.cluster.local:80
         
+        # brickfolio.online -> static-site service in brickfolio-online namespace
+        - hostname: brickfolio.online
+          service: http://static-site.brickfolio-online.svc.cluster.local:80
+        - hostname: www.brickfolio.online
+          service: http://static-site.brickfolio-online.svc.cluster.local:80
+        
         # Catch-all rule (return 404 for unknown hosts)
         - service: http_status:404
     EOF

@@ -373,4 +373,40 @@ variable "singularideas_waha_hook_events" {
   default     = "message,message.any,state.change"
 }
 
+variable "brickfolio_site_image" {
+  description = "Image for brickfolio.online site"
+  type        = string
+  default     = null
+}
+
+variable "brickfolio_forms_image" {
+  description = "Image for brickfolio.online forms service"
+  type        = string
+  default     = null
+}
+
+variable "brickfolio_forms_n8n_base_url" {
+  description = "Base URL for N8N webhook endpoints for brickfolio.online forms service (e.g., https://n8n.example.com/webhook)"
+  type        = string
+  default     = null
+}
+
+variable "brickfolio_forms_allowed_controllers" {
+  description = "Comma-separated list of allowed controllers for brickfolio.online forms service"
+  type        = string
+  default     = "leads,contacts"
+}
+
+variable "brickfolio_forms_allowed_origins" {
+  description = "Comma-separated list of allowed origins for brickfolio.online forms service"
+  type        = string
+  default     = "brickfolio.online"
+}
+
+variable "brickfolio_forms_origin_override" {
+  description = "Origin override for brickfolio.online forms service"
+  type        = string
+  default     = "brickfolio.online"
+}
+
 

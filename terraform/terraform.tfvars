@@ -31,7 +31,7 @@ enable_nfs_storage = true
 storage_class      = "nfs-loki"
 
 # Docker Images for Static Sites (replace with your actual images)
-pudim_site_image                        = "ghcr.io/luismr/pudim-dev-calculator:sha-7b7a884"                                            # Replace with your pudim.dev image
+pudim_site_image                        = "ghcr.io/luismr/pudim-dev-calculator:sha-2123322"                                            # Replace with your pudim.dev image
 luismachadoreis_site_image              = "ghcr.io/luismr/luismachadoreis-dev-portfolio:sha-0022a05"                                   # Replace with your luismachadoreis.dev image
 carimbo_site_image                      = "ghcr.io/luismr/carimbo-vip-site:sha-3a19b2c"                                                # Replace with your carimbo.vip image
 carimbo_forms_image                     = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Replace with your carimbo.vip forms image
@@ -49,6 +49,12 @@ singularideas_forms_allowed_controllers = "contacts"                            
 singularideas_forms_allowed_origins     = "singularideas.com.br"                                                                       # Comma-separated list of allowed origins for forms service
 singularideas_forms_origin_override     = "singularideas.com.br"                                                                       # Origin override for forms service
 leticiacarvalho_pro_site_image          = "ghcr.io/luismr/leticiacarvalho-pro-portfolio:master-ae00107"                                # leticiacarvalho.pro portfolio image
+brickfolio_site_image                    = "ghcr.io/luismr/brickfolio-site:main-61ffc4c"                                                # Replace with your brickfolio.online image
+brickfolio_forms_image                   = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Image for brickfolio.online forms service (using same as carimbo-vip)
+brickfolio_forms_n8n_base_url            = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints for forms service (using same as carimbo-vip)
+brickfolio_forms_allowed_controllers     = "leads,contacts"                                                                             # Comma-separated list of allowed controllers for forms service
+brickfolio_forms_allowed_origins         = "brickfolio.online"                                                                         # Comma-separated list of allowed origins for forms service
+brickfolio_forms_origin_override         = "brickfolio.online"                                                                         # Origin override for forms service
 
 # pudim.dev Redis cache settings (for pudim-dev-calculator)
 pudim_redis_enabled                     = true

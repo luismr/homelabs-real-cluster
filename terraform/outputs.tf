@@ -6,6 +6,7 @@ output "namespaces" {
     carimbo_vip          = module.carimbo_vip.namespace
     singularideas_com_br = module.singularideas_com_br.namespace
     leticiacarvalho_pro  = module.leticiacarvalho_pro.namespace
+    brickfolio_online     = module.brickfolio_online.namespace
   }
 }
 
@@ -96,6 +97,22 @@ output "leticiacarvalho_pro" {
   }
 }
 
+output "brickfolio_online" {
+  description = "brickfolio.online domain outputs"
+  value = {
+    namespace                = module.brickfolio_online.namespace
+    service                  = module.brickfolio_online.service_name
+    url                      = module.brickfolio_online.site_url
+    internal_url             = module.brickfolio_online.internal_url
+    internal_url_short       = module.brickfolio_online.internal_url_short
+    forms_service            = try(module.brickfolio_online.forms_service_name, null)
+    forms_deployment         = try(module.brickfolio_online.forms_deployment_name, null)
+    forms_url                = try(module.brickfolio_online.forms_url, null)
+    forms_internal_url       = try(module.brickfolio_online.forms_internal_url, null)
+    forms_internal_url_short = try(module.brickfolio_online.forms_internal_url_short, null)
+  }
+}
+
 output "cloudflare_tunnel_info" {
   description = "Cloudflare Tunnel deployment information (if enabled)"
   value = length(module.cloudflare_tunnel) > 0 ? {
@@ -115,6 +132,7 @@ output "sites_urls" {
     carimbo_vip          = module.carimbo_vip.site_url
     singularideas_com_br = module.singularideas_com_br.site_url
     leticiacarvalho_pro  = module.leticiacarvalho_pro.site_url
+    brickfolio_online     = module.brickfolio_online.site_url
   }
 }
 
