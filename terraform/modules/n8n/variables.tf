@@ -120,3 +120,9 @@ variable "n8n_proxy_hops" {
   type        = number
   default     = null
 }
+
+variable "enable_servicemonitor" {
+  description = "Enable ServiceMonitor resource for Prometheus metrics scraping (requires Prometheus Operator CRD)"
+  type        = bool
+  default     = false
+}

@@ -279,7 +279,12 @@ resource "kubernetes_service" "redis" {
 }
 
 # ServiceMonitor for Prometheus to scrape Redis metrics
+# Only create if ServiceMonitor CRD exists (monitoring stack installed)
+# Note: This resource will fail during plan if CRD doesn't exist yet
+# Ensure monitoring stack is installed first: terraform apply -target=module.monitoring
 resource "kubernetes_manifest" "redis_servicemonitor" {
+  count = var.enable_servicemonitor ? 1 : 0
+
   manifest = {
     apiVersion = "monitoring.coreos.com/v1"
     kind       = "ServiceMonitor"
@@ -309,6 +314,8 @@ resource "kubernetes_manifest" "redis_servicemonitor" {
       ]
     }
   }
+
+  computed_fields = ["metadata.labels", "metadata.annotations"]
 
   depends_on = [kubernetes_service.redis]
 }

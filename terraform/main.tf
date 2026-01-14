@@ -1,9 +1,12 @@
 # Deploy monitoring stack (Prometheus, Grafana, Loki with NFS storage)
+# This must be deployed BEFORE any ServiceMonitor resources
 module "monitoring" {
   source = "./modules/monitoring"
 
+  # Use NFS storage for monitoring (Loki, Grafana, Prometheus, Alertmanager)
+  # Requires NFS provisioner to be installed first: ./scripts/deploy-nfs-provisioner.sh
   enable_nfs_storage  = var.enable_nfs_storage
-  storage_class       = var.storage_class
+  storage_class       = var.storage_class  # Default: "nfs-client", or use "nfs-loki" for Loki-specific
   loki_storage_size   = "50Gi"
   loki_retention_days = 30
 }

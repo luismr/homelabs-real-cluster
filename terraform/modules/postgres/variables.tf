@@ -123,3 +123,9 @@ variable "node_port" {
   default     = null
 }
 
+variable "enable_servicemonitor" {
+  description = "Enable ServiceMonitor resource for Prometheus metrics scraping (requires Prometheus Operator CRD)"
+  type        = bool
+  default     = false
+}
+

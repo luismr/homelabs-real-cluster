@@ -64,7 +64,8 @@ resource "kubernetes_deployment" "n8n" {
   }
 
   spec {
-    replicas = var.replicas
+    replicas                 = var.replicas
+    progress_deadline_seconds = 1800  # 30 minutes (default is 600s)
 
     selector {
       match_labels = {
@@ -197,7 +198,12 @@ resource "kubernetes_service" "n8n" {
 }
 
 # ServiceMonitor for Prometheus metrics scraping
+# Only create if ServiceMonitor CRD exists (monitoring stack installed)
+# Note: This resource will fail during plan if CRD doesn't exist yet
+# Ensure monitoring stack is installed first: terraform apply -target=module.monitoring
 resource "kubernetes_manifest" "n8n_servicemonitor" {
+  count = var.enable_servicemonitor ? 1 : 0
+
   manifest = {
     apiVersion = "monitoring.coreos.com/v1"
     kind       = "ServiceMonitor"
@@ -227,5 +233,7 @@ resource "kubernetes_manifest" "n8n_servicemonitor" {
       ]
     }
   }
+
+  computed_fields = ["metadata.labels", "metadata.annotations"]
 }
 

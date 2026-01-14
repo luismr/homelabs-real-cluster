@@ -64,6 +64,8 @@ module "pudim_dev_redis" {
   maxmemory        = var.redis_maxmemory
   maxmemory_policy = var.redis_maxmemory_policy
 
+  enable_servicemonitor = false  # Enable after monitoring stack is installed
+
   depends_on = [kubernetes_namespace.pudim_dev]
 }
 

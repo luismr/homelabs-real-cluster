@@ -143,7 +143,8 @@ resource "kubernetes_deployment" "postgres" {
   }
 
   spec {
-    replicas = var.replicas
+    replicas                 = var.replicas
+    progress_deadline_seconds = 1800  # 30 minutes (default is 600s)
 
     selector {
       match_labels = {
@@ -179,9 +180,19 @@ resource "kubernetes_deployment" "postgres" {
             "-c",
             <<-EOT
               # If data directory exists and is empty, copy our pg_hba.conf template
-              if [ -d /var/lib/postgresql/data ] && [ ! "$(ls -A /var/lib/postgresql/data)" ]; then
-                cp /pg-hba-config/pg_hba.conf /var/lib/postgresql/data/pg_hba.conf
-                chmod 600 /var/lib/postgresql/data/pg_hba.conf
+              # If data directory has files but no PG_VERSION, it's a partial/invalid state - clean it
+              if [ -d /var/lib/postgresql/data ]; then
+                if [ ! "$(ls -A /var/lib/postgresql/data)" ]; then
+                  # Empty directory - copy template
+                  cp /pg-hba-config/pg_hba.conf /var/lib/postgresql/data/pg_hba.conf
+                  chmod 600 /var/lib/postgresql/data/pg_hba.conf
+                elif [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+                  # Directory has files but no PG_VERSION - invalid state, clean it
+                  echo "Warning: Data directory exists but is not a valid PostgreSQL data directory. Cleaning..."
+                  rm -rf /var/lib/postgresql/data/*
+                  cp /pg-hba-config/pg_hba.conf /var/lib/postgresql/data/pg_hba.conf
+                  chmod 600 /var/lib/postgresql/data/pg_hba.conf
+                fi
               fi
             EOT
           ]
@@ -489,7 +500,12 @@ resource "kubernetes_service" "postgres_nodeport" {
 }
 
 # ServiceMonitor for Prometheus to scrape PostgreSQL metrics
+# Only create if ServiceMonitor CRD exists (monitoring stack installed)
+# Note: This resource will fail during plan if CRD doesn't exist yet
+# Ensure monitoring stack is installed first: terraform apply -target=module.monitoring
 resource "kubernetes_manifest" "postgres_servicemonitor" {
+  count = var.enable_servicemonitor ? 1 : 0
+
   manifest = {
     apiVersion = "monitoring.coreos.com/v1"
     kind       = "ServiceMonitor"
@@ -519,6 +535,8 @@ resource "kubernetes_manifest" "postgres_servicemonitor" {
       ]
     }
   }
+
+  computed_fields = ["metadata.labels", "metadata.annotations"]
 
   depends_on = [kubernetes_service.postgres]
 }

@@ -178,8 +178,8 @@ module "carimbo_vip_n8n" {
 
   resource_limits_cpu      = "2000m" # 2 CPU cores
   resource_limits_memory   = "2Gi"   # 2 GiB memory
-  resource_requests_cpu    = "1000m" # 1 CPU core
-  resource_requests_memory = "1Gi"   # 1 GiB memory
+  resource_requests_cpu    = "500m"  # 0.5 CPU core (reduced to fit available resources)
+  resource_requests_memory = "512Mi" # 512 MiB memory (reduced to fit available resources)
 
   enable_cloudflare_tunnel = false
 
@@ -188,6 +188,8 @@ module "carimbo_vip_n8n" {
   n8n_host       = "engine.carimbo.vip"
   n8n_protocol   = "https"
   n8n_proxy_hops = 1
+
+  enable_servicemonitor = false  # Enable after monitoring stack is installed
 
   depends_on = [
     kubernetes_namespace.carimbo_vip,
@@ -229,6 +231,8 @@ module "carimbo_vip_redis" {
     }
   ]
 
+  enable_servicemonitor = false  # Enable after monitoring stack is installed
+
   depends_on = [
     kubernetes_namespace.carimbo_vip,
     kubernetes_secret_v1.ghcr_pull
@@ -257,6 +261,8 @@ module "carimbo_vip_postgres" {
   database_name     = var.postgres_database_name
   enable_pgvector   = true
   node_port         = var.postgres_node_port # NodePort for external access (like Grafana)
+
+  enable_servicemonitor = false  # Enable after monitoring stack is installed
 
   resource_limits_cpu      = "1000m"
   resource_limits_memory   = "1Gi"

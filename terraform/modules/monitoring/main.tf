@@ -17,6 +17,16 @@ resource "helm_release" "kube_prometheus_stack" {
   namespace  = var.namespace
   version    = "61.0.0"
 
+  # Increase timeout for large chart installation (kube-prometheus-stack can take 20-30 min)
+  timeout = 1800  # 30 minutes
+
+  # Wait for all resources to be ready
+  wait = true
+
+  # Atomic: if installation fails, rollback
+  # Disabled temporarily to see actual errors if timeout occurs
+  atomic = false
+
   values = [
     yamlencode({
       prometheus = {
@@ -26,7 +36,8 @@ resource "helm_release" "kube_prometheus_stack" {
             volumeClaimTemplate = {
               spec = {
                 accessModes      = ["ReadWriteOnce"]
-                storageClassName = var.enable_nfs_storage ? var.storage_class : null
+                # Use nfs-prometheus storage class if NFS enabled and using default nfs-client, otherwise use provided storage_class
+                storageClassName = var.enable_nfs_storage && var.storage_class != "" ? (var.storage_class == "nfs-client" ? "nfs-prometheus" : var.storage_class) : null
                 resources = {
                   requests = {
                     storage = "10Gi"
@@ -48,8 +59,9 @@ resource "helm_release" "kube_prometheus_stack" {
           nodePort = var.grafana_node_port
         }
         persistence = {
-          enabled          = var.enable_nfs_storage
-          storageClassName = var.enable_nfs_storage ? var.storage_class : null
+          enabled          = true  # Always enable persistence for Grafana
+          # Use nfs-grafana storage class if NFS enabled, otherwise use provided storage_class
+          storageClassName = var.enable_nfs_storage ? (var.storage_class == "nfs-client" ? "nfs-grafana" : var.storage_class) : null
           size             = "10Gi"
           accessModes      = ["ReadWriteOnce"]
         }
@@ -160,7 +172,8 @@ PYTHON_SCRIPT
             volumeClaimTemplate = {
               spec = {
                 accessModes      = ["ReadWriteOnce"]
-                storageClassName = var.enable_nfs_storage ? var.storage_class : null
+                # Use nfs-alertmanager storage class if NFS enabled, otherwise use provided storage_class
+                storageClassName = var.enable_nfs_storage ? (var.storage_class == "nfs-client" ? "nfs-alertmanager" : var.storage_class) : null
                 resources = {
                   requests = {
                     storage = "5Gi"
@@ -192,13 +205,23 @@ resource "helm_release" "loki" {
   version      = "2.9.11"
   force_update = true
 
+  # Increase timeout for large chart installation
+  timeout = 600  # 10 minutes
+
+  # Wait for all resources to be ready
+  wait = true
+
+  # Atomic: if installation fails, rollback
+  atomic = true
+
   values = [
     yamlencode({
       loki = {
         enabled = true
         persistence = {
-          enabled          = var.enable_nfs_storage
-          storageClassName = var.enable_nfs_storage ? var.storage_class : null
+          enabled          = true  # Always enable persistence for Loki
+          # Use nfs-loki storage class if available, otherwise fall back to provided storage_class
+          storageClassName = var.enable_nfs_storage ? (var.storage_class == "nfs-client" ? "nfs-loki" : var.storage_class) : null
           size             = var.loki_storage_size
           accessModes      = ["ReadWriteOnce"]
         }
