@@ -48,6 +48,7 @@ terraform.rc
 # Terraform plan files
 *.tfplan
 *.tfplan.json
+tfplan
 
 # Terraform lock file (optional - some prefer to commit this)
 # .terraform.lock.hcl
