@@ -75,21 +75,8 @@ resource "helm_release" "kube_prometheus_stack" {
         initChownData = {
           enabled = false
         }
-        # Configure datasources (including Loki)
-        datasources = {
-          "loki-datasource.yaml" = <<-EOF
-            apiVersion: 1
-            datasources:
-            - name: Loki
-              type: loki
-              access: proxy
-              url: http://loki:3100
-              version: 1
-              isDefault: false
-              jsonData:
-                maxLines: 1000
-          EOF
-        }
+        # Note: Datasources are configured via ConfigMap with label grafana_datasource=1
+        # See kubernetes_config_map.loki_datasource below
         extraInitContainers = [
           {
             name  = "download-dynamodb-plugin"
@@ -110,6 +97,7 @@ resource "helm_release" "kube_prometheus_stack" {
                 PLUGIN_DIR="/var/lib/grafana/plugins/haohanyang-dynamodb-datasource"
                 
                 echo "Downloading DynamoDB plugin v$${PLUGIN_VERSION} from $${PLUGIN_URL}..."
+                echo "Note: This may take a few minutes. If it times out, Grafana will start without the plugin."
                 python3 << 'PYTHON_SCRIPT'
 import urllib.request
 import zipfile
@@ -125,6 +113,9 @@ extract_dir = "/tmp/plugin-extract"
 
 try:
     print(f"Downloading from {plugin_url}...")
+    # Add timeout to urlretrieve (5 minutes)
+    import socket
+    socket.setdefaulttimeout(300)
     urllib.request.urlretrieve(plugin_url, zip_path)
     print("Download complete")
     
@@ -167,7 +158,10 @@ try:
         print(f"  {item}")
 except Exception as e:
     print(f"ERROR: {e}")
-    sys.exit(1)
+    print("WARNING: Plugin installation failed, but continuing...")
+    print("Grafana will start without DynamoDB plugin. You can install it later if needed.")
+    # Don't exit with error - allow Grafana to start without plugin
+    sys.exit(0)
 PYTHON_SCRIPT
                 echo "Installation complete!"
               EOT

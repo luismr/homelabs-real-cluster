@@ -27,9 +27,7 @@ output "internal_url_short" {
 output "mcp_blueprint_prompts_service_name" {
   description = "Service name for MCP Blueprint Prompts"
   value       = module.mcp_blueprint_prompts.service_name
-}
-
-output "mcp_blueprint_prompts_deployment_name" {
+}output "mcp_blueprint_prompts_deployment_name" {
   description = "Deployment name for MCP Blueprint Prompts"
   value       = module.mcp_blueprint_prompts.deployment_name
 }
