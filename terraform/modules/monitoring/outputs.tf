@@ -32,4 +32,3 @@ output "prometheus_operator_ready" {
   description = "Indicates that Prometheus Operator (and ServiceMonitor CRD) is ready"
   value       = helm_release.kube_prometheus_stack.status
 }
-

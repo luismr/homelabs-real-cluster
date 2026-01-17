@@ -30,3 +30,9 @@ variable "site_image" {
   default     = null
 }
 
+
+variable "mcp_blueprint_prompts_image" {
+  description = "Container image for MCP Blueprint Prompts service"
+  type        = string
+  default     = "luismachadoreis/the-pudim-blueprint-prompts:latest"
+}

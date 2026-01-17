@@ -207,14 +207,22 @@ ssh <user>@<WORKER3_IP>
 
 ## Documentation
 
+### Cluster Setup & Infrastructure
 - **[SETUP-GUIDE.md](docs/SETUP-GUIDE.md)** - Complete step-by-step setup tutorial
 - **[CLUSTER-INFO.md](docs/CLUSTER-INFO.md)** - Quick reference and access information
+- **[terraform/README.md](terraform/README.md)** - Terraform infrastructure documentation
+
+### Storage & Networking
 - **[NFS-STORAGE-GUIDE.md](docs/NFS-STORAGE-GUIDE.md)** - NFS shared storage configuration
 - **[SHARED-STORAGE-GUIDE.md](docs/SHARED-STORAGE-GUIDE.md)** - Complete NFS & Samba sharing guide
-- **[LOKI-GUIDE.md](docs/LOKI-GUIDE.md)** - Log collection and querying guide
 - **[CLOUDFLARE-TUNNEL-SETUP.md](docs/CLOUDFLARE-TUNNEL-SETUP.md)** - Cloudflare Tunnel configuration guide
+
+### Application Services
+- **[MCP-SERVICE-SETUP.md](docs/MCP-SERVICE-SETUP.md)** - MCP Blueprint Prompts service deployment and SSE configuration
+
+### Monitoring & Utilities
+- **[LOKI-GUIDE.md](docs/LOKI-GUIDE.md)** - Log collection and querying guide
 - **[GIT-QUICK-REFERENCE.md](docs/GIT-QUICK-REFERENCE.md)** - Git commands reference
-- **[terraform/README.md](terraform/README.md)** - Terraform infrastructure documentation
 
 ## Testing Connectivity
 
@@ -409,19 +417,23 @@ See **[NFS-STORAGE-GUIDE.md](docs/NFS-STORAGE-GUIDE.md)** for complete documenta
 
 Manage Kubernetes deployments declaratively with Terraform.
 
-### Deployed Static Sites
+### Deployed Services
 
-Three nginx-based static websites managed by Terraform, each in its own namespace:
+Multiple services managed by Terraform, each in its own namespace:
 
 ```bash
 # View deployment status
 cd terraform
 terraform output
 
-# Sites (Production - 3 replicas each):
-- pudim.dev           → pudim-dev namespace
-- luismachadoreis.dev → luismachadoreis-dev namespace  
-- carimbo.vip         → carimbo-vip namespace
+# Static Sites (Production - autoscaled):
+- pudim.dev           → pudim-dev namespace (static site)
+- luismachadoreis.dev → luismachadoreis-dev namespace (static site)
+- carimbo.vip         → carimbo-vip namespace (static site)
+
+# Application Services:
+- prompts.luismachadoreis.dev → luismachadoreis-dev namespace (MCP Blueprint Prompts)
+  SSE endpoint for MCP server integration
 ```
 
 
@@ -464,6 +476,12 @@ To expose sites publicly:
    cd terraform
    terraform apply
    ```
+
+**Routing Configuration:**
+- Cloudflare Tunnel supports **hostname-based routing** only
+- Each hostname/subdomain maps to a specific Kubernetes service
+- Main domains route to static-site services
+- Subdomains can route to application services (e.g., `prompts.luismachadoreis.dev` → MCP service)
 
 See **[CLOUDFLARE-TUNNEL-SETUP.md](docs/CLOUDFLARE-TUNNEL-SETUP.md)** and **[terraform/README.md](terraform/README.md)** for detailed guides.
 

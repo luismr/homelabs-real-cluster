@@ -97,6 +97,28 @@ resource "kubernetes_config_map" "default_content" {
   }
 }
 
+# ConfigMap for nginx reverse proxy configuration (created when proxy_routes provided)
+resource "kubernetes_config_map" "nginx_config" {
+  count = length(var.proxy_routes) > 0 ? 1 : 0
+  
+  metadata {
+    name      = "${var.site_name}-nginx-config"
+    namespace = var.namespace
+    labels = {
+      app         = var.site_name
+      domain      = var.domain
+      environment = var.environment
+      managed-by  = "terraform"
+    }
+  }
+
+  data = {
+    "default.conf" = templatefile("${path.module}/templates/nginx.conf.tpl", {
+      proxy_routes = var.proxy_routes
+    })
+  }
+}
+
 # Deployment
 resource "kubernetes_deployment" "site" {
   metadata {
@@ -186,6 +208,16 @@ resource "kubernetes_deployment" "site" {
             }
           }
 
+          # Mount custom nginx config when proxy routes are defined
+          dynamic "volume_mount" {
+            for_each = length(var.proxy_routes) > 0 ? [1] : []
+            content {
+              name       = "nginx-config"
+              mount_path = "/etc/nginx/conf.d/default.conf"
+              sub_path   = "default.conf"
+            }
+          }
+
           resources {
             limits = {
               cpu    = var.resource_limits_cpu
@@ -234,6 +266,17 @@ resource "kubernetes_deployment" "site" {
             name = "default-content"
             config_map {
               name = kubernetes_config_map.default_content[0].metadata[0].name
+            }
+          }
+        }
+
+        # Nginx config volume when proxy routes are defined
+        dynamic "volume" {
+          for_each = length(var.proxy_routes) > 0 ? [1] : []
+          content {
+            name = "nginx-config"
+            config_map {
+              name = kubernetes_config_map.nginx_config[0].metadata[0].name
             }
           }
         }

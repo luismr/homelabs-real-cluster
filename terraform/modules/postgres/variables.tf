@@ -128,4 +128,3 @@ variable "enable_servicemonitor" {
   type        = bool
   default     = false
 }
-

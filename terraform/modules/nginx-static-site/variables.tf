@@ -109,3 +109,9 @@ variable "memory_target_percentage" {
   default     = 80
 }
 
+
+variable "proxy_routes" {
+  description = "Map of proxy routes (path prefix -> backend service URL)"
+  type        = map(string)
+  default     = {}
+}

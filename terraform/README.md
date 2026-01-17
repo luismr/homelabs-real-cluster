@@ -75,7 +75,7 @@ terraform/
 │   │   ├── variables.tf
 │   │   └── outputs.tf
 │   ├── luismachadoreis-dev/           ← luismachadoreis.dev config
-│   │   ├── main.tf
+│   │   ├── main.tf                      (static site + MCP service)
 │   │   ├── variables.tf
 │   │   └── outputs.tf
 │   └── carimbo-vip/                   ← carimbo.vip configuration
@@ -83,7 +83,11 @@ terraform/
 │       ├── variables.tf
 │       └── outputs.tf
 └── modules/                           ← Reusable modules
-    ├── nginx-static-site/             ← Generic site module
+    ├── nginx-static-site/             ← Static site module
+    │   ├── main.tf
+    │   ├── variables.tf
+    │   └── outputs.tf
+    ├── app-service/                   ← Generic application service module
     │   ├── main.tf
     │   ├── variables.tf
     │   └── outputs.tf
@@ -192,27 +196,42 @@ kubectl port-forward -n pudim-dev svc/static-site 8080:80
 # Open http://localhost:8080
 ```
 
-## Deployed Sites
+## Deployed Services
 
-After deployment, these sites will be available:
+After deployment, these services will be available:
+
+### Static Sites
 
 | Site | Domain | Namespace | Service Name | Replicas | Environment |
 |------|--------|-----------|--------------|----------|-------------|
-| Pudim | pudim.dev | pudim-dev | static-site | 3 | Production |
-| Luis Machado Reis | luismachadoreis.dev | luismachadoreis-dev | static-site | 3 | Production |
-| Carimbo | carimbo.vip | carimbo-vip | static-site | 3 | Production |
+| Pudim | pudim.dev | pudim-dev | static-site | Autoscaled 1-3 | Production |
+| Luis Machado Reis | luismachadoreis.dev | luismachadoreis-dev | static-site | Autoscaled 1-3 | Production |
+| Carimbo | carimbo.vip | carimbo-vip | static-site | Autoscaled 1-3 | Production |
+
+### Application Services
+
+| Application | Domain | Namespace | Service Name | Port | Type |
+|-------------|--------|-----------|--------------|------|------|
+| MCP Blueprint Prompts | prompts.luismachadoreis.dev | luismachadoreis-dev | mcp-blueprint-prompts | 9000 | SSE/HTTP |
 
 **Architecture Notes:**
 - Each domain has its own isolated namespace
-- All services use the standardized name `static-site` within their namespace
+- Static sites use the standardized name `static-site` within their namespace
+- Application services have unique names (e.g., `mcp-blueprint-prompts`)
 - Cloudflare Tunnel runs in a separate `cloudflare-tunnel` namespace (2 replicas)
-- Full DNS name format: `http://static-site.<namespace>.svc.cluster.local:80`
+- Full DNS name format: `http://<service-name>.<namespace>.svc.cluster.local:<port>`
+
+**Routing:**
+- Cloudflare Tunnel uses **hostname-based routing** (not path-based)
+- Each hostname/subdomain maps directly to a specific service
+- SSE (Server-Sent Events) endpoints work seamlessly through the tunnel
+- NodePort services (e.g., port 30091) available for local cluster access
 
 ## DNS Configuration
 
 After deployment, configure DNS CNAMEs in Cloudflare:
 
-### For each domain:
+### Main Domains
 
 1. **pudim.dev**
    ```
@@ -238,9 +257,38 @@ After deployment, configure DNS CNAMEs in Cloudflare:
    Proxy: Yes (Orange cloud)
    ```
 
+### Subdomains (Application Services)
+
+4. **prompts.luismachadoreis.dev** (MCP Blueprint Prompts)
+   ```
+   Type: CNAME
+   Name: prompts
+   Content: <your-tunnel-uuid>.cfargotunnel.com
+   Proxy: Yes (Orange cloud)
+   ```
+
 ### Get Tunnel UUID
 
 From Cloudflare Dashboard: Zero Trust > Networks > Tunnels > Your Tunnel > Copy UUID
+
+### Adding New Subdomains
+
+To add a new subdomain for an application service:
+
+1. **Update Cloudflare Tunnel config** in `modules/cloudflare-tunnel/main.tf`:
+   ```yaml
+   - hostname: subdomain.yourdomain.com
+     service: http://your-service.your-namespace.svc.cluster.local:port
+   ```
+
+2. **Apply Terraform changes**:
+   ```bash
+   terraform apply
+   ```
+
+3. **Add DNS CNAME** in Cloudflare pointing to your tunnel UUID
+
+**Note**: Cloudflare Tunnel only supports hostname-based routing. Each subdomain must be configured separately in the tunnel ingress rules.
 
 ## Updating Site Content
 
@@ -625,6 +673,74 @@ For issues or questions:
 ---
 
 **Managed by Terraform** | **Version**: 1.0 | **Last Updated**: Nov 2025
+
+## App Service Module
+
+Path: `terraform/modules/app-service`
+
+A generic module for deploying application services (APIs, SSE servers, backend services, etc.).
+
+### Features
+
+- Kubernetes Deployment with configurable replicas
+- ClusterIP Service for internal cluster access
+- Optional NodePort Service for external/local access
+- Optional NFS persistent storage
+- Horizontal Pod Autoscaling (HPA) support
+- Configurable resource limits and health checks
+- Support for ConfigMap-based environment variables
+- Private registry support (imagePullSecrets)
+
+### Example: MCP Blueprint Prompts Service
+
+```hcl
+module "mcp_blueprint_prompts" {
+  source = "../../modules/app-service"
+
+  app_name           = "mcp-blueprint-prompts"
+  domain             = "luismachadoreis.dev"
+  namespace          = kubernetes_namespace.luismachadoreis_dev.metadata[0].name
+  environment        = "production"
+  replicas           = 1
+  enable_autoscaling = false
+  enable_nfs         = false
+
+  app_image              = "luismachadoreis/the-pudim-blueprint-prompts:latest"
+  image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
+
+  container_port    = 9000
+  service_port      = 9000
+  health_check_path = "/"
+  health_check_port = 9000
+
+  resource_limits_cpu      = "500m"
+  resource_limits_memory   = "512Mi"
+  resource_requests_cpu    = "100m"
+  resource_requests_memory = "128Mi"
+
+  # NodePort for external access (accessible via cluster IP:30091)
+  node_port = 30091
+
+  depends_on_resources = [kubernetes_namespace.luismachadoreis_dev]
+}
+```
+
+### Cloudflare Tunnel Configuration
+
+For SSE endpoints or application services, configure subdomain routing:
+
+```yaml
+# In modules/cloudflare-tunnel/main.tf
+- hostname: prompts.luismachadoreis.dev
+  service: http://mcp-blueprint-prompts.luismachadoreis-dev.svc.cluster.local:9000
+```
+
+### Important Notes
+
+- **Hostname-based routing**: Cloudflare Tunnel routes by hostname/subdomain, not by path
+- **SSE Support**: Server-Sent Events work seamlessly through the tunnel
+- **NodePort**: Useful for local development/testing (e.g., `http://192.168.7.200:30091`)
+- **Health Checks**: Configure appropriate paths for liveness/readiness probes
 
 ## Nginx Redirector Module
 

@@ -6,7 +6,7 @@ output "namespaces" {
     carimbo_vip          = module.carimbo_vip.namespace
     singularideas_com_br = module.singularideas_com_br.namespace
     leticiacarvalho_pro  = module.leticiacarvalho_pro.namespace
-    brickfolio_online     = module.brickfolio_online.namespace
+    brickfolio_online    = module.brickfolio_online.namespace
   }
 }
 
@@ -29,11 +29,15 @@ output "pudim_dev" {
 output "luismachadoreis_dev" {
   description = "luismachadoreis.dev domain outputs"
   value = {
-    namespace          = module.luismachadoreis_dev.namespace
-    service            = module.luismachadoreis_dev.service_name
-    url                = module.luismachadoreis_dev.site_url
-    internal_url       = module.luismachadoreis_dev.internal_url
-    internal_url_short = module.luismachadoreis_dev.internal_url_short
+    namespace                                = module.luismachadoreis_dev.namespace
+    service                                  = module.luismachadoreis_dev.service_name
+    url                                      = module.luismachadoreis_dev.site_url
+    internal_url                             = module.luismachadoreis_dev.internal_url
+    internal_url_short                       = module.luismachadoreis_dev.internal_url_short
+    mcp_blueprint_prompts_service            = module.luismachadoreis_dev.mcp_blueprint_prompts_service_name
+    mcp_blueprint_prompts_deployment         = module.luismachadoreis_dev.mcp_blueprint_prompts_deployment_name
+    mcp_blueprint_prompts_internal_url       = module.luismachadoreis_dev.mcp_blueprint_prompts_internal_url
+    mcp_blueprint_prompts_internal_url_short = module.luismachadoreis_dev.mcp_blueprint_prompts_internal_url_short
   }
 }
 
@@ -132,7 +136,7 @@ output "sites_urls" {
     carimbo_vip          = module.carimbo_vip.site_url
     singularideas_com_br = module.singularideas_com_br.site_url
     leticiacarvalho_pro  = module.leticiacarvalho_pro.site_url
-    brickfolio_online     = module.brickfolio_online.site_url
+    brickfolio_online    = module.brickfolio_online.site_url
   }
 }
 

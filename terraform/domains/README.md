@@ -26,12 +26,29 @@ domains/
     └── outputs.tf
 ```
 
+## Domain Services
+
+Each domain can host multiple types of services:
+
+1. **Static Sites** - Nginx-based websites (using `nginx-static-site` module)
+2. **Application Services** - Backend APIs, SSE servers, etc. (using `app-service` module)
+3. **Forms** - Contact forms and data collection
+4. **Database Services** - PostgreSQL, Redis, etc.
+5. **N8N Workflows** - Automation and integrations
+
+### Example: luismachadoreis-dev
+
+This domain hosts multiple services:
+- **Static Site** (luismachadoreis.dev) - Main website
+- **MCP Blueprint Prompts** (prompts.luismachadoreis.dev) - MCP server with SSE endpoint
+
 ## Benefits
 
 1. **Isolation** - Each domain is self-contained
 2. **Scalability** - Easy to add more applications per domain
 3. **Maintainability** - Changes to one domain don't affect others
 4. **Clarity** - Clear separation of concerns
+5. **Flexibility** - Mix static sites with dynamic application services
 
 ## Usage
 
@@ -48,14 +65,30 @@ Edit the domain's `main.tf` to add more modules:
 ```terraform
 # In domains/pudim-dev/main.tf
 
-# Add an API backend
+# Add an API backend using app-service module
 module "pudim_api" {
-  source = "../../modules/api-backend"
+  source = "../../modules/app-service"
   
-  namespace = kubernetes_namespace.pudim_dev.metadata[0].name
-  domain    = "api.pudim.dev"
-  ...
+  app_name           = "api"
+  domain             = "api.pudim.dev"
+  namespace          = kubernetes_namespace.pudim_dev.metadata[0].name
+  environment        = "production"
+  
+  app_image          = "your-registry/pudim-api:latest"
+  container_port     = 8000
+  service_port       = 8000
+  
+  # Optional: Enable NodePort for local access
+  node_port          = 30100
+  
+  depends_on_resources = [kubernetes_namespace.pudim_dev]
 }
+```
+
+Then update Cloudflare Tunnel configuration in `modules/cloudflare-tunnel/main.tf`:
+```yaml
+- hostname: api.pudim.dev
+  service: http://api.pudim-dev.svc.cluster.local:8000
 ```
 
 ### Add new domain

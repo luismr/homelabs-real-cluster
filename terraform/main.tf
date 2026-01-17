@@ -6,7 +6,7 @@ module "monitoring" {
   # Use NFS storage for monitoring (Loki, Grafana, Prometheus, Alertmanager)
   # Requires NFS provisioner to be installed first: ./scripts/deploy-nfs-provisioner.sh
   enable_nfs_storage  = var.enable_nfs_storage
-  storage_class       = var.storage_class  # Default: "nfs-client", or use "nfs-loki" for Loki-specific
+  storage_class       = var.storage_class # Default: "nfs-client", or use "nfs-loki" for Loki-specific
   loki_storage_size   = "50Gi"
   loki_retention_days = 30
 }
@@ -76,9 +76,10 @@ module "luismachadoreis_dev" {
   enable_nfs_storage = var.enable_nfs_storage
   storage_class      = var.storage_class
 
-  site_image    = var.luismachadoreis_site_image
-  ghcr_username = var.ghcr_username
-  ghcr_token    = var.ghcr_token
+  site_image                  = var.luismachadoreis_site_image
+  mcp_blueprint_prompts_image = var.luismachadoreis_mcp_blueprint_prompts_image
+  ghcr_username               = var.ghcr_username
+  ghcr_token                  = var.ghcr_token
 }
 
 # Deploy carimbo.vip domain

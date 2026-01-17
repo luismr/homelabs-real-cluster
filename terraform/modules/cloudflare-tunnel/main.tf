@@ -75,6 +75,10 @@ resource "kubernetes_config_map" "tunnel_config" {
         - hostname: www.luismachadoreis.dev
           service: http://static-site.luismachadoreis-dev.svc.cluster.local:80
         
+        # prompts.luismachadoreis.dev -> MCP Blueprint Prompts service
+        - hostname: prompts.luismachadoreis.dev
+          service: http://mcp-blueprint-prompts.luismachadoreis-dev.svc.cluster.local:9000
+        
         # carimbo.vip -> static-site service in carimbo-vip namespace
         - hostname: carimbo.vip
           service: http://static-site.carimbo-vip.svc.cluster.local:80

@@ -75,6 +75,21 @@ resource "helm_release" "kube_prometheus_stack" {
         initChownData = {
           enabled = false
         }
+        # Configure datasources (including Loki)
+        datasources = {
+          "loki-datasource.yaml" = <<-EOF
+            apiVersion: 1
+            datasources:
+            - name: Loki
+              type: loki
+              access: proxy
+              url: http://loki:3100
+              version: 1
+              isDefault: false
+              jsonData:
+                maxLines: 1000
+          EOF
+        }
         extraInitContainers = [
           {
             name  = "download-dynamodb-plugin"
@@ -332,14 +347,16 @@ resource "helm_release" "loki" {
   ]
 }
 
-# Configure Loki datasource in Grafana
+# Configure Loki datasource in Grafana via ConfigMap (backup method)
+# Primary method is via Grafana Helm values above, but this ensures it's available
+# even if Helm values don't work
 resource "kubernetes_config_map" "loki_datasource" {
   metadata {
     name      = "loki-datasource"
     namespace = var.namespace
     labels = {
-      app        = "grafana"
-      managed-by = "terraform"
+      grafana_datasource = "1"
+      managed-by         = "terraform"
     }
   }
 
@@ -358,6 +375,9 @@ resource "kubernetes_config_map" "loki_datasource" {
       EOF
   }
 
-  depends_on = [helm_release.kube_prometheus_stack]
+  depends_on = [
+    helm_release.kube_prometheus_stack,
+    helm_release.loki
+  ]
 }
 
