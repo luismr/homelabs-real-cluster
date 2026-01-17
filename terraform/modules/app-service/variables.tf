@@ -161,3 +161,9 @@ variable "enable_cloudflare_tunnel" {
   type        = bool
   default     = true
 }
+
+variable "node_port" {
+  description = "NodePort for external access (like Grafana). If null, no NodePort service is created."
+  type        = number
+  default     = null
+}

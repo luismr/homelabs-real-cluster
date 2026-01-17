@@ -136,6 +136,13 @@ resource "kubernetes_deployment" "app" {
       }
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].spec[0].container[0].liveness_probe,
+      spec[0].template[0].spec[0].container[0].readiness_probe,
+    ]
+  }
 }
 
 # Service for the application
@@ -220,4 +227,38 @@ resource "kubernetes_horizontal_pod_autoscaler_v2" "app" {
   }
 
   depends_on = [kubernetes_deployment.app]
+}
+
+# NodePort service for external access (like Grafana)
+resource "kubernetes_service" "app_nodeport" {
+  count = var.node_port != null ? 1 : 0
+
+  depends_on = [var.depends_on_resources]
+
+  metadata {
+    name      = "${var.app_name}-nodeport"
+    namespace = var.namespace
+    labels = {
+      app         = var.app_name
+      domain      = var.domain
+      environment = var.environment
+      managed-by  = "terraform"
+    }
+  }
+
+  spec {
+    type = "NodePort"
+
+    selector = {
+      app = var.app_name
+    }
+
+    port {
+      name        = "http"
+      port        = var.service_port
+      target_port = var.container_port
+      node_port   = var.node_port
+      protocol    = "TCP"
+    }
+  }
 }
