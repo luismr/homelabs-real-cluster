@@ -2,9 +2,9 @@
 # Quick SSH helper for cluster nodes (physical machines)
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-if [ -f "${SCRIPT_DIR}/cluster-hosts.env" ]; then
+if [ -f "${SCRIPT_DIR}/../cluster-hosts.env" ]; then
   # shellcheck disable=SC1090
-  source "${SCRIPT_DIR}/cluster-hosts.env"
+  source "${SCRIPT_DIR}/../cluster-hosts.env"
 fi
 
 SSH_USER=${SSH_USER:-ubuntu}
@@ -46,7 +46,7 @@ case "$1" in
     echo "  $0 worker-1   # SSH to worker-1"
     echo "  $0 w1         # SSH to worker-1 (short)"
     echo ""
-    echo "Configure hosts in: ${SCRIPT_DIR}/cluster-hosts.env"
+    echo "Configure hosts in: ${SCRIPT_DIR}/../cluster-hosts.env"
     exit 1
     ;;
 esac

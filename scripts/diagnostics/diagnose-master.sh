@@ -5,9 +5,9 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-if [ -f "${SCRIPT_DIR}/cluster-hosts.env" ]; then
+if [ -f "${SCRIPT_DIR}/../cluster-hosts.env" ]; then
   # shellcheck disable=SC1090
-  source "${SCRIPT_DIR}/cluster-hosts.env"
+  source "${SCRIPT_DIR}/../cluster-hosts.env"
 fi
 
 SSH_USER=${SSH_USER:-ubuntu}
@@ -50,7 +50,7 @@ else
   echo "   - Check if master node is powered on"
   echo "   - Check network connectivity: ping ${MASTER_IP}"
   echo "   - Verify SSH service is running on master"
-  echo "   - Check SSH key configuration in cluster-hosts.env"
+  echo "   - Check SSH key configuration in ../cluster-hosts.env"
   exit 1
 fi
 

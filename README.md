@@ -156,8 +156,23 @@ $EDITOR scripts/cluster-hosts.env
 3) Provision the cluster
 
 ```bash
-./scripts/setup-cluster.sh
+./scripts/cluster-management/setup-cluster.sh
 ```
+
+## 📜 Scripts Documentation
+
+For detailed information about all available scripts, see the **[Scripts Documentation](scripts/README.md)**.
+
+The scripts directory contains 36 utility scripts organized into 6 categories:
+
+| Category | Location | Scripts | Purpose |
+|----------|----------|---------|---------|
+| **🚀 Cluster Management** | `scripts/cluster-management/` | 8 | Setup, node management, SSH access |
+| **🔍 Diagnostics** | `scripts/diagnostics/` | 8 | Health checks, issue diagnosis |
+| **🏗️ Infrastructure** | `scripts/infrastructure/` | 3 | Initial configuration, specialized tools |
+| **🔧 Terraform Helpers** | `scripts/terraform-helpers/` | 6 | State management, retry operations |
+| **📊 Monitoring** | `scripts/monitoring/` | 6 | Grafana, Prometheus, Loki setup |
+| **🗄️ Storage** | `scripts/storage/` | 5 | NFS configuration, persistent volumes |
 
 ### SSH Access
 
@@ -176,10 +191,10 @@ ssh <user>@<WORKER3_IP>
 
 ```bash
 # Quick access using the helper script
-./scripts/ssh-nodes.sh master   # or: ./scripts/ssh-nodes.sh m
-./scripts/ssh-nodes.sh worker1  # or: ./scripts/ssh-nodes.sh w1
-./scripts/ssh-nodes.sh worker2  # or: ./scripts/ssh-nodes.sh w2
-./scripts/ssh-nodes.sh worker3  # or: ./scripts/ssh-nodes.sh w3
+./scripts/cluster-management/ssh-nodes.sh master   # or: ./scripts/cluster-management/ssh-nodes.sh m
+./scripts/cluster-management/ssh-nodes.sh worker1  # or: ./scripts/cluster-management/ssh-nodes.sh w1
+./scripts/cluster-management/ssh-nodes.sh worker2  # or: ./scripts/cluster-management/ssh-nodes.sh w2
+./scripts/cluster-management/ssh-nodes.sh worker3  # or: ./scripts/cluster-management/ssh-nodes.sh w3
 ```
 
  
@@ -231,8 +246,8 @@ ssh <user>@<WORKER3_IP>
 for ip in 192.168.7.{200..203}; do ping -c 1 "$ip"; done
 
 # Or use the helper to connect quickly
-./scripts/ssh-nodes.sh master
-./scripts/ssh-nodes.sh worker1
+./scripts/cluster-management/ssh-nodes.sh master
+./scripts/cluster-management/ssh-nodes.sh worker1
 ```
 
 ## k3s Cluster with Observability
@@ -242,7 +257,7 @@ for ip in 192.168.7.{200..203}; do ping -c 1 "$ip"; done
 Run the automated setup script to install k3s with full observability:
 
 ```bash
-./scripts/setup-cluster.sh
+./scripts/cluster-management/setup-cluster.sh
 ```
 
 This will:
@@ -257,15 +272,15 @@ If you prefer manual control:
 
 ```bash
 # 1. Install k3s master
-ssh <user>@<MASTER_IP> "bash -s -- <MASTER_IP>" < scripts/install-k3s-master.sh
+ssh <user>@<MASTER_IP> "bash -s -- <MASTER_IP>" < scripts/cluster-management/install-k3s-master.sh
 
 # 2. Get the node token
 NODE_TOKEN=$(ssh <user>@<MASTER_IP> 'sudo cat /var/lib/rancher/k3s/server/node-token')
 
 # 3. Install workers
-ssh <user>@<WORKER1_IP> "bash -s -- <MASTER_IP> $NODE_TOKEN" < scripts/install-k3s-worker.sh
-ssh <user>@<WORKER2_IP> "bash -s -- <MASTER_IP> $NODE_TOKEN" < scripts/install-k3s-worker.sh
-ssh <user>@<WORKER3_IP> "bash -s -- <MASTER_IP> $NODE_TOKEN" < scripts/install-k3s-worker.sh
+ssh <user>@<WORKER1_IP> "bash -s -- <MASTER_IP> $NODE_TOKEN" < scripts/cluster-management/install-k3s-worker.sh
+ssh <user>@<WORKER2_IP> "bash -s -- <MASTER_IP> $NODE_TOKEN" < scripts/cluster-management/install-k3s-worker.sh
+ssh <user>@<WORKER3_IP> "bash -s -- <MASTER_IP> $NODE_TOKEN" < scripts/cluster-management/install-k3s-worker.sh
 
 # 4. Copy kubeconfig
 ssh <user>@<MASTER_IP> 'sudo cat /etc/rancher/k3s/k3s.yaml' | \
@@ -273,7 +288,7 @@ ssh <user>@<MASTER_IP> 'sudo cat /etc/rancher/k3s/k3s.yaml' | \
 export KUBECONFIG=~/.kube/config-homelabs
 
 # 5. Install observability stack
-scp scripts/install-observability.sh <user>@<MASTER_IP>:/tmp/
+scp scripts/monitoring/install-observability.sh <user>@<MASTER_IP>:/tmp/
 ssh <user>@<MASTER_IP> 'bash /tmp/install-observability.sh'
 ```
 
@@ -381,7 +396,7 @@ spec:
 
 ```bash
 # Automated setup (recommended)
-./scripts/setup-nfs-complete.sh
+./scripts/storage/setup-nfs-complete.sh
 ```
 
 This will:

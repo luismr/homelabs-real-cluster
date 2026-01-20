@@ -3,9 +3,9 @@
 
 set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-if [ -f "${SCRIPT_DIR}/cluster-hosts.env" ]; then
+if [ -f "${SCRIPT_DIR}/../cluster-hosts.env" ]; then
   # shellcheck disable=SC1090
-  source "${SCRIPT_DIR}/cluster-hosts.env"
+  source "${SCRIPT_DIR}/../cluster-hosts.env"
 fi
 
 SSH_USER=${SSH_USER:-ubuntu}

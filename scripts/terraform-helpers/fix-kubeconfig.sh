@@ -6,8 +6,8 @@ set -euo pipefail
 
 # Source cluster hosts if available
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-if [ -f "${SCRIPT_DIR}/scripts/cluster-hosts.env" ]; then
-  source "${SCRIPT_DIR}/scripts/cluster-hosts.env"
+if [ -f "${SCRIPT_DIR}/../cluster-hosts.env" ]; then
+  source "${SCRIPT_DIR}/../cluster-hosts.env"
 fi
 
 # Use first master IP (or default)
@@ -24,7 +24,7 @@ if ! ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no "${SSH_USER}@${FIRST_MA
   echo "⚠️  Cannot SSH to ${FIRST_MASTER_IP}"
   echo "Please check:"
   echo "  1. SSH access is configured"
-  echo "  2. MASTER_IP is correct in scripts/cluster-hosts.env"
+  echo "  2. MASTER_IP is correct in ../cluster-hosts.env"
   echo "  3. SSH key is added to authorized_keys"
   exit 1
 fi

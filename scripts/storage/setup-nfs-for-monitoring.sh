@@ -7,8 +7,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Source cluster hosts if available
-if [ -f "${SCRIPT_DIR}/scripts/cluster-hosts.env" ]; then
-  source "${SCRIPT_DIR}/scripts/cluster-hosts.env"
+if [ -f "${SCRIPT_DIR}/../cluster-hosts.env" ]; then
+  source "${SCRIPT_DIR}/../cluster-hosts.env"
 fi
 
 # Set KUBECONFIG - use absolute path
