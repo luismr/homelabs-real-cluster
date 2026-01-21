@@ -25,13 +25,13 @@ server {
     location ${path_prefix} {
         proxy_pass ${backend_url};
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $$http_upgrade;
+        proxy_set_header Upgrade $${http_upgrade};
         proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $$host;
-        proxy_set_header X-Real-IP $$remote_addr;
-        proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $$scheme;
-        proxy_cache_bypass $$http_upgrade;
+        proxy_set_header Host $${host};
+        proxy_set_header X-Real-IP $${remote_addr};
+        proxy_set_header X-Forwarded-For $${proxy_add_x_forwarded_for};
+        proxy_set_header X-Forwarded-Proto $${scheme};
+        proxy_cache_bypass $${http_upgrade};
         
         # Timeouts
         proxy_connect_timeout 60s;
@@ -42,11 +42,11 @@ server {
     
     # Serve static files
     location / {
-        try_files $$uri $$uri/ /index.html;
+        try_files $${uri} $${uri}/ /index.html;
     }
     
     # Cache static assets
-    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$$ {
+    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ {
         expires 1y;
         add_header Cache-Control "public, immutable";
     }

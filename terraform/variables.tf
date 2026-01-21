@@ -113,10 +113,16 @@ variable "luismachadoreis_site_image" {
   default     = null
 }
 
-variable "luismachadoreis_mcp_blueprint_prompts_image" {
-  description = "Image for MCP Blueprint Prompts service in luismachadoreis.dev namespace"
+variable "luismachadoreis_mcp_blueprint_prompts_site_image" {
+  description = "Image for MCP Blueprint Prompts frontend (site) in luismachadoreis.dev namespace"
   type        = string
-  default     = "luismachadoreis/the-pudim-blueprint-prompts:latest"
+  default     = "luismachadoreis/the-pudim-blueprint-prompts:site-1.6.1"
+}
+
+variable "luismachadoreis_mcp_blueprint_prompts_sse_image" {
+  description = "Image for MCP Blueprint Prompts SSE backend in luismachadoreis.dev namespace"
+  type        = string
+  default     = "luismachadoreis/the-pudim-blueprint-prompts:1.6.1"
 }
 
 variable "carimbo_site_image" {

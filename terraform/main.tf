@@ -76,10 +76,11 @@ module "luismachadoreis_dev" {
   enable_nfs_storage = var.enable_nfs_storage
   storage_class      = var.storage_class
 
-  site_image                  = var.luismachadoreis_site_image
-  mcp_blueprint_prompts_image = var.luismachadoreis_mcp_blueprint_prompts_image
-  ghcr_username               = var.ghcr_username
-  ghcr_token                  = var.ghcr_token
+  site_image                       = var.luismachadoreis_site_image
+  mcp_blueprint_prompts_site_image = var.luismachadoreis_mcp_blueprint_prompts_site_image
+  mcp_blueprint_prompts_sse_image  = var.luismachadoreis_mcp_blueprint_prompts_sse_image
+  ghcr_username                    = var.ghcr_username
+  ghcr_token                       = var.ghcr_token
 }
 
 # Deploy carimbo.vip domain

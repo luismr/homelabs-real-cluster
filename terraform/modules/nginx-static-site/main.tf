@@ -285,10 +285,10 @@ resource "kubernetes_deployment" "site" {
   }
 }
 
-# Service for the static site (named "static-site")
+# Service for the static site (dynamic name based on site_name)
 resource "kubernetes_service" "site" {
   metadata {
-    name      = "static-site"
+    name      = var.site_name == "luismachadoreis-dev" ? "static-site" : "${var.site_name}-service"
     namespace = var.namespace
     labels = {
       app         = var.site_name

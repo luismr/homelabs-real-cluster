@@ -33,7 +33,8 @@ storage_class      = "nfs-loki"
 # Docker Images for Static Sites (replace with your actual images)
 pudim_site_image                            = "ghcr.io/luismr/pudim-dev-calculator:sha-2123322"                                            # Replace with your pudim.dev image
 luismachadoreis_site_image                  = "ghcr.io/luismr/luismachadoreis-dev-portfolio:sha-0022a05"                                   # Replace with your luismachadoreis.dev image
-luismachadoreis_mcp_blueprint_prompts_image = "luismachadoreis/the-pudim-blueprint-prompts:1.5.1"                                         # MCP Blueprint Prompts service image
+luismachadoreis_mcp_blueprint_prompts_site_image = "luismachadoreis/the-pudim-blueprint-prompts:site-1.6.1"                               # MCP Blueprint Prompts frontend (site) image
+luismachadoreis_mcp_blueprint_prompts_sse_image  = "luismachadoreis/the-pudim-blueprint-prompts:1.6.1"                                   # MCP Blueprint Prompts SSE backend image
 carimbo_site_image                          = "ghcr.io/luismr/carimbo-vip-site:sha-3a19b2c"                                                # Replace with your carimbo.vip image
 carimbo_forms_image                         = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Replace with your carimbo.vip forms image
 carimbo_forms_n8n_base_url                  = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints (e.g., https://n8n.example.com/webhook)

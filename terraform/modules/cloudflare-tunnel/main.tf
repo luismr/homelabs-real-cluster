@@ -75,9 +75,11 @@ resource "kubernetes_config_map" "tunnel_config" {
         - hostname: www.luismachadoreis.dev
           service: http://static-site.luismachadoreis-dev.svc.cluster.local:80
         
-        # prompts.luismachadoreis.dev -> MCP Blueprint Prompts service
+        # prompts.luismachadoreis.dev -> MCP Blueprint Prompts frontend (nginx with /sse proxy)
+        # Note: Configure manually in Cloudflare Tunnel dashboard
+        # Target: http://mcp-blueprint-prompts-service.luismachadoreis-dev.svc.cluster.local:80
         - hostname: prompts.luismachadoreis.dev
-          service: http://mcp-blueprint-prompts.luismachadoreis-dev.svc.cluster.local:9000
+          service: http://mcp-blueprint-prompts-service.luismachadoreis-dev.svc.cluster.local:80
         
         # carimbo.vip -> static-site service in carimbo-vip namespace
         - hostname: carimbo.vip

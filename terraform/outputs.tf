@@ -34,10 +34,12 @@ output "luismachadoreis_dev" {
     url                                      = module.luismachadoreis_dev.site_url
     internal_url                             = module.luismachadoreis_dev.internal_url
     internal_url_short                       = module.luismachadoreis_dev.internal_url_short
-    mcp_blueprint_prompts_service            = module.luismachadoreis_dev.mcp_blueprint_prompts_service_name
-    mcp_blueprint_prompts_deployment         = module.luismachadoreis_dev.mcp_blueprint_prompts_deployment_name
-    mcp_blueprint_prompts_internal_url       = module.luismachadoreis_dev.mcp_blueprint_prompts_internal_url
-    mcp_blueprint_prompts_internal_url_short = module.luismachadoreis_dev.mcp_blueprint_prompts_internal_url_short
+    mcp_blueprint_prompts_frontend_service            = module.luismachadoreis_dev.mcp_blueprint_prompts_frontend_service_name
+    mcp_blueprint_prompts_frontend_deployment         = module.luismachadoreis_dev.mcp_blueprint_prompts_frontend_deployment_name
+    mcp_blueprint_prompts_frontend_internal_url       = module.luismachadoreis_dev.mcp_blueprint_prompts_frontend_internal_url
+    mcp_blueprint_prompts_sse_service                 = module.luismachadoreis_dev.mcp_blueprint_prompts_sse_service_name
+    mcp_blueprint_prompts_sse_deployment              = module.luismachadoreis_dev.mcp_blueprint_prompts_sse_deployment_name
+    mcp_blueprint_prompts_sse_internal_url            = module.luismachadoreis_dev.mcp_blueprint_prompts_sse_internal_url
   }
 }
 

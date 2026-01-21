@@ -31,8 +31,14 @@ variable "site_image" {
 }
 
 
-variable "mcp_blueprint_prompts_image" {
-  description = "Container image for MCP Blueprint Prompts service"
+variable "mcp_blueprint_prompts_site_image" {
+  description = "Container image for MCP Blueprint Prompts frontend (site)"
   type        = string
-  default     = "luismachadoreis/the-pudim-blueprint-prompts:latest"
+  default     = "luismachadoreis/the-pudim-blueprint-prompts:site-1.6.1"
+}
+
+variable "mcp_blueprint_prompts_sse_image" {
+  description = "Container image for MCP Blueprint Prompts SSE backend"
+  type        = string
+  default     = "luismachadoreis/the-pudim-blueprint-prompts:1.6.1"
 }
