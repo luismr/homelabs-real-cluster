@@ -75,7 +75,7 @@ resource "kubernetes_config_map" "tunnel_config" {
         - hostname: www.luismachadoreis.dev
           service: http://static-site.luismachadoreis-dev.svc.cluster.local:80
         
-        # prompts.luismachadoreis.dev -> MCP Blueprint Prompts frontend (nginx with /sse proxy)
+        # prompts.luismachadoreis.dev -> MCP Blueprint Prompts frontend (nginx with /mcp proxy)
         # Note: Configure manually in Cloudflare Tunnel dashboard
         # Target: http://mcp-blueprint-prompts-service.luismachadoreis-dev.svc.cluster.local:80
         - hostname: prompts.luismachadoreis.dev

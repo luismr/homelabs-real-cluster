@@ -132,17 +132,17 @@ TTL: Auto
 
 ### Public Endpoint (via Cloudflare)
 ```
-https://prompts.luismachadoreis.dev/sse
+https://prompts.luismachadoreis.dev/mcp
 ```
 
 ### Local Endpoint (NodePort)
 ```
-http://192.168.7.200:30091/sse
+http://192.168.7.200:30091/mcp
 ```
 
 ### Cluster Internal Endpoint
 ```
-http://mcp-blueprint-prompts.luismachadoreis-dev.svc.cluster.local:9000/sse
+http://mcp-blueprint-prompts.luismachadoreis-dev.svc.cluster.local:9000/mcp
 ```
 
 ## SSE (Server-Sent Events) Support
@@ -158,25 +158,25 @@ The service uses SSE for real-time communication. Cloudflare Tunnel handles SSE 
 ### Test Public Endpoint
 ```bash
 # Check headers
-curl -I https://prompts.luismachadoreis.dev/sse
+curl -I https://prompts.luismachadoreis.dev/mcp
 
 # Test SSE connection (will stay open)
-curl -N https://prompts.luismachadoreis.dev/sse
+curl -N https://prompts.luismachadoreis.dev/mcp
 ```
 
 ### Test Local NodePort
 ```bash
 # Check headers
-curl -I http://192.168.7.200:30091/sse
+curl -I http://192.168.7.200:30091/mcp
 
 # Test SSE connection
-curl -N http://192.168.7.200:30091/sse
+curl -N http://192.168.7.200:30091/mcp
 ```
 
 ### Test from within cluster
 ```bash
 kubectl run -it --rm test-mcp --image=curlimages/curl --restart=Never -- \
-  curl -I http://mcp-blueprint-prompts.luismachadoreis-dev.svc.cluster.local:9000/sse
+  curl -I http://mcp-blueprint-prompts.luismachadoreis-dev.svc.cluster.local:9000/mcp
 ```
 
 ## Monitoring
@@ -244,14 +244,14 @@ curl http://192.168.7.200:30091/
 3. **Test from master node**:
    ```bash
    ssh ubuntu@192.168.7.200
-   curl http://localhost:30091/sse
+   curl http://localhost:30091/mcp
    ```
 
 ### SSE connection issues
 
 1. **Check for buffering**:
    ```bash
-   curl -I https://prompts.luismachadoreis.dev/sse
+   curl -I https://prompts.luismachadoreis.dev/mcp
    # Look for: Content-Type: text/event-stream
    # Look for: Cache-Control: no-store
    ```
@@ -259,7 +259,7 @@ curl http://192.168.7.200:30091/
 2. **Test SSE stream**:
    ```bash
    # Should keep connection open
-   curl -N --max-time 5 https://prompts.luismachadoreis.dev/sse
+   curl -N --max-time 5 https://prompts.luismachadoreis.dev/mcp
    ```
 
 3. **Check application logs**:

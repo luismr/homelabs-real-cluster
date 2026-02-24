@@ -71,6 +71,11 @@ resource "helm_release" "kube_prometheus_stack" {
             allow_loading_unsigned_plugins = "haohanyang-dynamodb-datasource"
           }
         }
+        sidecar = {
+          datasources = {
+            defaultDatasourceEnabled = false
+          }
+        }
         # Install DynamoDB datasource plugin
         initChownData = {
           enabled = false
@@ -331,6 +336,11 @@ resource "helm_release" "loki" {
       }
       grafana = {
         enabled = false
+        sidecar = {
+            datasources = {
+                enabled = false
+            }
+        }
       }
     })
   ]

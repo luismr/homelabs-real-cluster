@@ -84,7 +84,7 @@ module "mcp_blueprint_prompts_sse" {
 
   container_port    = 9000
   service_port      = 9000
-  health_check_path = "/sse"
+  health_check_path = "/mcp"
   health_check_port = 9000
 
   resource_limits_cpu      = "500m"
@@ -114,9 +114,9 @@ module "mcp_blueprint_prompts_frontend" {
   nginx_image            = var.mcp_blueprint_prompts_site_image
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
 
-  # Configure proxy routes - /sse requests go to the SSE backend
+  # Configure proxy routes - /mcp requests go to the SSE backend
   proxy_routes = {
-    "/sse" = "http://mcp-blueprint-prompts-sse.${kubernetes_namespace.luismachadoreis_dev.metadata[0].name}.svc.cluster.local:9000"
+    "/mcp" = "http://mcp-blueprint-prompts-sse.${kubernetes_namespace.luismachadoreis_dev.metadata[0].name}.svc.cluster.local:9000"
   }
 
   resource_limits_cpu      = "200m"
