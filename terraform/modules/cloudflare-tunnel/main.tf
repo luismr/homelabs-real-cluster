@@ -63,11 +63,11 @@ resource "kubernetes_config_map" "tunnel_config" {
         - hostname: '*.ligflat.com.br'
           service: http://redirector.redirects.svc.cluster.local:80
 
-        # pudim.dev -> static-site service in pudim-dev namespace
+        # pudim.dev -> calculator app-service in pudim-dev namespace
         - hostname: pudim.dev
-          service: http://static-site.pudim-dev.svc.cluster.local:80
+          service: http://calculator.pudim-dev.svc.cluster.local:80
         - hostname: www.pudim.dev
-          service: http://static-site.pudim-dev.svc.cluster.local:80
+          service: http://calculator.pudim-dev.svc.cluster.local:80
         
         # luismachadoreis.dev -> static-site service in luismachadoreis-dev namespace
         - hostname: luismachadoreis.dev
@@ -81,23 +81,29 @@ resource "kubernetes_config_map" "tunnel_config" {
         - hostname: prompts.luismachadoreis.dev
           service: http://mcp-blueprint-prompts-service.luismachadoreis-dev.svc.cluster.local:80
         
-        # carimbo.vip -> static-site service in carimbo-vip namespace
+        # carimbo.vip -> carimbo-vip-service (nginx-static-site) in carimbo-vip namespace
         - hostname: carimbo.vip
-          service: http://static-site.carimbo-vip.svc.cluster.local:80
+          service: http://carimbo-vip-service.carimbo-vip.svc.cluster.local:80
         - hostname: www.carimbo.vip
-          service: http://static-site.carimbo-vip.svc.cluster.local:80
+          service: http://carimbo-vip-service.carimbo-vip.svc.cluster.local:80
         
-        # singularideas.com.br -> static-site service in singularideas-com-br namespace
+        # singularideas.com.br -> singularideas-com-br-service (nginx-static-site) in singularideas-com-br namespace
         - hostname: singularideas.com.br
-          service: http://static-site.singularideas-com-br.svc.cluster.local:80
+          service: http://singularideas-com-br-service.singularideas-com-br.svc.cluster.local:80
         - hostname: www.singularideas.com.br
-          service: http://static-site.singularideas-com-br.svc.cluster.local:80
+          service: http://singularideas-com-br-service.singularideas-com-br.svc.cluster.local:80
         
-        # brickfolio.online -> static-site service in brickfolio-online namespace
+        # brickfolio.online -> static-site (app-service) in brickfolio-online namespace
         - hostname: brickfolio.online
           service: http://static-site.brickfolio-online.svc.cluster.local:80
         - hostname: www.brickfolio.online
           service: http://static-site.brickfolio-online.svc.cluster.local:80
+
+        # leticiacarvalho.pro -> leticiacarvalho-pro-service (nginx-static-site) in leticiacarvalho-pro namespace
+        - hostname: leticiacarvalho.pro
+          service: http://leticiacarvalho-pro-service.leticiacarvalho-pro.svc.cluster.local:80
+        - hostname: www.leticiacarvalho.pro
+          service: http://leticiacarvalho-pro-service.leticiacarvalho-pro.svc.cluster.local:80
         
         # Catch-all rule (return 404 for unknown hosts)
         - service: http_status:404
