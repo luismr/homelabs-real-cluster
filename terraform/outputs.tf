@@ -7,6 +7,8 @@ output "namespaces" {
     singularideas_com_br = module.singularideas_com_br.namespace
     leticiacarvalho_pro  = module.leticiacarvalho_pro.namespace
     brickfolio_online    = module.brickfolio_online.namespace
+    brickfolio_qa        = module.brickfolio_qa.namespace
+    brickfolio_prod      = module.brickfolio_prod.namespace
   }
 }
 
@@ -119,6 +121,36 @@ output "brickfolio_online" {
   }
 }
 
+output "brickfolio_qa" {
+  description = "brickfolio QA environment (brickfolio-online-qa) outputs"
+  value = {
+    namespace          = module.brickfolio_qa.namespace
+    api_service_name   = module.brickfolio_qa.api_service_name
+    app_service_name   = module.brickfolio_qa.app_service_name
+    api_url            = module.brickfolio_qa.api_url
+    app_url            = module.brickfolio_qa.app_url
+    api_internal_url   = module.brickfolio_qa.api_internal_url
+    app_internal_url   = module.brickfolio_qa.app_internal_url
+    redis_service_name = module.brickfolio_qa.redis_service_name
+    postgres_service_name = module.brickfolio_qa.postgres_service_name
+  }
+}
+
+output "brickfolio_prod" {
+  description = "brickfolio PROD environment (brickfolio-online-prod) outputs"
+  value = {
+    namespace            = module.brickfolio_prod.namespace
+    api_service_name     = module.brickfolio_prod.api_service_name
+    app_service_name     = module.brickfolio_prod.app_service_name
+    api_url              = module.brickfolio_prod.api_url
+    app_url              = module.brickfolio_prod.app_url
+    api_internal_url     = module.brickfolio_prod.api_internal_url
+    app_internal_url     = module.brickfolio_prod.app_internal_url
+    redis_service_name   = module.brickfolio_prod.redis_service_name
+    postgres_service_name = module.brickfolio_prod.postgres_service_name
+  }
+}
+
 output "cloudflare_tunnel_info" {
   description = "Cloudflare Tunnel deployment information (if enabled)"
   value = length(module.cloudflare_tunnel) > 0 ? {
@@ -139,6 +171,10 @@ output "sites_urls" {
     singularideas_com_br = module.singularideas_com_br.site_url
     leticiacarvalho_pro  = module.leticiacarvalho_pro.site_url
     brickfolio_online    = module.brickfolio_online.site_url
+    brickfolio_qa_app    = module.brickfolio_qa.app_url
+    brickfolio_qa_api    = module.brickfolio_qa.api_url
+    brickfolio_prod_app  = module.brickfolio_prod.app_url
+    brickfolio_prod_api  = module.brickfolio_prod.api_url
   }
 }
 

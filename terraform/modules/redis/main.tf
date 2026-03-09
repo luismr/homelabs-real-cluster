@@ -15,6 +15,9 @@ resource "kubernetes_config_map_v1" "redis_config" {
     # Enable RDB persistence (snapshots)
     # Save the dataset to disk every 60 seconds if at least 1000 keys changed
     "redis.conf" = join("\n", concat([
+      "# Logging (verbose = log client connections, notice = default)",
+      "loglevel ${var.loglevel}",
+      "",
       "# Persistence configuration",
       "save 60 1000",
       "save 300 100",

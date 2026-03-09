@@ -421,4 +421,57 @@ variable "brickfolio_forms_origin_override" {
   default     = "brickfolio.online"
 }
 
+# Brickfolio QA environment (brickfolio-online-qa namespace)
+variable "brickfolio_qa_api_image" {
+  description = "Container image for brickfolio-api in QA"
+  type        = string
+  default     = null
+}
+
+variable "brickfolio_qa_app_image" {
+  description = "Container image for brickfolio-app in QA"
+  type        = string
+  default     = null
+}
+
+variable "brickfolio_qa_postgres_password" {
+  description = "PostgreSQL password for brickfolio QA (use TF_VAR_brickfolio_qa_postgres_password)"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "brickfolio_qa_api_jwt_secret" {
+  description = "JWT secret for brickfolio API in QA (optional). Must be at least 32 characters for HS256."
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+# Brickfolio PROD environment (brickfolio-online-prod namespace)
+variable "brickfolio_prod_api_image" {
+  description = "Container image for brickfolio-api in PROD"
+  type        = string
+  default     = null
+}
+
+variable "brickfolio_prod_app_image" {
+  description = "Container image for brickfolio-app in PROD"
+  type        = string
+  default     = null
+}
+
+variable "brickfolio_prod_postgres_password" {
+  description = "PostgreSQL password for brickfolio PROD (use TF_VAR_brickfolio_prod_postgres_password)"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "brickfolio_prod_api_jwt_secret" {
+  description = "JWT secret for brickfolio API in PROD (optional). Must be at least 32 characters for HS256."
+  type        = string
+  sensitive   = true
+  default     = null
+}
 

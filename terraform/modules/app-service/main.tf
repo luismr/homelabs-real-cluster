@@ -27,7 +27,8 @@ resource "kubernetes_persistent_volume_claim" "app_data" {
 
 # Deployment
 resource "kubernetes_deployment" "app" {
-  depends_on = [var.depends_on_resources]
+  depends_on       = [var.depends_on_resources]
+  wait_for_rollout = var.wait_for_rollout
   metadata {
     name      = var.app_name
     namespace = var.namespace
@@ -40,7 +41,8 @@ resource "kubernetes_deployment" "app" {
   }
 
   spec {
-    replicas = var.enable_autoscaling ? var.min_replicas : var.replicas
+    replicas                 = var.enable_autoscaling ? var.min_replicas : var.replicas
+    progress_deadline_seconds = var.progress_deadline_seconds
 
     selector {
       match_labels = {
@@ -85,6 +87,16 @@ resource "kubernetes_deployment" "app" {
             }
           }
 
+          # Load environment variables from Secret if provided
+          dynamic "env_from" {
+            for_each = var.env_from_secret_name != null ? [1] : []
+            content {
+              secret_ref {
+                name = var.env_from_secret_name
+              }
+            }
+          }
+
           dynamic "volume_mount" {
             for_each = var.enable_nfs ? [1] : []
             content {
@@ -104,19 +116,59 @@ resource "kubernetes_deployment" "app" {
             }
           }
 
+          dynamic "startup_probe" {
+            for_each = var.startup_probe_enabled ? [1] : []
+            content {
+              dynamic "http_get" {
+                for_each = var.health_check_type == "http" ? [1] : []
+                content {
+                  path = var.health_check_path
+                  port = coalesce(var.health_check_port, var.container_port)
+                }
+              }
+              dynamic "tcp_socket" {
+                for_each = var.health_check_type == "tcp" ? [1] : []
+                content {
+                  port = coalesce(var.health_check_port, var.container_port)
+                }
+              }
+              initial_delay_seconds = var.startup_probe_initial_delay_seconds
+              period_seconds        = var.startup_probe_period_seconds
+              failure_threshold      = var.startup_probe_failure_threshold
+            }
+          }
+
           liveness_probe {
-            http_get {
-              path = var.health_check_path
-              port = coalesce(var.health_check_port, var.container_port)
+            dynamic "http_get" {
+              for_each = var.health_check_type == "http" ? [1] : []
+              content {
+                path = var.health_check_path
+                port = coalesce(var.health_check_port, var.container_port)
+              }
+            }
+            dynamic "tcp_socket" {
+              for_each = var.health_check_type == "tcp" ? [1] : []
+              content {
+                port = coalesce(var.health_check_port, var.container_port)
+              }
             }
             initial_delay_seconds = var.health_check_initial_delay
             period_seconds        = var.health_check_period
           }
 
           readiness_probe {
-            http_get {
-              path = var.health_check_path
-              port = coalesce(var.health_check_port, var.container_port)
+            dynamic "http_get" {
+              for_each = var.health_check_type == "http" ? [1] : []
+              content {
+                path = var.health_check_path
+                port = coalesce(var.health_check_port, var.container_port)
+              }
+            }
+            dynamic "tcp_socket" {
+              for_each = var.health_check_type == "tcp" ? [1] : []
+              content {
+                port = coalesce(var.health_check_port, var.container_port)
+              }
             }
             initial_delay_seconds = 5
             period_seconds        = 5
@@ -138,10 +190,7 @@ resource "kubernetes_deployment" "app" {
   }
 
   lifecycle {
-    ignore_changes = [
-      spec[0].template[0].spec[0].container[0].liveness_probe,
-      spec[0].template[0].spec[0].container[0].readiness_probe,
-    ]
+    ignore_changes = []
   }
 }
 

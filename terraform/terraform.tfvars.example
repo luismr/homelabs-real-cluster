@@ -43,6 +43,20 @@ pudim_redis_circuit_breaker_cooldown_ms = 60000
 pudim_redis_maxmemory                   = "128mb"
 pudim_redis_maxmemory_policy            = "allkeys-lru"
 
+# Brickfolio QA environment (brickfolio-online-qa namespace)
+# brickfolio_qa_api_image  = "ghcr.io/luismr/brickfolio-api:main-latest"
+# brickfolio_qa_app_image = "ghcr.io/luismr/brickfolio-app:main-latest"
+# Set via: export TF_VAR_brickfolio_qa_postgres_password="$POSTGRES_PASSWORD"
+# brickfolio_qa_postgres_password = null  # Use TF_VAR_brickfolio_qa_postgres_password env var
+# brickfolio_qa_api_jwt_secret   = null  # Optional: TF_VAR_brickfolio_qa_api_jwt_secret
+
+# Brickfolio PROD environment (brickfolio-online-prod namespace)
+# brickfolio_prod_api_image  = "ghcr.io/luismr/brickfolio-api:main-latest"
+# brickfolio_prod_app_image  = "ghcr.io/luismr/brickfolio-app:main-latest"
+# Set via: export TF_VAR_brickfolio_prod_postgres_password="$POSTGRES_PASSWORD"
+# brickfolio_prod_postgres_password = null  # Use TF_VAR_brickfolio_prod_postgres_password env var
+# brickfolio_prod_api_jwt_secret   = null  # Optional: TF_VAR_brickfolio_prod_api_jwt_secret
+
 # GitHub Container Registry (GHCR) Authentication (for private images)
 # Leave empty if using public images
 # Set via: export TF_VAR_ghcr_username="$GITHUB_USER"

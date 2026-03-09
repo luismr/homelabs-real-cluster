@@ -170,7 +170,8 @@ resource "kubernetes_deployment" "postgres" {
           }
         }
 
-        # Init container to copy pg_hba.conf template (will be used if data directory is empty)
+        # Init container: only clean invalid state. Do NOT write into empty data dir (Postgres
+        # image runs initdb only when the dir is empty; writing pg_hba.conf there prevents initdb).
         init_container {
           name  = "init-pg-hba"
           image = "busybox:latest"
@@ -179,20 +180,11 @@ resource "kubernetes_deployment" "postgres" {
             "sh",
             "-c",
             <<-EOT
-              # If data directory exists and is empty, copy our pg_hba.conf template
               # If data directory has files but no PG_VERSION, it's a partial/invalid state - clean it
-              if [ -d /var/lib/postgresql/data ]; then
-                if [ ! "$(ls -A /var/lib/postgresql/data)" ]; then
-                  # Empty directory - copy template
-                  cp /pg-hba-config/pg_hba.conf /var/lib/postgresql/data/pg_hba.conf
-                  chmod 600 /var/lib/postgresql/data/pg_hba.conf
-                elif [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
-                  # Directory has files but no PG_VERSION - invalid state, clean it
-                  echo "Warning: Data directory exists but is not a valid PostgreSQL data directory. Cleaning..."
-                  rm -rf /var/lib/postgresql/data/*
-                  cp /pg-hba-config/pg_hba.conf /var/lib/postgresql/data/pg_hba.conf
-                  chmod 600 /var/lib/postgresql/data/pg_hba.conf
-                fi
+              # so Postgres entrypoint will run initdb on next start. Leave empty dirs alone.
+              if [ -d /var/lib/postgresql/data ] && [ "$(ls -A /var/lib/postgresql/data)" ] && [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+                echo "Warning: Data directory exists but is not a valid PostgreSQL data directory. Cleaning..."
+                rm -rf /var/lib/postgresql/data/*
               fi
             EOT
           ]

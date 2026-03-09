@@ -66,8 +66,19 @@ variable "service_port" {
   default     = 80
 }
 
+variable "health_check_type" {
+  description = "Probe type: \"http\" for HTTP GET or \"tcp\" for TCP socket"
+  type        = string
+  default     = "http"
+
+  validation {
+    condition     = contains(["http", "tcp"], var.health_check_type)
+    error_message = "health_check_type must be \"http\" or \"tcp\"."
+  }
+}
+
 variable "health_check_path" {
-  description = "Path for the health check endpoint"
+  description = "Path for the health check endpoint (only used when health_check_type = \"http\")"
   type        = string
   default     = "/"
 }
@@ -88,6 +99,30 @@ variable "health_check_period" {
   description = "Period for the liveness probe"
   type        = number
   default     = 10
+}
+
+variable "startup_probe_enabled" {
+  description = "Enable startupProbe so liveness/readiness don't kill the container during slow startup"
+  type        = bool
+  default     = false
+}
+
+variable "startup_probe_initial_delay_seconds" {
+  description = "Initial delay for the startup probe"
+  type        = number
+  default     = 10
+}
+
+variable "startup_probe_period_seconds" {
+  description = "Period for the startup probe"
+  type        = number
+  default     = 10
+}
+
+variable "startup_probe_failure_threshold" {
+  description = "Startup probe failure threshold; max startup time = initial_delay + (period * failure_threshold)"
+  type        = number
+  default     = 30
 }
 
 variable "resource_limits_cpu" {
@@ -156,6 +191,12 @@ variable "config_map_name" {
   default     = null
 }
 
+variable "env_from_secret_name" {
+  description = "Name of Secret to load as environment variables (all keys)"
+  type        = string
+  default     = null
+}
+
 variable "enable_cloudflare_tunnel" {
   description = "Enable Cloudflare Tunnel annotation on the service"
   type        = bool
@@ -166,4 +207,16 @@ variable "node_port" {
   description = "NodePort for external access (like Grafana). If null, no NodePort service is created."
   type        = number
   default     = null
+}
+
+variable "progress_deadline_seconds" {
+  description = "Maximum time in seconds for a deployment to make progress before it is considered failed (Kubernetes progressDeadlineSeconds)"
+  type        = number
+  default     = 600
+}
+
+variable "wait_for_rollout" {
+  description = "If true, Terraform will wait for the deployment rollout to complete before continuing"
+  type        = bool
+  default     = true
 }

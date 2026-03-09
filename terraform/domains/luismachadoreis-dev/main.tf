@@ -82,10 +82,10 @@ module "mcp_blueprint_prompts_sse" {
   app_image              = var.mcp_blueprint_prompts_sse_image
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
 
-  container_port    = 9000
-  service_port      = 9000
-  health_check_path = "/mcp"
-  health_check_port = 9000
+  container_port     = 9000
+  service_port       = 9000
+  health_check_type  = "tcp"
+  health_check_port  = 9000
 
   resource_limits_cpu      = "500m"
   resource_limits_memory   = "512Mi"

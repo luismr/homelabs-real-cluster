@@ -173,6 +173,50 @@ module "brickfolio_online" {
   ghcr_token                = var.ghcr_token
 }
 
+# Deploy brickfolio QA environment (brickfolio-online-qa namespace)
+module "brickfolio_qa" {
+  source = "./domains/brickfolio-environment"
+
+  environment         = "qa"
+  namespace_name     = "brickfolio-online-qa"
+  enable_nfs_storage = var.enable_nfs_storage
+  storage_class      = var.storage_class
+  ghcr_username      = var.ghcr_username
+  ghcr_token        = var.ghcr_token
+
+  api_image                  = var.brickfolio_qa_api_image
+  app_image                  = var.brickfolio_qa_app_image
+  api_replicas               = 1
+  app_replicas               = 1
+  postgres_password          = var.brickfolio_qa_postgres_password
+  api_jwt_secret             = var.brickfolio_qa_api_jwt_secret
+  api_public_host            = "api.brickfolio-qa.online"
+  app_public_host            = "app.brickfolio-qa.online"
+  api_cors_allowed_origins   = "https://app.brickfolio-qa.online"
+}
+
+# Deploy brickfolio PROD environment (brickfolio-online-prod namespace)
+module "brickfolio_prod" {
+  source = "./domains/brickfolio-environment"
+
+  environment         = "prod"
+  namespace_name     = "brickfolio-online-prod"
+  enable_nfs_storage = var.enable_nfs_storage
+  storage_class      = var.storage_class
+  ghcr_username      = var.ghcr_username
+  ghcr_token        = var.ghcr_token
+
+  api_image                  = var.brickfolio_prod_api_image
+  app_image                  = var.brickfolio_prod_app_image
+  api_replicas               = 2
+  app_replicas               = 2
+  postgres_password          = var.brickfolio_prod_postgres_password
+  api_jwt_secret             = var.brickfolio_prod_api_jwt_secret
+  api_public_host            = "api.brickfolio.online"
+  app_public_host            = "app.brickfolio.online"
+  api_cors_allowed_origins   = "https://app.brickfolio.online"
+}
+
 # Redirects namespace and redirector deployment
 resource "kubernetes_namespace" "redirects" {
   metadata {
