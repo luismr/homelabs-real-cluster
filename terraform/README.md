@@ -78,8 +78,12 @@ terraform/
 │   │   ├── main.tf                      (static site + MCP service)
 │   │   ├── variables.tf
 │   │   └── outputs.tf
-│   └── carimbo-vip/                   ← carimbo.vip configuration
-│       ├── main.tf
+│   ├── carimbo-vip/                   ← carimbo.vip configuration
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   └── brickfolio-environment/        ← Reusable QA/PROD environment module
+│       ├── main.tf                      (namespace, Redis, Postgres, API, App)
 │       ├── variables.tf
 │       └── outputs.tf
 └── modules/                           ← Reusable modules
@@ -214,6 +218,57 @@ After deployment, these services will be available:
 |-------------|--------|-----------|--------------|------|------|
 | MCP Blueprint Prompts | prompts.luismachadoreis.dev | luismachadoreis-dev | mcp-blueprint-prompts | 9000 | SSE/HTTP |
 
+### Brickfolio App Environments
+
+Two dedicated environments (QA and PROD) each run in an isolated namespace and share the same module (`domains/brickfolio-environment`). Each includes: Redis, Postgres 17, Spring Boot API, and a Vite SPA frontend.
+
+| Environment | App URL | API URL | Namespace |
+|-------------|---------|---------|-----------|
+| **PROD** | app.brickfolio.online | api.brickfolio.online | `brickfolio-online-prod` |
+| **QA** | app.brickfolio-qa.online | api.brickfolio-qa.online | `brickfolio-online-qa` |
+
+**Per-environment components:**
+
+| Component | Service name | Port | Notes |
+|-----------|-------------|------|-------|
+| API (Spring Boot) | `api` | 8080 | 2 replicas PROD / 1 QA |
+| App (Vite SPA) | `app` | 80 | 2 replicas PROD / 1 QA |
+| Postgres 17 | `postgres` | 5432 | DB: `brickfolio_db`, user: `brickfolio` |
+| Redis 7 | `redis` | 6379 | No auth, standalone |
+
+**Environment variables (API):**
+
+| Variable | Value |
+|----------|-------|
+| `DATABASE_URL` | `jdbc:postgresql://postgres:5432/brickfolio_db` |
+| `DATABASE_USERNAME` | `brickfolio` |
+| `DATABASE_PASSWORD` | From `api-secrets` Secret |
+| `REDIS_HOST` | `redis` (in-namespace service name) |
+| `REDIS_PORT` | `6379` |
+| `JWT_SECRET` | From `api-secrets` Secret (≥ 32 chars required for HS256) |
+| `APP_CORS_ALLOWED_ORIGINS_0` | App public URL for this environment |
+
+**Environment variables (App / runtime config):**
+
+The app uses a `runtime-config.js` file generated at container start from env vars injected via the `app-config` ConfigMap. Values are available as `window.__RUNTIME_CONFIG__.<KEY>`.
+
+| Variable | PROD value | QA value |
+|----------|------------|----------|
+| `VITE_API_URL` | `https://api.brickfolio.online` | `https://api.brickfolio-qa.online` |
+| `VITE_AUTH_MODE` | `api` | `api` |
+| `VITE_API_TIMEOUT` | `10000` | `10000` |
+
+> **Note:** VITE_* are injected at runtime via the ConfigMap, not baked at build time. After a ConfigMap change, restart the app deployment (`kubectl rollout restart deployment/app -n <namespace>`) and **purge the Cloudflare cache** for `runtime-config.js` to avoid serving a stale cached version to browsers.
+
+**Required secrets (set via env vars or tfvars, never commit):**
+
+```bash
+export TF_VAR_brickfolio_prod_postgres_password="<min 16 chars>"
+export TF_VAR_brickfolio_prod_api_jwt_secret="<min 32 chars>"
+export TF_VAR_brickfolio_qa_postgres_password="<min 16 chars>"
+export TF_VAR_brickfolio_qa_api_jwt_secret="<min 32 chars>"
+```
+
 **Architecture Notes:**
 - Each domain has its own isolated namespace
 - Static sites use the standardized name `static-site` within their namespace
@@ -263,6 +318,44 @@ After deployment, configure DNS CNAMEs in Cloudflare:
    ```
    Type: CNAME
    Name: prompts
+   Content: <your-tunnel-uuid>.cfargotunnel.com
+   Proxy: Yes (Orange cloud)
+   ```
+
+### Brickfolio PROD (brickfolio.online zone)
+
+5. **app.brickfolio.online** (PROD frontend)
+   ```
+   Type: CNAME
+   Name: app
+   Content: <your-tunnel-uuid>.cfargotunnel.com
+   Proxy: Yes (Orange cloud)
+   ```
+
+6. **api.brickfolio.online** (PROD API)
+   ```
+   Type: CNAME
+   Name: api
+   Content: <your-tunnel-uuid>.cfargotunnel.com
+   Proxy: Yes (Orange cloud)
+   ```
+
+### Brickfolio QA (brickfolio-qa.online zone)
+
+> These are on a **separate zone** (`brickfolio-qa.online`) in Cloudflare.
+
+7. **app.brickfolio-qa.online** (QA frontend)
+   ```
+   Type: CNAME
+   Name: app
+   Content: <your-tunnel-uuid>.cfargotunnel.com
+   Proxy: Yes (Orange cloud)
+   ```
+
+8. **api.brickfolio-qa.online** (QA API)
+   ```
+   Type: CNAME
+   Name: api
    Content: <your-tunnel-uuid>.cfargotunnel.com
    Proxy: Yes (Orange cloud)
    ```
@@ -741,6 +834,74 @@ For SSE endpoints or application services, configure subdomain routing:
 - **SSE Support**: Server-Sent Events work seamlessly through the tunnel
 - **NodePort**: Useful for local development/testing (e.g., `http://192.168.7.200:30091`)
 - **Health Checks**: Configure appropriate paths for liveness/readiness probes
+
+### Troubleshooting: API pod crash / restarts
+
+When API pods are in CrashLoopBackOff or not becoming Ready:
+
+1. **Why the container exited**  
+   `kubectl describe pod -n <namespace> -l app=api`  
+   Check **Last State** / **Reason** (e.g. OOMKilled, or exit code 137/143 from probes).
+
+2. **Restarts**  
+   `kubectl get pod -n <namespace> -l app=api -o wide`  
+   Check **RESTARTS** and **STATUS**.
+
+3. **Probe config**  
+   In the Deployment (or Terraform app-service module) check `livenessProbe`, `readinessProbe`, and whether `startupProbe` is set.  
+   If there is no startup probe and `initialDelaySeconds` is short (e.g. 30–60s), the app can be killed during slow startup. The brickfolio API uses a startup probe to avoid this.
+
+### Brickfolio QA/PROD: Common Operations
+
+**Check all pods:**
+```bash
+kubectl get pods -n brickfolio-online-prod
+kubectl get pods -n brickfolio-online-qa
+```
+
+**Restart API (e.g. after Secret update):**
+```bash
+kubectl rollout restart deployment/api -n brickfolio-online-prod
+kubectl rollout restart deployment/api -n brickfolio-online-qa
+```
+
+**Restart App (e.g. after ConfigMap update):**
+```bash
+kubectl rollout restart deployment/app -n brickfolio-online-prod
+kubectl rollout restart deployment/app -n brickfolio-online-qa
+```
+
+> After restarting the app, **purge the Cloudflare cache** for `runtime-config.js` so browsers pick up the new config:
+> - Cloudflare Dashboard → brickfolio.online → Caching → Cache Purge → Custom Purge
+> - URL: `https://app.brickfolio.online/runtime-config.js`
+
+**View API logs:**
+```bash
+kubectl logs -n brickfolio-online-prod -l app=api -c api --tail=100
+kubectl logs -n brickfolio-online-qa -l app=api -c api --tail=100
+```
+
+**Check env vars in the app pod:**
+```bash
+kubectl exec -n brickfolio-online-prod deployment/app -- env | grep VITE_
+kubectl get configmap app-config -n brickfolio-online-prod -o yaml
+```
+
+**Check runtime-config.js served by the cluster:**
+```bash
+kubectl exec -n brickfolio-online-prod deployment/app -- cat /usr/share/nginx/html/runtime-config.js
+```
+
+**Check runtime-config.js served publicly (bypasses pod, shows Cloudflare cache):**
+```bash
+curl -s https://app.brickfolio.online/runtime-config.js
+```
+
+**JWT secret requirement:**  
+The API's `JWT_SECRET` must be **at least 32 characters** (256 bits). A shorter secret causes `WeakKeyException` on startup and the pod will crash. Set via:
+```bash
+export TF_VAR_brickfolio_prod_api_jwt_secret="<32+ char secret>"
+```
 
 ## Nginx Redirector Module
 

@@ -93,7 +93,19 @@ resource "kubernetes_config_map" "tunnel_config" {
         - hostname: www.singularideas.com.br
           service: http://singularideas-com-br-service.singularideas-com-br.svc.cluster.local:80
         
-        # brickfolio.online -> static-site (app-service) in brickfolio-online namespace
+        # brickfolio PROD (api/app on brickfolio.online)
+        - hostname: api.brickfolio.online
+          service: http://api.brickfolio-online-prod.svc.cluster.local:80
+        - hostname: app.brickfolio.online
+          service: http://app.brickfolio-online-prod.svc.cluster.local:80
+
+        # brickfolio QA (api/app on brickfolio-qa.online)
+        - hostname: api.brickfolio-qa.online
+          service: http://api.brickfolio-online-qa.svc.cluster.local:80
+        - hostname: app.brickfolio-qa.online
+          service: http://app.brickfolio-online-qa.svc.cluster.local:80
+
+        # brickfolio.online -> static-site (marketing) in brickfolio-online namespace
         - hostname: brickfolio.online
           service: http://static-site.brickfolio-online.svc.cluster.local:80
         - hostname: www.brickfolio.online

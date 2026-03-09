@@ -126,3 +126,9 @@ variable "enable_servicemonitor" {
   type        = bool
   default     = false
 }
+
+variable "loglevel" {
+  description = "Redis log level: debug, verbose, notice, warning. Default 'notice' logs only important events; use 'verbose' to see client connections."
+  type        = string
+  default     = "notice"
+}
