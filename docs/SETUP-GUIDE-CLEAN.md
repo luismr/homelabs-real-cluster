@@ -170,6 +170,8 @@ Apply the configuration:
 sudo netplan apply
 ```
 
+**Using only wlan0 (WiFi) for cluster connectivity:** If your nodes use WiFi and you want no other interfaces (e.g. ethernet) to get an address or default route, see [NETWORK-WLAN0-ONLY.md](NETWORK-WLAN0-ONLY.md). Run `sudo ./scripts/network/ensure-wlan0-only.sh` on each node so only wlan0 is active and cluster traffic (192.168.7.0/24) uses wlan0.
+
 ### 1.3: Update System Packages
 
 On each machine, update the system:

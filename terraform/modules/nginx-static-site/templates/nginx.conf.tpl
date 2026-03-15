@@ -2,6 +2,9 @@ server {
     listen 80;
     server_name _;
     
+    # Resolve upstream hostnames at request time (avoids "host not found in upstream" at startup)
+    resolver ${cluster_dns_ip} valid=10s ipv6=off;
+    
     root /usr/share/nginx/html;
     index index.html index.htm;
     
@@ -20,10 +23,11 @@ server {
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
     
-    # Proxy routes
+    # Proxy routes (variable-based proxy_pass so DNS is resolved at request time, not at nginx start)
 %{ for path_prefix, backend_url in proxy_routes ~}
     location ${path_prefix} {
-        proxy_pass ${backend_url};
+        set $backend "${backend_url}";
+        proxy_pass $backend;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $${http_upgrade};
         proxy_set_header Connection 'upgrade';

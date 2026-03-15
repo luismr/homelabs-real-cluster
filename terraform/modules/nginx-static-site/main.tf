@@ -114,7 +114,8 @@ resource "kubernetes_config_map" "nginx_config" {
 
   data = {
     "default.conf" = templatefile("${path.module}/templates/nginx.conf.tpl", {
-      proxy_routes = var.proxy_routes
+      proxy_routes   = var.proxy_routes
+      cluster_dns_ip = var.cluster_dns_ip
     })
   }
 }

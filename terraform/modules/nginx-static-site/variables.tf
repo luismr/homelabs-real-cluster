@@ -115,3 +115,9 @@ variable "proxy_routes" {
   type        = map(string)
   default     = {}
 }
+
+variable "cluster_dns_ip" {
+  description = "Cluster DNS IP for nginx resolver (when using proxy_routes with variable-based proxy_pass). k3s default: 10.43.0.10. Get via: kubectl get svc -n kube-system kube-dns -o jsonpath='{.spec.clusterIP}'"
+  type        = string
+  default     = "10.43.0.10"
+}
