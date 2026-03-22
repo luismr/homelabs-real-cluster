@@ -83,3 +83,10 @@ variable "api_jwt_secret" {
   sensitive   = true
   default     = null
 }
+
+variable "mapbox_access_token" {
+  description = "Mapbox access token for the API (optional)"
+  type        = string
+  sensitive   = true
+  default     = null
+}

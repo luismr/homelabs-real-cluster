@@ -193,6 +193,7 @@ module "brickfolio_qa" {
   api_public_host            = "api.brickfolio-qa.online"
   app_public_host            = "app.brickfolio-qa.online"
   api_cors_allowed_origins   = "https://app.brickfolio-qa.online"
+  mapbox_access_token        = var.brickfolio_qa_mapbox_access_token
 }
 
 # Deploy brickfolio PROD environment (brickfolio-online-prod namespace)
@@ -215,6 +216,7 @@ module "brickfolio_prod" {
   api_public_host            = "api.brickfolio.online"
   app_public_host            = "app.brickfolio.online"
   api_cors_allowed_origins   = "https://app.brickfolio.online"
+  mapbox_access_token        = var.brickfolio_prod_mapbox_access_token
 }
 
 # Redirects namespace and redirector deployment

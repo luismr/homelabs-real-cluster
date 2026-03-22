@@ -59,18 +59,22 @@ brickfolio_forms_allowed_origins            = "brickfolio.online"               
 brickfolio_forms_origin_override            = "brickfolio.online"                                                                          # Origin override for forms service
 
 # Brickfolio QA environment (brickfolio-online-qa namespace)
-brickfolio_qa_api_image                    = "ghcr.io/luismr/brickfolio-api:0.0.12"   # Replace with your QA API image
-brickfolio_qa_app_image                    = "ghcr.io/luismr/brickfolio-app:0.0.2"  # Replace with your QA App image
+brickfolio_qa_api_image                    = "ghcr.io/luismr/brickfolio-api:0.0.14"   # Replace with your QA API image
+brickfolio_qa_app_image                    = "ghcr.io/luismr/brickfolio-app:0.0.3"  # Replace with your QA App image
 # Set via: export TF_VAR_brickfolio_qa_postgres_password="$POSTGRES_PASSWORD"
 # brickfolio_qa_postgres_password = null  # Commented out - use TF_VAR_brickfolio_qa_postgres_password env var instead
 # brickfolio_qa_api_jwt_secret   = null  # Optional: use TF_VAR_brickfolio_qa_api_jwt_secret env var instead
+# Set via: export TF_VAR_brickfolio_qa_mapbox_access_token="$MAPBOX_ACCESS_TOKEN"
+# brickfolio_qa_mapbox_access_token = null  # Optional: use TF_VAR_brickfolio_qa_mapbox_access_token env var instead
 
 # Brickfolio PROD environment (brickfolio-online-prod namespace)
-brickfolio_prod_api_image                  = "ghcr.io/luismr/brickfolio-api:0.0.12"  # Replace with your PROD API image
-brickfolio_prod_app_image                  = "ghcr.io/luismr/brickfolio-app:0.0.2" # Replace with your PROD App image
+brickfolio_prod_api_image                  = "ghcr.io/luismr/brickfolio-api:0.0.14"  # Replace with your PROD API image
+brickfolio_prod_app_image                  = "ghcr.io/luismr/brickfolio-app:0.0.3" # Replace with your PROD App image
 # Set via: export TF_VAR_brickfolio_prod_postgres_password="$POSTGRES_PASSWORD"
 # brickfolio_prod_postgres_password = null  # Commented out - use TF_VAR_brickfolio_prod_postgres_password env var instead
 # brickfolio_prod_api_jwt_secret   = null   # Optional: use TF_VAR_brickfolio_prod_api_jwt_secret env var instead
+# Set via: export TF_VAR_brickfolio_prod_mapbox_access_token="$MAPBOX_ACCESS_TOKEN"
+# brickfolio_prod_mapbox_access_token = null  # Optional: use TF_VAR_brickfolio_prod_mapbox_access_token env var instead
 
 # pudim.dev Redis cache settings (for pudim-dev-calculator)
 pudim_redis_enabled                     = true

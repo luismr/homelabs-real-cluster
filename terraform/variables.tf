@@ -448,6 +448,13 @@ variable "brickfolio_qa_api_jwt_secret" {
   default     = null
 }
 
+variable "brickfolio_qa_mapbox_access_token" {
+  description = "Mapbox access token for brickfolio API in QA (use TF_VAR_brickfolio_qa_mapbox_access_token)"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
 # Brickfolio PROD environment (brickfolio-online-prod namespace)
 variable "brickfolio_prod_api_image" {
   description = "Container image for brickfolio-api in PROD"
@@ -470,6 +477,13 @@ variable "brickfolio_prod_postgres_password" {
 
 variable "brickfolio_prod_api_jwt_secret" {
   description = "JWT secret for brickfolio API in PROD (optional). Must be at least 32 characters for HS256."
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "brickfolio_prod_mapbox_access_token" {
+  description = "Mapbox access token for brickfolio API in PROD (use TF_VAR_brickfolio_prod_mapbox_access_token)"
   type        = string
   sensitive   = true
   default     = null

@@ -153,7 +153,8 @@ resource "kubernetes_secret_v1" "api_secrets" {
     {
       DATABASE_PASSWORD = base64encode(var.postgres_password)
     },
-    var.api_jwt_secret != null ? { JWT_SECRET = base64encode(var.api_jwt_secret) } : {}
+    var.api_jwt_secret != null ? { JWT_SECRET = base64encode(var.api_jwt_secret) } : {},
+    var.mapbox_access_token != null ? { MAPBOX_ACCESS_TOKEN = base64encode(var.mapbox_access_token) } : {}
   )
 
   depends_on = [kubernetes_namespace.brickfolio_env]
