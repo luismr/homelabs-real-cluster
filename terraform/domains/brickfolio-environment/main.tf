@@ -48,13 +48,13 @@ module "redis" {
   redis_image            = "redis:7-alpine"
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
 
-  enable_nfs         = var.enable_nfs_storage
-  storage_class      = var.storage_class
-  storage_size       = "1Gi"
-  replicas           = 1
-  protected_mode      = false
-  requirepass         = null
-  acl_users           = []
+  enable_nfs            = var.enable_nfs_storage
+  storage_class         = var.storage_class
+  storage_size          = "1Gi"
+  replicas              = 1
+  protected_mode        = false
+  requirepass           = null
+  acl_users             = []
   enable_servicemonitor = false
   depends_on_resources  = [kubernetes_namespace.brickfolio_env]
   loglevel              = "verbose" # log client connections; set to "notice" to reduce noise
@@ -76,15 +76,15 @@ module "postgres" {
   postgres_image         = "postgres:17-alpine"
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
 
-  enable_nfs         = var.enable_nfs_storage
-  storage_class      = var.storage_class
-  storage_size       = "5Gi"
-  replicas            = 1
-  postgres_user       = "brickfolio"
-  postgres_password   = var.postgres_password
-  database_name       = "brickfolio_db"
-  enable_pgvector    = false
-  node_port          = null
+  enable_nfs            = var.enable_nfs_storage
+  storage_class         = var.storage_class
+  storage_size          = "5Gi"
+  replicas              = 1
+  postgres_user         = "brickfolio"
+  postgres_password     = var.postgres_password
+  database_name         = "brickfolio_db"
+  enable_pgvector       = false
+  node_port             = var.postgres_node_port
   enable_servicemonitor = false
   depends_on_resources  = [kubernetes_namespace.brickfolio_env]
 
@@ -186,14 +186,14 @@ resource "kubernetes_config_map_v1" "app_config" {
 module "api" {
   source = "../../modules/app-service"
 
-  app_name           = "api"
-  domain             = var.api_public_host
-  namespace          = kubernetes_namespace.brickfolio_env.metadata[0].name
-  environment        = var.environment
-  replicas           = var.api_replicas
-  enable_autoscaling  = false
-  enable_nfs         = false
-  app_image          = var.api_image
+  app_name               = "api"
+  domain                 = var.api_public_host
+  namespace              = kubernetes_namespace.brickfolio_env.metadata[0].name
+  environment            = var.environment
+  replicas               = var.api_replicas
+  enable_autoscaling     = false
+  enable_nfs             = false
+  app_image              = var.api_image
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
 
   container_port = 8080
@@ -205,18 +205,18 @@ module "api" {
   health_check_period        = 10
 
   # Startup probe: give Spring Boot time to start before liveness can kill the container (max ~5 min)
-  startup_probe_enabled             = true
+  startup_probe_enabled               = true
   startup_probe_initial_delay_seconds = 30
-  startup_probe_period_seconds       = 20
-  startup_probe_failure_threshold    = 90
+  startup_probe_period_seconds        = 20
+  startup_probe_failure_threshold     = 90
 
   resource_limits_cpu      = "500m"
   resource_limits_memory   = "512Mi"
   resource_requests_cpu    = "200m"
   resource_requests_memory = "256Mi"
 
-  config_map_name       = kubernetes_config_map_v1.api_config.metadata[0].name
-  env_from_secret_name  = kubernetes_secret_v1.api_secrets.metadata[0].name
+  config_map_name      = kubernetes_config_map_v1.api_config.metadata[0].name
+  env_from_secret_name = kubernetes_secret_v1.api_secrets.metadata[0].name
 
   # API readiness depends on Postgres and Redis; allow 30 min for first rollout
   progress_deadline_seconds = 1800
@@ -228,14 +228,14 @@ module "api" {
 module "app" {
   source = "../../modules/app-service"
 
-  app_name           = "app"
-  domain             = var.app_public_host
-  namespace          = kubernetes_namespace.brickfolio_env.metadata[0].name
-  environment        = var.environment
-  replicas           = var.app_replicas
-  enable_autoscaling  = false
-  enable_nfs         = false
-  app_image          = var.app_image
+  app_name               = "app"
+  domain                 = var.app_public_host
+  namespace              = kubernetes_namespace.brickfolio_env.metadata[0].name
+  environment            = var.environment
+  replicas               = var.app_replicas
+  enable_autoscaling     = false
+  enable_nfs             = false
+  app_image              = var.app_image
   image_pull_secret_name = try(kubernetes_secret_v1.ghcr_pull[0].metadata[0].name, null)
 
   config_map_name = kubernetes_config_map_v1.app_config.metadata[0].name

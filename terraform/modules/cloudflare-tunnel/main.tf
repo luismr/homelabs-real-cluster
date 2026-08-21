@@ -111,12 +111,17 @@ resource "kubernetes_config_map" "tunnel_config" {
         - hostname: www.brickfolio.online
           service: http://static-site.brickfolio-online.svc.cluster.local:80
 
-        # leticiacarvalho.pro -> leticiacarvalho-pro-service (nginx-static-site) in leticiacarvalho-pro namespace
+        # leticiacarvalho.pro.br -> leticiacarvalho-pro-service (nginx-static-site) in leticiacarvalho-pro namespace
+        - hostname: leticiacarvalho.pro.br
+          service: http://leticiacarvalho-pro-service.leticiacarvalho-pro.svc.cluster.local:80
+        - hostname: www.leticiacarvalho.pro.br
+          service: http://leticiacarvalho-pro-service.leticiacarvalho-pro.svc.cluster.local:80
+        # legacy short domain (if still pointed at this tunnel)
         - hostname: leticiacarvalho.pro
           service: http://leticiacarvalho-pro-service.leticiacarvalho-pro.svc.cluster.local:80
         - hostname: www.leticiacarvalho.pro
           service: http://leticiacarvalho-pro-service.leticiacarvalho-pro.svc.cluster.local:80
-        
+
         # Catch-all rule (return 404 for unknown hosts)
         - service: http_status:404
     EOF

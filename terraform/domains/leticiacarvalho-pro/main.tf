@@ -1,10 +1,10 @@
-# Create namespace for leticiacarvalho.pro domain
+# Create namespace for leticiacarvalho.pro.br domain
 resource "kubernetes_namespace" "leticiacarvalho_pro" {
   metadata {
     name = "leticiacarvalho-pro"
     labels = {
       name        = "leticiacarvalho-pro"
-      domain      = "leticiacarvalho.pro"
+      domain      = "leticiacarvalho.pro.br"
       environment = "production"
       managed-by  = "terraform"
     }
@@ -37,12 +37,12 @@ resource "kubernetes_secret_v1" "ghcr_pull" {
   depends_on = [kubernetes_namespace.leticiacarvalho_pro]
 }
 
-# Deploy leticiacarvalho.pro static site
+# Deploy leticiacarvalho.pro.br static site
 module "leticiacarvalho_pro_site" {
   source = "../../modules/nginx-static-site"
 
   site_name          = "leticiacarvalho-pro"
-  domain             = "leticiacarvalho.pro"
+  domain             = "leticiacarvalho.pro.br"
   namespace          = kubernetes_namespace.leticiacarvalho_pro.metadata[0].name
   environment        = "production"
   replicas           = 1

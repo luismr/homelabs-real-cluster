@@ -42,3 +42,18 @@ output "postgres_service_name" {
   description = "PostgreSQL Kubernetes service name"
   value       = module.postgres.service_name
 }
+
+output "postgres_node_port" {
+  description = "NodePort for external Postgres access, if enabled"
+  value       = module.postgres.node_port
+}
+
+output "postgres_nodeport_service_name" {
+  description = "Kubernetes NodePort service name for Postgres, if enabled"
+  value       = module.postgres.nodeport_service_name
+}
+
+output "postgres_external_connection_string" {
+  description = "Template connection string for tools (replace <password> and <MASTER_IP>)"
+  value       = module.postgres.connection_string
+}

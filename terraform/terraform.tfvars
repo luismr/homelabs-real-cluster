@@ -31,50 +31,52 @@ enable_nfs_storage = true
 storage_class      = "nfs-loki"
 
 # Docker Images for Static Sites (replace with your actual images)
-pudim_site_image                            = "ghcr.io/luismr/pudim-dev-calculator:sha-2123322"                                            # Replace with your pudim.dev image
-luismachadoreis_site_image                  = "ghcr.io/luismr/luismachadoreis-dev-portfolio:sha-0309e6a"                                   # Replace with your luismachadoreis.dev image
-luismachadoreis_mcp_blueprint_prompts_site_image = "luismachadoreis/the-pudim-blueprint-prompts:site-1.7.2"                               # MCP Blueprint Prompts frontend (site) image
-luismachadoreis_mcp_blueprint_prompts_sse_image  = "luismachadoreis/the-pudim-blueprint-prompts:1.7.2"                                   # MCP Blueprint Prompts SSE backend image
-carimbo_site_image                          = "ghcr.io/luismr/carimbo-vip-site:sha-3a19b2c"                                                # Replace with your carimbo.vip image
-carimbo_forms_image                         = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Replace with your carimbo.vip forms image
-carimbo_forms_n8n_base_url                  = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints (e.g., https://n8n.example.com/webhook)
-carimbo_forms_allowed_controllers           = "leads,contacts"                                                                             # Comma-separated list of allowed controllers for forms service
-carimbo_forms_allowed_origins               = "carimbo.vip"                                                                                # Comma-separated list of allowed origins for forms service
-carimbo_forms_origin_override               = "carimbo.vip"                                                                                # Origin override for forms service
-carimbo_waha_image                          = "devlikeapro/waha:arm"                                                                       # WAHA (WhatsApp HTTP API) image - ARM64 version
-singularideas_waha_image                    = "devlikeapro/waha:arm"                                                                       # WAHA (WhatsApp HTTP API) image for singularideas.com.br - ARM64 version (same as carimbo-vip)
-carimbo_n8n_image                           = "docker.n8n.io/n8nio/n8n"                                                                    # n8n workflow automation image
-singularideas_site_image                    = "ghcr.io/luismr/singularideas-com-site:sha-d6254da"                                          # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
-singularideas_forms_image                   = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Image for singularideas.com.br forms service (using same as carimbo-vip)
-singularideas_forms_n8n_base_url            = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints for forms service (using same as carimbo-vip)
-singularideas_forms_allowed_controllers     = "contacts"                                                                                   # Comma-separated list of allowed controllers for forms service
-singularideas_forms_allowed_origins         = "singularideas.com.br"                                                                       # Comma-separated list of allowed origins for forms service
-singularideas_forms_origin_override         = "singularideas.com.br"                                                                       # Origin override for forms service
-leticiacarvalho_pro_site_image              = "ghcr.io/luismr/leticiacarvalho-pro-portfolio:master-ae00107"                                # leticiacarvalho.pro portfolio image
-brickfolio_site_image                       = "ghcr.io/luismr/brickfolio-site:main-a0e3d24"                                                # Replace with your brickfolio.online image
-brickfolio_forms_image                      = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Image for brickfolio.online forms service (using same as carimbo-vip)
-brickfolio_forms_n8n_base_url               = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints for forms service (using same as carimbo-vip)
-brickfolio_forms_allowed_controllers        = "leads,contacts"                                                                             # Comma-separated list of allowed controllers for forms service
-brickfolio_forms_allowed_origins            = "brickfolio.online"                                                                          # Comma-separated list of allowed origins for forms service
-brickfolio_forms_origin_override            = "brickfolio.online"                                                                          # Origin override for forms service
+pudim_site_image                                 = "ghcr.io/luismr/pudim-dev-calculator:sha-2123322"                                            # Replace with your pudim.dev image
+luismachadoreis_site_image                       = "ghcr.io/luismr/luismachadoreis-dev-portfolio:sha-0309e6a"                                   # Replace with your luismachadoreis.dev image
+luismachadoreis_mcp_blueprint_prompts_site_image = "luismachadoreis/the-pudim-blueprint-prompts:site-1.7.2"                                     # MCP Blueprint Prompts frontend (site) image
+luismachadoreis_mcp_blueprint_prompts_sse_image  = "luismachadoreis/the-pudim-blueprint-prompts:1.7.2"                                          # MCP Blueprint Prompts SSE backend image
+carimbo_site_image                               = "ghcr.io/luismr/carimbo-vip-site:sha-3a19b2c"                                                # Replace with your carimbo.vip image
+carimbo_forms_image                              = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Replace with your carimbo.vip forms image
+carimbo_forms_n8n_base_url                       = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints (e.g., https://n8n.example.com/webhook)
+carimbo_forms_allowed_controllers                = "leads,contacts"                                                                             # Comma-separated list of allowed controllers for forms service
+carimbo_forms_allowed_origins                    = "carimbo.vip"                                                                                # Comma-separated list of allowed origins for forms service
+carimbo_forms_origin_override                    = "carimbo.vip"                                                                                # Origin override for forms service
+carimbo_waha_image                               = "devlikeapro/waha:arm"                                                                       # WAHA (WhatsApp HTTP API) image - ARM64 version
+singularideas_waha_image                         = "devlikeapro/waha:arm"                                                                       # WAHA (WhatsApp HTTP API) image for singularideas.com.br - ARM64 version (same as carimbo-vip)
+carimbo_n8n_image                                = "docker.n8n.io/n8nio/n8n"                                                                    # n8n workflow automation image
+singularideas_site_image                         = "ghcr.io/luismr/singularideas-com-site:sha-d6254da"                                          # Replace with your singularideas.com.br image (or leave null for nginx:alpine)
+singularideas_forms_image                        = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Image for singularideas.com.br forms service (using same as carimbo-vip)
+singularideas_forms_n8n_base_url                 = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints for forms service (using same as carimbo-vip)
+singularideas_forms_allowed_controllers          = "contacts"                                                                                   # Comma-separated list of allowed controllers for forms service
+singularideas_forms_allowed_origins              = "singularideas.com.br"                                                                       # Comma-separated list of allowed origins for forms service
+singularideas_forms_origin_override              = "singularideas.com.br"                                                                       # Origin override for forms service
+leticiacarvalho_pro_site_image                   = "ghcr.io/luismr/leticiacarvalho-pro-portfolio:master-ae00107"                                # leticiacarvalho.pro portfolio image
+brickfolio_site_image                            = "ghcr.io/luismr/brickfolio-site:main-a0e3d24"                                                # Replace with your brickfolio.online image
+brickfolio_forms_image                           = "ghcr.io/luismr/carimbo-vip-forms:main-8c2e0e7"                                              # Image for brickfolio.online forms service (using same as carimbo-vip)
+brickfolio_forms_n8n_base_url                    = "http://n8n.carimbo-vip.svc.cluster.local:5678/webhook/9c49552a-ccdc-4805-b4ee-c69074c371bb" # Base URL for N8N webhook endpoints for forms service (using same as carimbo-vip)
+brickfolio_forms_allowed_controllers             = "leads,contacts"                                                                             # Comma-separated list of allowed controllers for forms service
+brickfolio_forms_allowed_origins                 = "brickfolio.online"                                                                          # Comma-separated list of allowed origins for forms service
+brickfolio_forms_origin_override                 = "brickfolio.online"                                                                          # Origin override for forms service
 
 # Brickfolio QA environment (brickfolio-online-qa namespace)
-brickfolio_qa_api_image                    = "ghcr.io/luismr/brickfolio-api:0.0.14"   # Replace with your QA API image
-brickfolio_qa_app_image                    = "ghcr.io/luismr/brickfolio-app:0.0.3"  # Replace with your QA App image
+brickfolio_qa_api_image = "ghcr.io/luismr/brickfolio-api:0.0.15" # Replace with your QA API image
+brickfolio_qa_app_image = "ghcr.io/luismr/brickfolio-app:0.0.3"  # Replace with your QA App image
 # Set via: export TF_VAR_brickfolio_qa_postgres_password="$POSTGRES_PASSWORD"
 # brickfolio_qa_postgres_password = null  # Commented out - use TF_VAR_brickfolio_qa_postgres_password env var instead
 # brickfolio_qa_api_jwt_secret   = null  # Optional: use TF_VAR_brickfolio_qa_api_jwt_secret env var instead
 # Set via: export TF_VAR_brickfolio_qa_mapbox_access_token="$MAPBOX_ACCESS_TOKEN"
 # brickfolio_qa_mapbox_access_token = null  # Optional: use TF_VAR_brickfolio_qa_mapbox_access_token env var instead
+# brickfolio_qa_postgres_node_port = 30433  # Default: Postgres NodePort (e.g. master IP); set null to disable
 
 # Brickfolio PROD environment (brickfolio-online-prod namespace)
-brickfolio_prod_api_image                  = "ghcr.io/luismr/brickfolio-api:0.0.14"  # Replace with your PROD API image
-brickfolio_prod_app_image                  = "ghcr.io/luismr/brickfolio-app:0.0.3" # Replace with your PROD App image
+brickfolio_prod_api_image = "ghcr.io/luismr/brickfolio-api:0.0.15" # Replace with your PROD API image
+brickfolio_prod_app_image = "ghcr.io/luismr/brickfolio-app:0.0.3"  # Replace with your PROD App image
 # Set via: export TF_VAR_brickfolio_prod_postgres_password="$POSTGRES_PASSWORD"
 # brickfolio_prod_postgres_password = null  # Commented out - use TF_VAR_brickfolio_prod_postgres_password env var instead
 # brickfolio_prod_api_jwt_secret   = null   # Optional: use TF_VAR_brickfolio_prod_api_jwt_secret env var instead
 # Set via: export TF_VAR_brickfolio_prod_mapbox_access_token="$MAPBOX_ACCESS_TOKEN"
 # brickfolio_prod_mapbox_access_token = null  # Optional: use TF_VAR_brickfolio_prod_mapbox_access_token env var instead
+# brickfolio_prod_postgres_node_port = 30434  # Default: Postgres NodePort (e.g. master IP); set null to disable
 
 # pudim.dev Redis cache settings (for pudim-dev-calculator)
 pudim_redis_enabled                     = true

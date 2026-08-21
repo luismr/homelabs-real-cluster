@@ -61,6 +61,13 @@ variable "postgres_password" {
   sensitive   = true
 }
 
+variable "postgres_node_port" {
+  description = "If set, expose Postgres on this NodePort (reachable at any cluster node IP, e.g. master). null disables."
+  type        = number
+  default     = null
+  nullable    = true
+}
+
 variable "api_public_host" {
   description = "Public hostname for the API (e.g. api.brickfolio.online or api.brickfolio-qa.online)"
   type        = string

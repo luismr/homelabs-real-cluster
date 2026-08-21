@@ -18,6 +18,8 @@ Your Kubernetes Cluster (cloudflared pod)
 Your Services (nginx sites)
 ```
 
+To expose **SSH to the physical k3s master** (host `cloudflared`, not the cluster pod), use [HOST-SSH-TUNNEL.md](./HOST-SSH-TUNNEL.md) and a **separate** tunnel token from the one below.
+
 ## Prerequisites
 
 1. **Cloudflare Account** (free tier works)

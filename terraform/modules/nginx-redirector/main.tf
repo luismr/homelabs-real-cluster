@@ -86,6 +86,17 @@ resource "kubernetes_deployment" "this" {
             container_port = 80
           }
 
+          resources {
+            requests = {
+              cpu    = "10m"
+              memory = "16Mi"
+            }
+            limits = {
+              cpu    = "100m"
+              memory = "64Mi"
+            }
+          }
+
           readiness_probe {
             tcp_socket {
               port = 80

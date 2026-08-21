@@ -148,13 +148,24 @@ resource "kubernetes_deployment" "waha" {
             }
           }
 
+          startup_probe {
+            http_get {
+              path = "/ping"
+              port = 3000
+            }
+            initial_delay_seconds = 10
+            period_seconds        = 5
+            failure_threshold     = 30
+          }
+
           liveness_probe {
             http_get {
               path = "/ping"
               port = 3000
             }
-            initial_delay_seconds = 30
+            initial_delay_seconds = 0
             period_seconds        = 15
+            failure_threshold     = 3
           }
 
           readiness_probe {
@@ -162,7 +173,7 @@ resource "kubernetes_deployment" "waha" {
               path = "/ping"
               port = 3000
             }
-            initial_delay_seconds = 5
+            initial_delay_seconds = 0
             period_seconds        = 5
           }
         }

@@ -10,7 +10,7 @@ output "service_name" {
 
 output "site_url" {
   description = "URL for leticiacarvalho.pro site"
-  value       = "https://leticiacarvalho.pro"
+  value       = "https://leticiacarvalho.pro.br"
 }
 
 output "internal_url" {

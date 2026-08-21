@@ -31,17 +31,17 @@ output "pudim_dev" {
 output "luismachadoreis_dev" {
   description = "luismachadoreis.dev domain outputs"
   value = {
-    namespace                                = module.luismachadoreis_dev.namespace
-    service                                  = module.luismachadoreis_dev.service_name
-    url                                      = module.luismachadoreis_dev.site_url
-    internal_url                             = module.luismachadoreis_dev.internal_url
-    internal_url_short                       = module.luismachadoreis_dev.internal_url_short
-    mcp_blueprint_prompts_frontend_service            = module.luismachadoreis_dev.mcp_blueprint_prompts_frontend_service_name
-    mcp_blueprint_prompts_frontend_deployment         = module.luismachadoreis_dev.mcp_blueprint_prompts_frontend_deployment_name
-    mcp_blueprint_prompts_frontend_internal_url       = module.luismachadoreis_dev.mcp_blueprint_prompts_frontend_internal_url
-    mcp_blueprint_prompts_sse_service                 = module.luismachadoreis_dev.mcp_blueprint_prompts_sse_service_name
-    mcp_blueprint_prompts_sse_deployment              = module.luismachadoreis_dev.mcp_blueprint_prompts_sse_deployment_name
-    mcp_blueprint_prompts_sse_internal_url            = module.luismachadoreis_dev.mcp_blueprint_prompts_sse_internal_url
+    namespace                                   = module.luismachadoreis_dev.namespace
+    service                                     = module.luismachadoreis_dev.service_name
+    url                                         = module.luismachadoreis_dev.site_url
+    internal_url                                = module.luismachadoreis_dev.internal_url
+    internal_url_short                          = module.luismachadoreis_dev.internal_url_short
+    mcp_blueprint_prompts_frontend_service      = module.luismachadoreis_dev.mcp_blueprint_prompts_frontend_service_name
+    mcp_blueprint_prompts_frontend_deployment   = module.luismachadoreis_dev.mcp_blueprint_prompts_frontend_deployment_name
+    mcp_blueprint_prompts_frontend_internal_url = module.luismachadoreis_dev.mcp_blueprint_prompts_frontend_internal_url
+    mcp_blueprint_prompts_sse_service           = module.luismachadoreis_dev.mcp_blueprint_prompts_sse_service_name
+    mcp_blueprint_prompts_sse_deployment        = module.luismachadoreis_dev.mcp_blueprint_prompts_sse_deployment_name
+    mcp_blueprint_prompts_sse_internal_url      = module.luismachadoreis_dev.mcp_blueprint_prompts_sse_internal_url
   }
 }
 
@@ -124,30 +124,36 @@ output "brickfolio_online" {
 output "brickfolio_qa" {
   description = "brickfolio QA environment (brickfolio-online-qa) outputs"
   value = {
-    namespace          = module.brickfolio_qa.namespace
-    api_service_name   = module.brickfolio_qa.api_service_name
-    app_service_name   = module.brickfolio_qa.app_service_name
-    api_url            = module.brickfolio_qa.api_url
-    app_url            = module.brickfolio_qa.app_url
-    api_internal_url   = module.brickfolio_qa.api_internal_url
-    app_internal_url   = module.brickfolio_qa.app_internal_url
-    redis_service_name = module.brickfolio_qa.redis_service_name
-    postgres_service_name = module.brickfolio_qa.postgres_service_name
+    namespace                           = module.brickfolio_qa.namespace
+    api_service_name                    = module.brickfolio_qa.api_service_name
+    app_service_name                    = module.brickfolio_qa.app_service_name
+    api_url                             = module.brickfolio_qa.api_url
+    app_url                             = module.brickfolio_qa.app_url
+    api_internal_url                    = module.brickfolio_qa.api_internal_url
+    app_internal_url                    = module.brickfolio_qa.app_internal_url
+    redis_service_name                  = module.brickfolio_qa.redis_service_name
+    postgres_service_name               = module.brickfolio_qa.postgres_service_name
+    postgres_node_port                  = module.brickfolio_qa.postgres_node_port
+    postgres_nodeport_service_name      = module.brickfolio_qa.postgres_nodeport_service_name
+    postgres_external_connection_string = module.brickfolio_qa.postgres_external_connection_string
   }
 }
 
 output "brickfolio_prod" {
   description = "brickfolio PROD environment (brickfolio-online-prod) outputs"
   value = {
-    namespace            = module.brickfolio_prod.namespace
-    api_service_name     = module.brickfolio_prod.api_service_name
-    app_service_name     = module.brickfolio_prod.app_service_name
-    api_url              = module.brickfolio_prod.api_url
-    app_url              = module.brickfolio_prod.app_url
-    api_internal_url     = module.brickfolio_prod.api_internal_url
-    app_internal_url     = module.brickfolio_prod.app_internal_url
-    redis_service_name   = module.brickfolio_prod.redis_service_name
-    postgres_service_name = module.brickfolio_prod.postgres_service_name
+    namespace                           = module.brickfolio_prod.namespace
+    api_service_name                    = module.brickfolio_prod.api_service_name
+    app_service_name                    = module.brickfolio_prod.app_service_name
+    api_url                             = module.brickfolio_prod.api_url
+    app_url                             = module.brickfolio_prod.app_url
+    api_internal_url                    = module.brickfolio_prod.api_internal_url
+    app_internal_url                    = module.brickfolio_prod.app_internal_url
+    redis_service_name                  = module.brickfolio_prod.redis_service_name
+    postgres_service_name               = module.brickfolio_prod.postgres_service_name
+    postgres_node_port                  = module.brickfolio_prod.postgres_node_port
+    postgres_nodeport_service_name      = module.brickfolio_prod.postgres_nodeport_service_name
+    postgres_external_connection_string = module.brickfolio_prod.postgres_external_connection_string
   }
 }
 

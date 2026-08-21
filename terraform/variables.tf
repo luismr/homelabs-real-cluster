@@ -441,6 +441,13 @@ variable "brickfolio_qa_postgres_password" {
   default     = null
 }
 
+variable "brickfolio_qa_postgres_node_port" {
+  description = "NodePort for brickfolio QA Postgres (e.g. psql to <master-ip>:PORT). null disables. Must not collide with other NodePorts."
+  type        = number
+  default     = 30433
+  nullable    = true
+}
+
 variable "brickfolio_qa_api_jwt_secret" {
   description = "JWT secret for brickfolio API in QA (optional). Must be at least 32 characters for HS256."
   type        = string
@@ -473,6 +480,13 @@ variable "brickfolio_prod_postgres_password" {
   type        = string
   sensitive   = true
   default     = null
+}
+
+variable "brickfolio_prod_postgres_node_port" {
+  description = "NodePort for brickfolio PROD Postgres (e.g. psql to <master-ip>:PORT). null disables. Must not collide with other NodePorts."
+  type        = number
+  default     = 30434
+  nullable    = true
 }
 
 variable "brickfolio_prod_api_jwt_secret" {
